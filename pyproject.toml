@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "excalidraw-agent-cli"
+version = "1.1.0"
+description = "Agentic CLI for Excalidraw — create, edit, and export diagrams from the command line or from AI agents."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+dependencies = [
+    "click>=8.0.0",
+    "prompt-toolkit>=3.0.0",
+]
+keywords = ["excalidraw", "cli", "diagram", "agentic", "ai"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Utilities",
+]
+
+[project.scripts]
+excalidraw-agent-cli = "excalidraw_agent_cli.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/bhushanlaware/excalidraw-agent-cli"
+Issues = "https://github.com/bhushanlaware/excalidraw-agent-cli/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["excalidraw_agent_cli*"]
+
+[tool.setuptools.package-data]
+"excalidraw_agent_cli.export_helper" = [
+    "export.js",
+    "package.json",
+    "package-lock.json",
+]
