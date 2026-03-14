@@ -44,3 +44,5 @@ include = ["excalidraw_agent_cli*"]
     "package.json",
     "package-lock.json",
 ]
+"excalidraw_agent_cli.skill" = ["SKILL.md"]
+"excalidraw_agent_cli.skill.references" = ["*.md"]

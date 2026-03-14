@@ -958,6 +958,81 @@ def backend_check(ctx, action):
     _out(result, as_json)
 
 
+# ── install-skill command ─────────────────────────────────────────────
+
+@cli.command("install-skill")
+@click.option(
+    "--global", "global_install", is_flag=True, default=False,
+    help="Install into ~/.claude/skills/excalidraw/ (default when no --codebase flag).",
+)
+@click.option(
+    "--codebase", "codebase_dir", default=None, metavar="DIR",
+    help="Install into <DIR>/.claude/skills/excalidraw/ instead of the global location.",
+)
+@click.option(
+    "--force", is_flag=True, default=False,
+    help="Overwrite existing skill files without prompting.",
+)
+@click.pass_context
+def install_skill(ctx, global_install, codebase_dir, force):
+    """Install the Excalidraw diagram skill for Claude Code.
+
+    By default installs globally to ~/.claude/skills/excalidraw/ so the skill
+    is available in every Claude Code session.  Pass --codebase <dir> to
+    install it into a specific project instead (useful for sharing the skill
+    with a team via git).
+
+    \b
+    Examples:
+      excalidraw-agent-cli install-skill                   # global
+      excalidraw-agent-cli install-skill --global          # same as above
+      excalidraw-agent-cli install-skill --codebase .      # current project
+      excalidraw-agent-cli install-skill --codebase ~/work/myapp
+    """
+    import shutil
+    from pathlib import Path
+
+    # ── Locate bundled skill directory ────────────────────────────────
+    # When installed via pip the skill lives next to this file under
+    # excalidraw_agent_cli/skill/.  In the dev layout it lives in the repo root.
+    _pkg_dir = Path(__file__).parent
+    skill_src = _pkg_dir / "skill"
+    if not skill_src.is_dir():
+        # Fallback: repo root (dev mode)
+        skill_src = _pkg_dir.parent / "skill"
+    if not skill_src.is_dir():
+        skin.error("Bundled skill directory not found.")
+        skin.info("Expected location: " + str(_pkg_dir / "skill"))
+        raise SystemExit(1)
+
+    # ── Determine destination ─────────────────────────────────────────
+    if codebase_dir is not None:
+        dest_base = Path(codebase_dir).expanduser().resolve()
+        dest = dest_base / ".claude" / "skills" / "excalidraw"
+        scope = f"codebase ({dest_base})"
+    else:
+        dest = Path.home() / ".claude" / "skills" / "excalidraw"
+        scope = "global (~/.claude/skills/excalidraw)"
+
+    # ── Safety check ─────────────────────────────────────────────────
+    if dest.exists() and not force:
+        skin.warning(f"Skill already installed at: {dest}")
+        skin.info("Use --force to overwrite.")
+        raise SystemExit(0)
+
+    # ── Copy skill/ → dest ───────────────────────────────────────────
+    if dest.exists():
+        shutil.rmtree(dest)
+    shutil.copytree(skill_src, dest)
+
+    skin.success(f"Skill installed ({scope})")
+    skin.status("location", str(dest))
+    skin.status("files", str(sum(1 for _ in dest.rglob("*") if _.is_file())))
+    skin.info("")
+    skin.info("Claude Code will pick up the skill automatically.")
+    skin.info("Try: \"draw a system architecture diagram for a three-tier web app\"")
+
+
 # ── Entry point ───────────────────────────────────────────────────────
 
 def main():

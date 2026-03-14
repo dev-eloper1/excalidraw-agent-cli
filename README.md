@@ -209,12 +209,13 @@ excalidraw> exit
 ## All commands
 
 ```
-project   new / open / save / info / validate
-element   add rectangle / ellipse / diamond / text / arrow / line / frame
-element   list / get / update / delete / move / connect
-export    svg / png / json
-session   status / undo / redo / history
-backend   check
+project        new / open / save / info / validate
+element        add rectangle / ellipse / diamond / text / arrow / line / frame
+element        list / get / update / delete / move / connect
+export         svg / png / json
+session        status / undo / redo / history
+backend        check
+install-skill  [--global] [--codebase DIR] [--force]
 ```
 
 Global flags (before the subcommand):
@@ -272,19 +273,38 @@ excalidraw-agent-cli --project "$P" --json element add arrow \
 
 ## Claude Code skill
 
-The `skill/SKILL.md` teaches Claude Code to use this CLI automatically. Install once:
+The CLI ships with a built-in Claude Code skill that teaches Claude how to build production-quality diagrams. Install it with one command:
 
 ```bash
-mkdir -p ~/.claude/skills/excalidraw
-cp skill/SKILL.md ~/.claude/skills/excalidraw/SKILL.md
+# Install globally (available in all Claude Code sessions)
+excalidraw-agent-cli install-skill
+
+# Install into a specific project (checked into git with your team)
+excalidraw-agent-cli install-skill --codebase .
+
+# Overwrite an existing installation
+excalidraw-agent-cli install-skill --force
 ```
 
-After that, just ask Claude:
+After installing, just ask Claude:
 > *"Draw a system architecture for a three-tier web app"*
 > *"Create a flowchart for the user signup process"*
 > *"Diagram the data flow between these services"*
+> *"Visualize how auth tokens flow through my API"*
 
-Claude will run `excalidraw-agent-cli` commands to build the diagram and export an SVG.
+Claude will use `excalidraw-agent-cli` to build the diagram, export a PNG, inspect it visually, fix layout issues, and present the final result.
+
+### What the skill includes
+
+The skill ships as `SKILL.md` + a `references/` directory:
+
+| File | Purpose |
+|------|---------|
+| `SKILL.md` | Core philosophy, step-by-step process, quality checklist |
+| `references/color-palette.md` | All approved hex colors by semantic purpose |
+| `references/cli-reference.md` | Full CLI syntax with copy-paste examples |
+| `references/patterns.md` | Visual pattern library (fan-out, swim lanes, timeline, cycle, etc.) |
+| `references/layout-rules.md` | 15 layout rules + 3 coordinate templates + pre/post-build checklists |
 
 ---
 
