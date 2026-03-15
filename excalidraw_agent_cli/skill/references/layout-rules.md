@@ -1,6 +1,6 @@
 # Layout Rules
 
-15 rules for building readable, well-proportioned diagrams. Every diagram must satisfy all 15 before export.
+20 rules for building readable, well-proportioned diagrams. Every diagram must satisfy all 20 before export.
 
 ---
 
@@ -187,6 +187,140 @@ Never let all arrows look identical. Apply this style vocabulary:
 | Data read/write | `--stroke-style solid --sw 2` | `#6d28d9` (purple) |
 | Feedback loop | `--stroke-style dashed --sw 2` | `#be123c` (rose) |
 
+### Rule 16 — Sequence Diagrams: Use Explicit Arrow Coordinates
+
+NEVER use `element connect -l "label"` for sequence diagram step arrows. The label renders ON the arrow line and is unreadable. Instead:
+1. Draw arrows with `add arrow --x start_x --y step_y --ex end_x --ey step_y` (perfectly horizontal, explicit coords)
+2. Add the label as a separate `add text` element placed **20px above** the arrow midpoint
+
+```bash
+# Participant center x values:
+# P1_CX = p1_x + p1_w/2
+# P2_CX = p2_x + p2_w/2
+# Step row y = 300 + (step_num * 100)  ← 100px per step
+# Label x = (P1_CX + P2_CX) / 2 - estimated_label_width/2
+# Label y = step_y - 20
+
+# Step 1: P1 → P2
+add arrow --x "$P1_CX" --y 300 --ex "$P2_CX" --ey 300 \
+  --stroke "#c2410c" --sw 2 --stroke-style solid \
+  --end-arrowhead arrow --start-arrowhead none > /dev/null
+add text --x 380 --y 280 --fs 13 --ff 2 --color "#1e293b" -t "1. POST /auth/login" > /dev/null
+
+# Response (right-to-left, dashed):
+add arrow --x "$P2_CX" --y 400 --ex "$P1_CX" --ey 400 \
+  --stroke "#15803d" --sw 2 --stroke-style dashed \
+  --end-arrowhead arrow --start-arrowhead none > /dev/null
+add text --x 380 --y 380 --fs 13 --ff 2 --color "#6b7280" -t "2. 200 OK + token" > /dev/null
+```
+
+Vertical spacing: **100px per step** minimum. Participants at y=200, lifelines from y=278, first step at y=340.
+
+### Rule 17 — Decision Branch Spacing
+
+For flowcharts with left/right branches from a diamond:
+- The entire diagram must be wide enough that the left branch node stays at x ≥ 200
+- Required minimum layout:
+  - Left branch: x=200, w=160 → right edge=360
+  - Diamond: x ≥ 420 (gap of 60px from left branch right edge)
+  - Diamond w=240 → right edge = 660
+  - Right branch: x ≥ 720 (gap of 60px from diamond right edge)
+
+```
+[ERR x=200]  60px gap  [Diamond x=420, w=240]  60px gap  [OK x=720]
+                        center_x = 540
+[vertical column centered over diamond: x=440, w=200]
+```
+
+If the diamond must be centered: shift the whole diagram so left branch x ≥ 200.
+
+### Rule 18 — Mind Map Layout: Left-to-Right Tree
+
+Mind maps must use a **left-to-right tree**, not a radial hub-and-spoke. Hub-and-spoke produces visual clutter and poor hierarchy. Tree structure:
+
+```
+Root (ellipse, x=200)  →  Branch nodes (x=500)  →  Sub-labels (x=800, free text)
+```
+
+- Root: large ellipse at x=200, vertically centered over all branches
+- Branch nodes: spaced 130px vertically at x=500
+- Sub-labels: free-floating text at x=800, no boxes needed
+- Connections: use `--end-arrowhead none` (plain lines, not arrows) or dotted gray lines
+
+```bash
+# 5 branches, total height = 5*130 = 650px
+# Center root vertically: root_y = (top_branch_y + bottom_branch_y) / 2 - root_h/2
+# top_branch_y=160, bottom_branch_y=680 → root_y = (160+680)/2 - 40 = 380
+ROOT=$(add ellipse --x 200 --y 380 -w 200 -h 80 --label "Root" --bg "#1e293b" --stroke "#e2e8f0" --fill-style solid --roughness 0 --sw 2)  # light stroke = readable label (Rule 22)
+
+B1=$(add rectangle --x 500 --y 160 -w 200 -h 65 --label "Branch 1" ...)
+B2=$(add rectangle --x 500 --y 290 -w 200 -h 65 --label "Branch 2" ...)
+# ... etc
+
+# Plain line connections (no arrowhead = tree aesthetic)
+$CLI --project "$P" --json element connect --from "$ROOT" --to "$B1" \
+  --stroke "#94a3b8" --sw 1 --stroke-style solid --end-arrowhead none > /dev/null
+
+# Sub-labels as free text beside branch nodes
+add text --x 715 --y 148 --fs 12 --ff 1 --color "#1e40af" -t "sub-item 1" > /dev/null
+add text --x 715 --y 166 --fs 12 --ff 1 --color "#1e40af" -t "sub-item 2" > /dev/null
+```
+
+### Rule 19 — Multi-Layer Architecture: Use Zone Grouping
+
+For diagrams with 4+ components in a fan-out (microservices, etc.), group services into **labeled zone columns**:
+- Column 1 (Edge/Ingress): CDN, Load Balancer, API Gateway
+- Column 2 (Services): individual microservices
+- Column 3 (Data/External): databases, queues, external APIs
+
+Each column gets a zone background. Vertical spacing between services: 110px. Arrow routes go horizontally between columns, never diagonally across 2+ columns.
+
+### Rule 20 — No Double Arrows Between Adjacent Nodes
+
+When two nodes are at the same y-coordinate, `element connect` may produce doubled or curved arrows due to Excalidraw's auto-routing. Prevention:
+- Ensure ≥ 60px horizontal gap between adjacent same-row nodes
+- For same-row connections, use `add arrow` with explicit coordinates instead of `element connect`
+- Never connect two nodes that share both a y-coordinate AND are within 40px of each other
+
+### Rule 21 — Title Spacing: 60px Minimum Below Title Baseline
+
+The title text and the first diagram element (zone background, node, or annotation) must have **≥ 60px vertical clearance**. Closer than this and they visually collide or overlap.
+
+```
+Title at y=15, font-size=22 → baseline ≈ y=37
+First element must start at y ≥ 37 + 60 = y=97
+```
+
+Recommended safe baseline:
+- Title: `--y 15 --fs 20`  (baseline ≈ y=35)
+- First zone or node: `--y 100` minimum
+
+For diagrams with a ∩ fail path or legend just below the title, place the extra element between title and main content — but still give the title at least 15px of breathing room before the next element.
+
+### Rule 22 — Label Contrast: Always Match Text Color to Background
+
+In Excalidraw, `--stroke` sets **both** the border color and the label text color inside shapes. There is no separate label-color flag.
+
+**Fail modes:**
+- `--bg "#1e293b" --stroke "#334155"` → unreadable dark-on-dark ❌
+- `--bg "#fef08a" --stroke "#a16207"` → muddy amber-on-yellow ❌
+
+**Fix:**
+- Dark backgrounds (`#1e293b`, `#0f172a`, `#334155`, any bg with lightness < 40%): use `--stroke "#e2e8f0"` (near-white label + light border)
+- Pale yellow bg (`#fef08a`): use `--stroke "#92400e"` (dark brown — high contrast)
+- Pale pink bg (`#fecdd3`): use `--stroke "#9f1239"` (dark rose)
+- When in doubt: aim for ≥ 4.5:1 contrast ratio between `--stroke` and `--bg`
+
+```bash
+# ✅ Dark hub node — readable white-ish label text
+ROOT=$(add ellipse --x 200 --y 380 -w 200 -h 80 \
+  --label "Root" --bg "#1e293b" --stroke "#e2e8f0" --fill-style solid)
+
+# ❌ WRONG — label invisible on dark bg
+ROOT=$(add ellipse --x 200 --y 380 -w 200 -h 80 \
+  --label "Root" --bg "#1e293b" --stroke "#334155" --fill-style solid)
+```
+
 ---
 
 ## Canonical Layout Templates
@@ -363,6 +497,11 @@ Run this mental check before writing any CLI commands:
 □ Terminal nodes are rightmost/bottommost (Rule 13)
 □ All text --fs ≥ 12 (Rule 14)
 □ Arrow styles vary (Rule 15)
+□ Sequence diagram arrows: explicit add arrow coords, labels as separate text 20px above
+□ Decision branches: left branch x≥200, 60px gap both sides of diamond
+□ Mind maps: left-to-right tree layout, not radial
+□ Fan-out with 4+ targets: zone column grouping, not plain fan-out
+□ Same-row nodes: ≥60px gap to prevent double-arrow routing
 ```
 
 ## Post-Build Checklist (After PNG Export)

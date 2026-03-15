@@ -100,86 +100,162 @@ CACHE=$(  add rectangle --x 415 --y 515 -w 160 -h 72 --label "Redis"       --bg 
 
 ---
 
-## Timeline (Sequence / Protocol)
+## Sequence Diagram (Protocol / Auth Flow)
 
-A vertical or horizontal line with dot markers at each step. Use for: event sequences, protocols, step-by-step processes.
+Participants across the top, horizontal arrows for each step. **Use `add arrow` with explicit coordinates — never `element connect -l` for sequence steps.**
 
-```
-  ● ─── Event 1
-  │
-  ● ─── Event 2
-  │
-  ● ─── Event 3
-```
+Layout formula:
+- Participant row: y=200, h=70
+- Lifelines: from y=278 downward (dashed vertical lines)
+- Step rows: y = 340 + (step_index * 100)  [100px per step]
+- Labels: free text at step_y - 20, x = midpoint of the two participants
 
 ```bash
-# Vertical timeline spine
-add line --x 300 --y 200 --points "0,0 0,400" \
-  --stroke "#64748b" --sw 2 > /dev/null
+#!/usr/bin/env bash
+CLI=$(which excalidraw-agent-cli)
+P=/tmp/sequence.excalidraw
 
-# Dot markers (small ellipses at each step)
-add ellipse --x 294 --y 200 -w 12 -h 12 \
-  --bg "#3b82f6" --stroke "#1e40af" --fill-style solid --roughness 0 > /dev/null
-add ellipse --x 294 --y 330 -w 12 -h 12 \
-  --bg "#3b82f6" --stroke "#1e40af" --fill-style solid --roughness 0 > /dev/null
-add ellipse --x 294 --y 460 -w 12 -h 12 \
-  --bg "#3b82f6" --stroke "#1e40af" --fill-style solid --roughness 0 > /dev/null
+add() { $CLI --project "$P" --json element add "$@" | python3 -c "import sys,json;print(json.load(sys.stdin)['id'])"; }
 
-# Free-floating labels beside each dot
-add text --x 320 --y 193 --fs 14 --ff 2 --color "#1e293b" -t "RUN_STARTED"    > /dev/null
-add text --x 320 --y 323 --fs 14 --ff 2 --color "#1e293b" -t "STATE_DELTA"    > /dev/null
-add text --x 320 --y 453 --fs 14 --ff 2 --color "#1e293b" -t "RUN_FINISHED"   > /dev/null
+rm -f "$P"
+$CLI --json project new --name "sequence" --output "$P" > /dev/null
 
-# Optional: detail text beneath each label
-add text --x 320 --y 213 --fs 12 --ff 3 --color "#6b7280" -t '{"runId": "abc"}' > /dev/null
+# Participants
+P1=$(add rectangle --x 200 --y 200 -w 160 -h 70 --label "Client"  --bg "#bfdbfe" --stroke "#1e40af" --fill-style solid --roughness 0)
+P2=$(add rectangle --x 480 --y 200 -w 180 -h 70 --label "Server"  --bg "#86efac" --stroke "#15803d" --fill-style solid --roughness 0)
+P3=$(add rectangle --x 780 --y 200 -w 160 -h 70 --label "Database" --bg "#ddd6fe" --stroke "#6d28d9" --fill-style solid --roughness 0)
+
+# Lifelines (dashed vertical lines below each participant)
+add line --x 280  --y 278 --points "0,0 0,500" --stroke "#cbd5e1" --sw 1 --stroke-style dashed > /dev/null
+add line --x 570  --y 278 --points "0,0 0,500" --stroke "#cbd5e1" --sw 1 --stroke-style dashed > /dev/null
+add line --x 860  --y 278 --points "0,0 0,500" --stroke "#cbd5e1" --sw 1 --stroke-style dashed > /dev/null
+
+# Step 1: Client → Server (request, solid)
+add arrow --x 280 --y 340 --ex 570 --ey 340 \
+  --stroke "#c2410c" --sw 2 --stroke-style solid \
+  --end-arrowhead arrow --start-arrowhead none > /dev/null
+add text --x 360 --y 320 --fs 13 --ff 2 --color "#1e293b" -t "1. POST /login" > /dev/null
+
+# Step 2: Server → DB (query, solid)
+add arrow --x 570 --y 440 --ex 860 --ey 440 \
+  --stroke "#6d28d9" --sw 2 --stroke-style solid \
+  --end-arrowhead arrow --start-arrowhead none > /dev/null
+add text --x 660 --y 420 --fs 13 --ff 2 --color "#6d28d9" -t "2. SELECT user" > /dev/null
+
+# Step 3: DB → Server (response, dashed)
+add arrow --x 860 --y 540 --ex 570 --ey 540 \
+  --stroke "#6d28d9" --sw 2 --stroke-style dashed \
+  --end-arrowhead arrow --start-arrowhead none > /dev/null
+add text --x 660 --y 520 --fs 13 --ff 2 --color "#6b7280" -t "3. user row" > /dev/null
+
+# Step 4: Server → Client (response, dashed)
+add arrow --x 570 --y 640 --ex 280 --ey 640 \
+  --stroke "#15803d" --sw 2 --stroke-style dashed \
+  --end-arrowhead arrow --start-arrowhead none > /dev/null
+add text --x 360 --y 620 --fs 13 --ff 2 --color "#6b7280" -t "4. 200 OK + JWT" > /dev/null
 ```
 
 ---
 
-## Hub-and-Spoke (Type System / Taxonomy)
+## Mind Map (Left-to-Right Tree)
 
-One central hub node with N spoke nodes radiating around it. Use for: element type systems, categories, options.
+A hierarchical tree with the root at left, branches in the middle, sub-labels at right. Use plain lines (no arrowheads) for tree edges. Never use radial/hub-and-spoke for mind maps — it produces poor hierarchy and text overlap.
 
-**Arrow style rule** (Rule 15):
-- Hub → spoke (type fan-out): `--stroke "#94a3b8" --stroke-style dotted --sw 1` (thin gray dotted)
-- Cross-connections: `--stroke "#3b82f6" --stroke-style dashed --sw 2` (colored dashed)
+```
+Root ──── Branch 1 ──── sub-item a
+     │               └── sub-item b
+     ├─── Branch 2 ──── sub-item c
+     ├─── Branch 3
+     └─── Branch 4
+```
+
+**Vertical spacing formula**: total_height = n_branches * 130. Root y = center.
 
 ```bash
-HUB=$(add rectangle --x 640 --y 415 -w 160 -h 78 --label "Base Element" \
-  --bg "#e2e8f0" --stroke "#334155" --fill-style solid --roughness 0 --sw 3)
+# Root uses dark bg — MUST use light stroke for readable label text (Rule 22)
+ROOT=$(add ellipse --x 200 --y 380 -w 200 -h 80 \
+  --label "Root Concept" --bg "#1e293b" --stroke "#e2e8f0" \
+  --fill-style solid --roughness 0 --sw 2)
 
-# Spokes in a ring around the hub
-RECT=$(    add rectangle --x 330 --y 200 -w 155 -h 72 --label "rectangle" --bg "#bfdbfe" --stroke "#1e40af")
-ELLIPSE=$( add ellipse   --x 590 --y 200 -w 140 -h 72 --label "ellipse"   --bg "#bfdbfe" --stroke "#1e40af")
-DIAMOND=$( add diamond   --x 860 --y 195 -w 145 -h 90 --label "diamond"   --bg "#bfdbfe" --stroke "#1e40af")
-TARROW=$(  add rectangle --x 1000 --y 415 -w 120 -h 70 --label "arrow"    --bg "#fed7aa" --stroke "#c2410c")
-TTEXT=$(   add rectangle --x 330  --y 430 -w 120 -h 70 --label "text"     --bg "#bbf7d0" --stroke "#15803d")
+B1=$(add rectangle --x 500 --y 160 -w 200 -h 65 --label "Topic A" --bg "#bfdbfe" --stroke "#1e40af" --fill-style solid --roughness 0)
+B2=$(add rectangle --x 500 --y 290 -w 200 -h 65 --label "Topic B" --bg "#bbf7d0" --stroke "#15803d" --fill-style solid --roughness 0)
+B3=$(add rectangle --x 500 --y 420 -w 200 -h 65 --label "Topic C" --bg "#fef08a" --stroke "#92400e" --fill-style solid --roughness 0)
+B4=$(add rectangle --x 500 --y 550 -w 200 -h 65 --label "Topic D" --bg "#fed7aa" --stroke "#c2410c" --fill-style solid --roughness 0)
+B5=$(add rectangle --x 500 --y 680 -w 200 -h 65 --label "Topic E" --bg "#ddd6fe" --stroke "#6d28d9" --fill-style solid --roughness 0)
 
-# All spokes: dotted gray, thin
-for SPOKE in "$RECT" "$ELLIPSE" "$DIAMOND" "$TARROW" "$TTEXT"; do
+# Tree edges: plain lines, no arrowhead
+for B in "$B1" "$B2" "$B3" "$B4" "$B5"; do
   $CLI --project "$P" --json element connect \
-    --from "$HUB" --to "$SPOKE" \
-    --stroke "#94a3b8" --stroke-style dotted --sw 1 > /dev/null
+    --from "$ROOT" --to "$B" \
+    --stroke "#94a3b8" --sw 1 --stroke-style solid \
+    --end-arrowhead none > /dev/null
 done
+
+# Sub-labels: free text at x=715, beside each branch
+add text --x 715 --y 148 --fs 12 --ff 1 --color "#1e40af" -t "sub-item 1" > /dev/null
+add text --x 715 --y 168 --fs 12 --ff 1 --color "#1e40af" -t "sub-item 2" > /dev/null
+add text --x 715 --y 278 --fs 12 --ff 1 --color "#15803d" -t "sub-item 3" > /dev/null
 ```
 
 ---
 
 ## Cycle (Feedback Loop)
 
-Elements in sequence with an arrow returning to the start. Use for: CI/CD loops, iterative refinement, retry logic.
+Elements in sequence with a return arrow back to the start. Use for: CI/CD pipelines, iterative refinement, retry loops.
+
+**Layout**: 2×N grid (top row = forward stages, bottom row = return stages). The fail/return arrow routes as a **∩ shape above the top row** — a horizontal dashed line at title level with short vertical stubs connecting to the first and last stage tops. This is always cleaner than routing around the outside edges.
+
+```
+                [fail]
+     ┌──────────────────────────┐
+     ↓                          │
+  Code → Build → Test ──────────┘
+     ↑
+  Plan ← Monitor ← Deploy
+```
 
 ```bash
-PLAN=$(  add rectangle --x 350 --y 200 -w 160 -h 72 --label "Plan"    --bg "#bfdbfe" --stroke "#1e40af")
-BUILD=$( add rectangle --x 600 --y 350 -w 160 -h 72 --label "Build"   --bg "#86efac" --stroke "#15803d")
-DEPLOY=$(add rectangle --x 350 --y 500 -w 160 -h 72 --label "Deploy"  --bg "#fef08a" --stroke "#a16207")
-OBSERVE=$(add rectangle --x 100 --y 350 -w 160 -h 72 --label "Observe" --bg "#fecdd3" --stroke "#be123c")
+# Title (Rule 21: leave ≥60px below baseline before first element)
+add text --x 290 --y 15 --fs 22 --ff 1 --color "#111827" -t "CI/CD Pipeline" > /dev/null
 
-conn "$PLAN"   "$BUILD"   ""        "#1e1e1e"
-conn "$BUILD"  "$DEPLOY"  ""        "#1e1e1e"
-conn "$DEPLOY" "$OBSERVE" ""        "#1e1e1e"
-conn "$OBSERVE" "$PLAN"  "feedback" "#be123c" "dashed"
+# Grid: Row1 y=90 h=70, Row2 y=270 h=70
+# Cols: Code/Plan x=160, Build/Monitor x=390, Test/Deploy x=620; w=170
+CODE=$(add rectangle    --x 160 --y 90  -w 170 -h 70 --label "Code"    --bg "#bfdbfe" --stroke "#1e40af" --fill-style solid --roughness 0 --sw 2 --roundness)
+BUILD=$(add rectangle   --x 390 --y 90  -w 170 -h 70 --label "Build"   --bg "#bbf7d0" --stroke "#15803d" --fill-style solid --roughness 0 --sw 2 --roundness)
+TEST=$(add rectangle    --x 620 --y 90  -w 170 -h 70 --label "Test"    --bg "#fef08a" --stroke "#92400e" --fill-style solid --roughness 0 --sw 2 --roundness)
+PLAN=$(add rectangle    --x 160 --y 270 -w 170 -h 70 --label "Plan"    --bg "#e0e7ff" --stroke "#4338ca" --fill-style solid --roughness 0 --sw 2 --roundness)
+MONITOR=$(add rectangle --x 390 --y 270 -w 170 -h 70 --label "Monitor" --bg "#fce7f3" --stroke "#be185d" --fill-style solid --roughness 0 --sw 2 --roundness)
+DEPLOY=$(add rectangle  --x 620 --y 270 -w 170 -h 70 --label "Deploy"  --bg "#d1fae5" --stroke "#047857" --fill-style solid --roughness 0 --sw 2 --roundness)
+
+# Forward cycle (element connect handles clean routing)
+$CLI --project "$P" --json element connect --from "$CODE"    --to "$BUILD"   --start-arrowhead none --end-arrowhead arrow --sw 2 --roughness 0 > /dev/null
+$CLI --project "$P" --json element connect --from "$BUILD"   --to "$TEST"    --start-arrowhead none --end-arrowhead arrow --sw 2 --roughness 0 > /dev/null
+$CLI --project "$P" --json element connect --from "$TEST"    --to "$DEPLOY"  --start-arrowhead none --end-arrowhead arrow --sw 2 --roughness 0 > /dev/null
+$CLI --project "$P" --json element connect --from "$DEPLOY"  --to "$MONITOR" --start-arrowhead none --end-arrowhead arrow --sw 2 --roughness 0 > /dev/null
+$CLI --project "$P" --json element connect --from "$MONITOR" --to "$PLAN"    --start-arrowhead none --end-arrowhead arrow --sw 2 --roughness 0 > /dev/null
+$CLI --project "$P" --json element connect --from "$PLAN"    --to "$CODE"    --start-arrowhead none --end-arrowhead arrow --sw 2 --roughness 0 > /dev/null
+
+# ∩ fail path above the top row (Test → Code via ∩ at y=62)
+# Col centers: Code=245, Test=705; horizontal fail path at y=62 (28px above row1 y=90)
+# "fail" label right of center, above the ∩ line
+add text --x 645 --y 46 --fs 13 --ff 2 --color "#dc2626" -t "fail" > /dev/null
+# Horizontal dashed segment (Code column to Test column)
+add line --x 245 --y 62 --points "0,0 460,0" \
+  --stroke "#dc2626" --sw 2 --stroke-style dashed --roughness 0 > /dev/null
+# Right stub: Test top (705, 90) up to horizontal (705, 62)
+add line --x 705 --y 62 --points "0,0 0,28" \
+  --stroke "#dc2626" --sw 2 --stroke-style dashed --roughness 0 > /dev/null
+# Left cap: downward arrow from horizontal (245, 62) into Code top (245, 88) — arrowhead at Code
+add arrow --x 245 --y 62 --ex 245 --ey 88 \
+  --stroke "#dc2626" --sw 2 --roughness 0 \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null
 ```
+
+**Key rules for cycles:**
+- Title must be above the ∩ path (Rule 21: ≥60px gap to first element)
+- ∩ path: horizontal at `row1_top - 28px`, stubs go DOWN to node tops, arrowhead enters start node from above
+- Use `element connect` for all main cycle arrows (it auto-routes cleanly when nodes don't share both x and y)
+- Route fail/skip paths using the ∩ above, not around the outside edges
 
 ---
 

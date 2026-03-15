@@ -52,18 +52,18 @@ Semi-transparent rectangles drawn **before** the nodes that sit on top of them.
 
 | Zone type | `--bg` | `--stroke` | `--opacity` |
 |-----------|--------|------------|-------------|
-| Client layer | `#dbeafe` | `#93c5fd` | `15` |
-| Service layer | `#dcfce7` | `#86efac` | `20` |
-| Data layer | `#ede9fe` | `#c4b5fd` | `20` |
-| Async layer | `#fef9c3` | `#fbbf24` | `25` |
-| Security layer | `#ffedd5` | `#fdba74` | `20` |
-| Observability | `#ffe4e6` | `#fda4af` | `20` |
-| Node.js / External | `#fef3c7` | `#fbbf24` | `15` |
+| Client layer | `#dbeafe` | `#93c5fd` | `30` |
+| Service layer | `#dcfce7` | `#86efac` | `35` |
+| Data layer | `#ede9fe` | `#c4b5fd` | `35` |
+| Async layer | `#fef9c3` | `#fbbf24` | `40` |
+| Security layer | `#ffedd5` | `#fdba74` | `35` |
+| Observability | `#ffe4e6` | `#fda4af` | `35` |
+| Node.js / External | `#fef3c7` | `#fbbf24` | `30` |
 
 ```bash
 # Add zone background first (before nodes)
 add rectangle --x 185 --y 155 -w 820 -h 145 \
-  --bg "#dbeafe" --stroke "#93c5fd" --fill-style solid --opacity 15 --sw 1 > /dev/null
+  --bg "#dbeafe" --stroke "#93c5fd" --fill-style solid --opacity 30 --sw 1 > /dev/null
 ```
 
 ---
@@ -138,3 +138,48 @@ add text --x 910 --y 328 --fs 13 --ff 3 --color "#22c55e" \
 | `0` | Clean vector | Technical / professional diagrams |
 | `1` | Slightly hand-drawn | Default — general use |
 | `2` | Sketchy | Brainstorming, drafts, informal |
+
+---
+
+## Text Contrast Rules
+
+Excalidraw uses the `--stroke` color as the label text color inside shapes. Choose stroke colors that contrast well against the background fill.
+
+### Problem pairs (avoid)
+
+| `--bg` | Bad `--stroke` | Why |
+|--------|---------------|-----|
+| `#fef08a` (yellow) | `#a16207` (amber) | Similar hue, muddy at small sizes |
+| `#fecdd3` (pink) | `#be123c` (rose) | Low contrast on pale pink |
+| `#bbf7d0` (light green) | `#15803d` (green) | OK at large size, tight at small |
+
+### Fix: use darker strokes on pale backgrounds
+
+| Node type | Use this `--stroke` instead |
+|-----------|----------------------------|
+| Async / Queue (`#fef08a` bg) | `#92400e` (dark amber-brown) |
+| Observability (`#fecdd3` bg) | `#9f1239` (dark rose) |
+| Gateway (`#bbf7d0` bg) | `#14532d` (dark green) |
+
+### Dark background nodes
+
+**IMPORTANT:** In Excalidraw, `--stroke` controls **both** the border color AND the label text color. They cannot be set independently. This means:
+
+- A dark `--stroke` (e.g. `#334155`) on a dark `--bg` (e.g. `#1e293b`) = **unreadable** — dark text on dark background
+- To get readable label text on a dark background, you **must** use a light `--stroke`
+
+Use `--stroke "#e2e8f0"` (near-white) for any node with a dark fill. The border will be light-gray, and the label text will be clearly readable.
+
+```bash
+# ✅ Dark hub node — light stroke gives readable white-ish label text
+add ellipse --x 200 --y 380 -w 200 -h 80 \
+  --label "Root Concept" \
+  --bg "#1e293b" --stroke "#e2e8f0" --fill-style solid --roughness 0 --sw 2
+
+# ❌ WRONG — dark stroke on dark bg = unreadable label
+add ellipse --x 200 --y 380 -w 200 -h 80 \
+  --label "Root Concept" \
+  --bg "#1e293b" --stroke "#334155" --fill-style solid --roughness 0 --sw 2
+```
+
+**Rule**: Before using any dark background, check that the `--stroke` color has **at least 4.5:1 contrast ratio** against the `--bg`. When in doubt, use `--stroke "#e2e8f0"` or `--stroke "#f8fafc"`.
