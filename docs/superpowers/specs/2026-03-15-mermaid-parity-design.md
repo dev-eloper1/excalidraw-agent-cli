@@ -19,6 +19,10 @@ Mermaid provides a proven taxonomy of diagram types that covers the same concept
 
 **Out of scope (v1):** XY charts, Sankey diagrams, timeline diagrams — these require arc/area primitives not available in the CLI. Auto-layout (Mermaid computes node positions; excalidraw-agent-cli requires explicit coordinates) is a known gap addressed by the layout templates.
 
+**Deferred to v2 — CLI `convert` subcommand:**
+`excalidraw-agent-cli convert --input diagram.mmd --output diagram.excalidraw`
+Converts Mermaid syntax directly to Excalidraw without Claude. Works in CI/CD, scripts, and other AI agents. Layout algorithm: recipe-based coordinate mapping — each diagram type's canonical coordinate grid (from the v1 recipe files) is used as the layout engine, avoiding a Dagre port. When Claude receives Mermaid input in v2+, it calls `convert` rather than generating bash from scratch. The v1 recipe format must be designed to be compatible with this future converter (coordinate grids as explicit variables, type-keyed layout templates).
+
 ---
 
 ## Prerequisites and Environment
