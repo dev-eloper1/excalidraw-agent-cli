@@ -16,7 +16,78 @@ Read these as needed — they are the ground truth for specifics:
 | `references/color-palette.md` | **Before every diagram** — all hex values live here |
 | `references/cli-reference.md` | CLI syntax, flags, bash helper patterns |
 | `references/patterns.md` | Visual pattern library with CLI examples |
-| `references/layout-rules.md` | 15 layout rules + coordinate templates |
+| `references/layout-rules.md` | Layout rules + coordinate templates |
+| `references/diagram-type-rubric.md` | **Type selection** — which diagram type to use when |
+| `references/diagram-recipes/<type>.md` | **Before generating** — layout template, color defaults, pitfalls per type |
+
+Available recipes: `flowchart.md`, `sequence.md`, `mindmap.md`, `class-diagram.md`, `state-diagram.md`, `er-diagram.md`, `gantt.md`, `architecture.md`
+
+---
+
+---
+
+## Diagram Generation Workflow
+
+Use this workflow when generating a diagram as part of documentation, a report, or a blog post — or when the user asks for a diagram without specifying exact elements.
+
+### 1. Type selection
+Read `references/diagram-type-rubric.md`. Pick the best type silently.
+Say: *"I'll generate a [type] diagram for this."* — user can redirect before you proceed.
+
+### 2. Content sourcing
+
+**Codebase task** (documenting a repo, explaining a system):
+- Read relevant source files (entry points, services, config)
+- Present a brief bullet summary: *"Here's what I found: [nodes + relationships]"*
+- Wait for user confirmation before generating (max 3 rounds; proceed after 3 or if user says "go ahead")
+
+**Conceptual task** (blog post, report, explanation):
+- Derive structure from the user's message and any open documents
+- No confirmation needed — proceed directly
+
+### 3. Read the recipe
+`references/diagram-recipes/<type>.md` — use the layout template and color defaults. Do not compute coordinates from scratch.
+
+### 4. Generate and export
+Run the bash script. Export using:
+```bash
+$CLI -p "$P" export png -o <name>.png --overwrite   # default
+$CLI -p "$P" export svg -o <name>.svg --overwrite   # for web projects
+$CLI -p "$P" export json -o <name>.excalidraw --overwrite  # when user wants to edit
+```
+Format choice: PNG for markdown/docs/blogs; SVG if web project; `.excalidraw` if user says "I want to edit it".
+
+Output file naming: `<kebab-case-subject>-<type>.<ext>` — e.g., `auth-flow-sequence.png`
+
+### 5. Self-inspection loop (max 3 iterations)
+Read the PNG with the Read tool. Check all 7 items:
+- [ ] All nodes labeled and readable
+- [ ] No label text overlapping node borders or other nodes
+- [ ] All expected connections present
+- [ ] Arrow directions correct (no unintended bidirectional arrows)
+- [ ] Title has ≥60px clearance from first element (Rule 21)
+- [ ] Dark-background nodes use light stroke `#e2e8f0` (Rule 22)
+- [ ] Color coding consistent with the recipe defaults
+
+If any item fails: fix script, regenerate, re-inspect. After 3 iterations: deliver best version and list remaining issues.
+
+### 6. Output location and embed
+Save to: same directory as the doc being written → or `docs/diagrams/` if it exists → or current directory.
+
+Return this markdown embed snippet:
+```
+![<Type> diagram showing <brief description>](<relative-path-to-file>)
+```
+Path is relative to the document, not the project root. If file already exists, append `-2`, `-3`.
+
+### Output format by context
+
+| Context | Format |
+|---|---|
+| Markdown doc, README, blog post | PNG |
+| Web project (HTML/CSS/JS present) | SVG |
+| User says "I want to edit it" | `.excalidraw` |
+| User specifies a format | User's choice |
 
 ---
 
@@ -148,7 +219,7 @@ Full command reference in `references/cli-reference.md`. Critical rules:
 You cannot judge a diagram from CLI commands alone. Export and view it.
 
 ```bash
-$CLI --project "$P" export png --output /tmp/diagram.png --overwrite
+$CLI -p "$P" export png -o /tmp/diagram.png --overwrite
 # Then use the Read tool to view the PNG
 ```
 
