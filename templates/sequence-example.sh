@@ -18,7 +18,7 @@
 #
 # CRITICAL: NEVER use element connect for sequence arrows (Rules 16 & 20).
 #           All message arrows use explicit add arrow coordinates.
-#           Labels are separate add text elements 18px above each arrow.
+#           Labels are separate add text elements 26px above each arrow.
 
 set -e
 
@@ -92,13 +92,13 @@ add line --x $P4_CX --y 160 --points "0,0 0,500" \
 
 # ════════════════════════════════════════════════════════════════════════════
 # STEP 3: Message arrows — explicit coordinates only (Rule 16, Rule 20)
-# Pattern: add text label 18px above, then add arrow at msg_y
+# Pattern: add text label 26px above, then add arrow at msg_y
 # Label x = midpoint of the two participant center_x values, offset left by ~half label width
 # ════════════════════════════════════════════════════════════════════════════
 
 # ── Message 1: Browser → API Gateway (POST /auth/login) ──────────────────────
 MSG1_Y=$FIRST_MSG_Y
-add text --x 330 --y $(( MSG1_Y - 18 )) --fs 13 --ff 2 --color "#1e293b" \
+add text --x 330 --y $(( MSG1_Y - 26 )) --fs 13 --ff 2 --color "#1e293b" \
   -t "1. POST /auth/login" > /dev/null
 add arrow --x $P1_CX --y $MSG1_Y --ex $P2_CX --ey $MSG1_Y \
   --stroke "#1e1e1e" --sw 2 --stroke-style solid \
@@ -106,7 +106,7 @@ add arrow --x $P1_CX --y $MSG1_Y --ex $P2_CX --ey $MSG1_Y \
 
 # ── Message 2: API Gateway → Auth Service (verify credentials) ───────────────
 MSG2_Y=$(( FIRST_MSG_Y + MSG_STEP ))
-add text --x 530 --y $(( MSG2_Y - 18 )) --fs 13 --ff 2 --color "#c2410c" \
+add text --x 530 --y $(( MSG2_Y - 26 )) --fs 13 --ff 2 --color "#c2410c" \
   -t "2. verify(email, pw)" > /dev/null
 add arrow --x $P2_CX --y $MSG2_Y --ex $P3_CX --ey $MSG2_Y \
   --stroke "#c2410c" --sw 2 --stroke-style solid \
@@ -114,7 +114,7 @@ add arrow --x $P2_CX --y $MSG2_Y --ex $P3_CX --ey $MSG2_Y \
 
 # ── Message 3: Auth Service → Database (SELECT query) ────────────────────────
 MSG3_Y=$(( FIRST_MSG_Y + MSG_STEP * 2 ))
-add text --x 730 --y $(( MSG3_Y - 18 )) --fs 13 --ff 2 --color "#6d28d9" \
+add text --x 730 --y $(( MSG3_Y - 26 )) --fs 13 --ff 2 --color "#6d28d9" \
   -t "3. SELECT user" > /dev/null
 add arrow --x $P3_CX --y $MSG3_Y --ex $P4_CX --ey $MSG3_Y \
   --stroke "#6d28d9" --sw 2 --stroke-style solid \
@@ -122,7 +122,7 @@ add arrow --x $P3_CX --y $MSG3_Y --ex $P4_CX --ey $MSG3_Y \
 
 # ── Message 4: Database → Auth Service (user record) ─────────────────────────
 MSG4_Y=$(( FIRST_MSG_Y + MSG_STEP * 3 ))
-add text --x 730 --y $(( MSG4_Y - 18 )) --fs 13 --ff 2 --color "#6b7280" \
+add text --x 730 --y $(( MSG4_Y - 26 )) --fs 13 --ff 2 --color "#6b7280" \
   -t "4. user record" > /dev/null
 add arrow --x $P4_CX --y $MSG4_Y --ex $P3_CX --ey $MSG4_Y \
   --stroke "#a16207" --sw 1 --stroke-style dashed \
@@ -130,7 +130,7 @@ add arrow --x $P4_CX --y $MSG4_Y --ex $P3_CX --ey $MSG4_Y \
 
 # ── Message 5: Auth Service → API Gateway (JWT token) ────────────────────────
 MSG5_Y=$(( FIRST_MSG_Y + MSG_STEP * 4 ))
-add text --x 530 --y $(( MSG5_Y - 18 )) --fs 13 --ff 2 --color "#6b7280" \
+add text --x 530 --y $(( MSG5_Y - 26 )) --fs 13 --ff 2 --color "#6b7280" \
   -t "5. JWT token" > /dev/null
 add arrow --x $P3_CX --y $MSG5_Y --ex $P2_CX --ey $MSG5_Y \
   --stroke "#a16207" --sw 1 --stroke-style dashed \
@@ -138,7 +138,7 @@ add arrow --x $P3_CX --y $MSG5_Y --ex $P2_CX --ey $MSG5_Y \
 
 # ── Message 6: API Gateway → Browser (200 OK + token) ────────────────────────
 MSG6_Y=$(( FIRST_MSG_Y + MSG_STEP * 5 ))
-add text --x 330 --y $(( MSG6_Y - 18 )) --fs 13 --ff 2 --color "#6b7280" \
+add text --x 330 --y $(( MSG6_Y - 26 )) --fs 13 --ff 2 --color "#6b7280" \
   -t "6. 200 OK + token" > /dev/null
 add arrow --x $P2_CX --y $MSG6_Y --ex $P1_CX --ey $MSG6_Y \
   --stroke "#a16207" --sw 1 --stroke-style dashed \

@@ -37,16 +37,19 @@ Say: *"I'll generate a [type] diagram for this."* — user can redirect before y
 ### 2. Content sourcing
 
 **Codebase task** (documenting a repo, explaining a system):
-- Read relevant source files (entry points, services, config)
+- **Parallelize file reads** — identify all relevant source files first, then read them all in a single turn using multiple parallel Read tool calls (entry points, services, config, etc.). For large repos (>5 files), spawn parallel **Haiku sub-agents** per service/module — each reads its files and returns a node+relationship summary.
 - Present a brief bullet summary: *"Here's what I found: [nodes + relationships]"*
 - Wait for user confirmation before generating (max 3 rounds; proceed after 3 or if user says "go ahead")
+
+**Multiple diagrams in one request** (e.g., "give me a flowchart and a sequence diagram"):
+- Generate all diagrams in parallel using sub-agents — each diagram is fully independent
 
 **Conceptual task** (blog post, report, explanation):
 - Derive structure from the user's message and any open documents
 - No confirmation needed — proceed directly
 
 ### 3. Read the recipe
-`references/diagram-recipes/<type>.md` — use the layout template and color defaults. Do not compute coordinates from scratch.
+**Parallelize with Step 2** — read `references/diagram-recipes/<type>.md` AND `references/color-palette.md` in the same turn as your source file reads. Do not compute coordinates from scratch.
 
 ### 4. Generate and export
 Run the bash script. Export using:
@@ -190,16 +193,34 @@ Build at three levels simultaneously:
 
 ---
 
-## Step 4: Plan Coordinates Before Writing Commands
+## Step 4: Plan Before Writing Commands
 
-**Do not write a single CLI command until every node has coordinates.**
+**Do not write a single CLI command until you have completed both sub-steps.**
+
+### 4a — Color plan (write as bash comments)
+
+Map every node to its semantic color pair from `references/color-palette.md` before building. Color discipline degrades as element count rises — plan it once upfront:
+
+```bash
+# COLOR PLAN
+# Web App, Mobile App  → bg "#bfdbfe"  stroke "#1e40af"   (Clients/Users)
+# API Gateway          → bg "#bbf7d0"  stroke "#15803d"   (Gateway)
+# Auth Service         → bg "#fed7aa"  stroke "#c2410c"   (Security/Edge)
+# Payment Service      → bg "#86efac"  stroke "#15803d"   (App Service)
+# Postgres             → bg "#ddd6fe"  stroke "#6d28d9"   (Data/Storage)
+# Redis                → bg "#fef08a"  stroke "#92400e"   (Async/Queue — use #92400e NOT #a16207)
+```
+
+At the nodes checkpoint, verify each node's actual color matches this plan.
+
+### 4b — Coordinates + arrows
 
 1. List every node and connection in a table
-2. Choose a template from `references/layout-rules.md`
-3. Assign `x`, `y`, `w`, `h` to every node
-4. Verify: `min_width = max(120, len(label)*9.6+32)` for each label
-5. Verify: every node's right edge is ≥ 30px from the adjacent zone's start x
-6. Run the Pre-Build Checklist from `references/layout-rules.md`
+2. **Structured layout**: choose a template from `references/layout-rules.md`
+   **Freeform layout**: pick a gravity center (the most-connected node), place it at canvas center, then place other nodes by relationship distance — directly connected = 200–300px away, indirectly connected = 400–500px away. Use cluster background rectangles (not full-width zones) to show groupings.
+3. Assign `x`, `y`, `w`, `h` to every node; verify `min_width = max(120, len(label)*9.6+32)`
+4. Trace every arrow — identify stagger values for fan-out sources and shared-target entries
+5. Arrows default to `--start-arrowhead none --end-arrowhead arrow` — never omit `--start-arrowhead none`
 
 ---
 
@@ -234,6 +255,8 @@ $CLI -p "$P" export png -o /tmp/diagram.png --overwrite
    - Output nodes above their lane instead of at the far right (Rule 13)
    - Font sizes below 12px (Rule 14)
    - All arrows looking identical (Rule 15)
+   - **Color audit**: each node's fill matches the color plan from Step 4a — wrong colors (e.g. Postgres orange instead of purple) mean a `--bg` value was copied from the wrong node
+   - **Arrow direction audit**: any arrow showing arrowheads at both ends has a missing `--start-arrowhead none`
 4. Fix coordinates, labels, connections → re-export → re-view
 5. Repeat until both checks pass. Typically 2–3 iterations.
 

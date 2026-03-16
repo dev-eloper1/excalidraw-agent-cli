@@ -80,7 +80,7 @@ Do NOT use `--label` on the class box rectangle. `--label` renders text at the v
 3. Class name text elements (`add text` in header zone: y = CLASS_Y + 12)
 4. Divider lines (one per class, separating name from attributes)
 5. Attribute text elements (field names inside each class box)
-6. Relationship arrows (`element connect`)
+6. Relationship arrows (explicit `add arrow --x --y --ex --ey` — NOT `element connect`; see Rule 23)
 
 **Coordinate planning table (placeholder labels):**
 
@@ -123,7 +123,19 @@ Class box style: `--roughness 0 --sw 2`
 | `--fs`      | `12`       | Minimum readable (Rule 14)           |
 | `--color`   | `#6d28d9`  | Matches class theme                  |
 
-### Relationship arrows
+### Relationship arrows (Rule 23 — explicit coordinates, never `element connect`)
+
+**Do NOT use `element connect`**. When multiple arrows share a class, auto-routing bundles them at the same edge point causing visual overlap. Use explicit `add arrow --x --y --ex --ey` with staggered Y offsets.
+
+**Pattern:**
+```bash
+# Exit source left/right at staggered y, enter target at staggered y
+add arrow --x SOURCE_EDGE_X --y STAGGERED_Y --ex TARGET_EDGE_X --ey STAGGERED_Y \
+  --stroke STROKE_COLOR --sw SW --stroke-style STYLE \
+  --start-arrowhead none --end-arrowhead ARROWHEAD > /dev/null
+```
+
+**Skip connections** (arrow that must bypass intermediate classes): route **above all classes** at `y = CLASS_Y - 12`. Example: `Comment → User` when `Post` sits between them — draw at `y = 108` when boxes start at `y = 120`.
 
 | Relationship              | `--end-arrowhead` | `--start-arrowhead` | `--stroke` | `--stroke-style` | `--sw` |
 |---------------------------|-------------------|---------------------|------------|------------------|--------|
@@ -135,7 +147,7 @@ Class box style: `--roughness 0 --sw 2`
 
 > **Available arrowhead values:** `arrow`, `bar`, `dot`, `triangle`, `circle`, or omit for none.
 > Use `--end-arrowhead triangle` for inheritance (open triangle pointing to parent/interface).
-> Composition "filled diamond" is not a native arrowhead type — approximate by adding a `--label "◆"` on the arrow or by placing a small diamond shape at the source end.
+> Composition "filled diamond" is not a native arrowhead type — approximate by placing a small diamond shape at the source end.
 
 ---
 
@@ -155,7 +167,9 @@ Class box style: `--roughness 0 --sw 2`
 
 7. **Text inside dark-bg class box unreadable.** The recommended class fill `#ddd6fe` is light purple — `#6d28d9` stroke provides good contrast. If you switch to a dark fill for emphasis, remember to use `--stroke "#e2e8f0"` (Rule 22).
 
-8. **Inheritance arrow direction confusion.** The arrowhead points TO the parent (superclass), not to the child. Draw `element connect --from ChildClass --to ParentClass --end-arrowhead triangle`. The child "extends" the parent, so the arrow runs child → parent.
+8. **Inheritance arrow direction confusion.** The arrowhead points TO the parent (superclass), not to the child. Draw `add arrow --x CHILD_EDGE --y Y --ex PARENT_EDGE --ey Y --end-arrowhead triangle`. The child "extends" the parent, so the arrow runs child → parent.
+
+9. **Overlapping relationship arrows.** Never use `element connect` for class relationships — it bundles multiple arrows at shared edges. Use explicit `add arrow` with staggered Y positions (see Rule 23). For arrows crossing intermediate classes, route above all boxes at `y = CLASS_Y - 12`.
 
 ---
 
@@ -271,29 +285,29 @@ add text --x 670 --y 210 --fs 12 --ff 3 --color "#6d28d9" -t "postId: Long"     
 add text --x 670 --y 232 --fs 12 --ff 3 --color "#6d28d9" -t "authorId: Long"   > /dev/null
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# RELATIONSHIPS
+# RELATIONSHIPS (Rule 23 — explicit add arrow, staggered Y, NO element connect)
+# Class edges: User right=300 cy=184, Post left=380 right=580 cy=200, Comment left=660 cy=184
+# All boxes top y=120 → skip-connection route above all at y=108
 # ═══════════════════════════════════════════════════════════════════════════════
-# Post →(authored by)→ User: association (Post knows User via authorId)
-$CLI -p "$P" --json element connect \
-  --from "$POST" --to "$USER" \
-  --stroke "#94a3b8" --sw 1 --stroke-style solid \
-  --end-arrowhead arrow --start-arrowhead none > /dev/null
 
-# Comment →(belongs to)→ Post: composition (Comment owns ref to Post)
-$CLI -p "$P" --json element connect \
-  --from "$COMMENT" --to "$POST" \
+# Post →(authored by)→ User: association (gray, horizontal at y=175)
+add arrow --x 380 --y 175 --ex 300 --ey 175 \
+  --stroke "#94a3b8" --sw 1 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null
+add text --x 316 --y 159 --fs 12 --ff 2 --color "#6b7280" -t "authored by" > /dev/null
+
+# Comment →(belongs to)→ Post: composition (purple, horizontal at y=200)
+add arrow --x 660 --y 200 --ex 580 --ey 200 \
   --stroke "#6d28d9" --sw 2 --stroke-style solid \
-  --end-arrowhead arrow --start-arrowhead none > /dev/null
+  --start-arrowhead none --end-arrowhead arrow > /dev/null
+add text --x 596 --y 184 --fs 12 --ff 2 --color "#6b7280" -t "belongs to" > /dev/null
 
-# Comment →(authored by)→ User: association
-$CLI -p "$P" --json element connect \
-  --from "$COMMENT" --to "$USER" \
-  --stroke "#94a3b8" --sw 1 --stroke-style solid \
-  --end-arrowhead arrow --start-arrowhead none > /dev/null
-
-# ── Relationship labels (free text below arrow midpoints) ─────────────────────
-add text --x 240 --y 290 --fs 12 --ff 2 --color "#6b7280" -t "authored by" > /dev/null
-add text --x 530 --y 290 --fs 12 --ff 2 --color "#6b7280" -t "belongs to"  > /dev/null
+# Comment →(authored by)→ User: dashed association, SKIPS Post
+# Route above all boxes at y=108 (box tops at y=120, 12px clearance)
+add arrow --x 660 --y 108 --ex 300 --ey 108 \
+  --stroke "#94a3b8" --sw 1 --stroke-style dashed \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null
+add text --x 436 --y 92 --fs 12 --ff 2 --color "#6b7280" -t "authored by" > /dev/null
 
 $CLI -p "$P" export png --output /tmp/class-diagram-worked-example.png --overwrite
 echo "Exported: /tmp/class-diagram-worked-example.png"

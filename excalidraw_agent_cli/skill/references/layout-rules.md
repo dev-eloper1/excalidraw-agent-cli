@@ -282,6 +282,63 @@ When two nodes are at the same y-coordinate, `element connect` may produce doubl
 - For same-row connections, use `add arrow` with explicit coordinates instead of `element connect`
 - Never connect two nodes that share both a y-coordinate AND are within 40px of each other
 
+### Rule 23 — Explicit Arrow Coordinates When Multiple Arrows Share a Node
+
+**When multiple arrows share a source or target node, NEVER use `element connect`.** Auto-routing produces overlapping paths when several connections exit or enter the same attachment point.
+
+Use `add arrow --x sx --y sy --ex ex --ey ey` with:
+
+1. **Endpoint at the node EDGE, not center** — prevents arrows from terminating deep inside a node:
+   - Left/right connections: end at `(node_x, node_center_y)` or `(node_x + node_w, node_center_y)`
+   - Top/bottom connections: end at `(node_center_x, node_y)` or `(node_center_x, node_y + node_h)`
+
+2. **Y-offset spread for multiple arrows from the same node** — stagger arrows by ±15–20px on y:
+   ```bash
+   # 3 arrows leaving the same right edge — staggered, not bundled
+   add arrow --x 280 --y 155 --ex 360 --ey 155 ...  # high
+   add arrow --x 280 --y 185 --ex 640 --ey 185 ...  # middle
+   add arrow --x 280 --y 205 --ex 560 --ey 205 ...  # low
+   ```
+
+3. **Skip connections that cross intermediate nodes** — route ABOVE or BELOW the intermediate nodes:
+   ```bash
+   # Arrow from Comment to User, skipping Post (which is in between)
+   # All class boxes start at y=120 → route at y=108 (above all boxes)
+   add arrow --x 660 --y 108 --ex 300 --ey 108 ...  # above all boxes ✓
+   ```
+
+4. **Mindmap spokes** — use `add arrow --start-arrowhead none --end-arrowhead arrow` from root center to branch NEAREST EDGE (see Rule 24).
+
+### Rule 24 — Mindmap Spoke Connections: Arrows to Node Edges
+
+Mind map connections use `add arrow --start-arrowhead none --end-arrowhead arrow` (NOT `add line`, NOT `element connect`). The arrow starts at the root center (visually exits at the root ellipse boundary due to fill) and terminates at the **nearest edge** of the branch node:
+
+```bash
+# Root center: (ROOT_CX, ROOT_CY) = (600, 420) for default layout
+# For a RIGHT-side branch at (x=830, y=390, w=160, h=60):
+#   nearest edge = left edge center = (830, 390 + 60/2) = (830, 420)
+add arrow --x 600 --y 420 --ex 830 --ey 420 \
+  --stroke "#94a3b8" --sw 1 --start-arrowhead none --end-arrowhead arrow > /dev/null
+
+# For a LEFT-side branch at (x=210, y=390, w=160, h=60):
+#   nearest edge = right edge center = (210 + 160, 420) = (370, 420)
+add arrow --x 600 --y 420 --ex 370 --ey 420 \
+  --stroke "#94a3b8" --sw 1 --start-arrowhead none --end-arrowhead arrow > /dev/null
+
+# For a TOP branch at (x=520, y=180, w=160, h=60):
+#   nearest edge = bottom edge center = (520 + 80, 180 + 60) = (600, 240)
+add arrow --x 600 --y 420 --ex 600 --ey 240 \
+  --stroke "#94a3b8" --sw 1 --start-arrowhead none --end-arrowhead arrow > /dev/null
+```
+
+Edge calculation summary:
+| Branch direction | Endpoint formula |
+|-----------------|-----------------|
+| Right side | `(branch_x, branch_y + branch_h/2)` |
+| Left side  | `(branch_x + branch_w, branch_y + branch_h/2)` |
+| Top        | `(branch_x + branch_w/2, branch_y + branch_h)` |
+| Bottom     | `(branch_x + branch_w/2, branch_y)` |
+
 ### Rule 21 — Title Spacing: 60px Minimum Below Title Baseline
 
 The title text and the first diagram element (zone background, node, or annotation) must have **≥ 60px vertical clearance**. Closer than this and they visually collide or overlap.

@@ -2,7 +2,7 @@
 
 ## When to use
 
-Use a mind map when you need to communicate **how a central concept branches into related topics**, and those topics may further branch into sub-topics. The key signal is a single root idea with non-linear, associative relationships radiating outward.
+Use a mind map when you need to communicate **how a central concept branches into related topics**, and those topics may further branch into sub-topics. The key signal is a single root idea with associative relationships radiating outward.
 
 Choose this pattern when:
 - You have one dominant root concept and 5–10 first-level branches
@@ -12,64 +12,73 @@ Choose this pattern when:
 
 Do NOT use for: ordered processes (use flowchart), time-phased plans (use Gantt), layered system architectures (use architecture diagram), or message sequences (use sequence diagram).
 
-> **Rule 18 note:** The layout-rules.md Rule 18 describes a left-to-right tree layout as the default. The radial layout described here is an alternative for concept-centric mind maps where the root has roughly equal branches on all sides. Both are valid; choose radial when the root concept has balanced coverage in all directions, choose left-to-right tree when branches have a natural reading order.
+## Layout choice: Tree (default) vs Radial
+
+**Use LEFT-TO-RIGHT TREE layout (default):** Root on the left, branches stacked vertically on the right, leaves further right. This gives clear visual hierarchy — the eye reads left-to-right following the depth level. Preferred for most mindmaps because it's easier to read and shows branch depth clearly.
+
+**Use RADIAL layout only when:** The topic has equal branches in all compass directions AND there are few enough branches (≤8) that the center doesn't get cluttered. Radial works for pure brainstorm dumps where no branch is more important than others.
+
+**Why tree beats radial:** A radial mindmap with 7 branches all radiating from a center looks like a spider web with no visual hierarchy. Readers struggle to distinguish level-1 branches from each other. Tree layout makes hierarchy obvious at a glance.
 
 ---
 
-## Layout template
+## Layout template — Tree (left-to-right, default)
 
 ```
-Canvas: 1200 × 800px, origin top-left (0, 0)
+Canvas: 700 × 650px (adjust height based on branch count)
 
-Title: x=20, y=15, --fs 20 --ff 2   (baseline ≈ y=37, Rule 21)
-First element at y=97 minimum (37 + 60 = 97, Rule 21 satisfied)
+Title: x=20, y=15, --fs 20 --ff 2  (baseline ≈ y=37, Rule 21)
+First branch at y=75 minimum.
 
-Root ellipse (center of canvas):
-  ROOT_X=510   ROOT_Y=370   ROOT_W=180  ROOT_H=100
-  center_x = ROOT_X + ROOT_W/2 = 600
-  center_y = ROOT_Y + ROOT_H/2 = 420
+Named variables:
+  ROOT_X=80   ROOT_Y=(center_y - ROOT_H/2)  ROOT_W=140  ROOT_H=80
+  BRANCH_X=300  BRANCH_W=160  BRANCH_H=50    (right edge x=460)
+  LEAF_X=510    LEAF_W=130    LEAF_H=40      (left edge x=510)
 
-Branch ellipse geometry (level-1 nodes):
-  BRANCH_W=160   BRANCH_H=60
+Branch Y-center spacing: 80px between branches (center-to-center)
+For N branches: center_y_first=(80+40)/2=60  (adjust for canvas top clearance)
+  Branch centers at: 100, 180, 260, 340, 420, 500, 580 (for 7 branches)
+  Root center_y = (first_center + last_center) / 2 = (100+580)/2 = 340
 
-Branch positions (8 compass points, anchored by top-left x,y):
-  Right-center:  x=830,  y=390   → center (910, 420)
-  Right-top:     x=830,  y=280   → center (910, 310)
-  Right-bottom:  x=830,  y=500   → center (910, 530)
-  Left-center:   x=210,  y=390   → center (290, 420)
-  Left-top:      x=210,  y=280   → center (290, 310)
-  Left-bottom:   x=210,  y=500   → center (290, 530)
-  Top-center:    x=520,  y=180   → center (600, 210)  [≥ y=97 ✓]
-  Bottom-center: x=520,  y=590   → center (600, 620)
+Root (right edge = ROOT_X + ROOT_W = 220):
+  ROOT_Y = center_y - ROOT_H/2 = 340 - 40 = 300
 
-Leaf ellipse geometry (level-2 nodes):
-  LEAF_W=130   LEAF_H=45
+Branch positions (x=BRANCH_X=300, anchored by top-left):
+  Branch 1: y=75   center_y=100
+  Branch 2: y=155  center_y=180
+  Branch 3: y=235  center_y=260
+  Branch 4: y=315  center_y=340  ← aligned with root
+  ...and so on at +80 per branch
 
-  Leaves hang off each branch — example for Right-top branch at (830, 280):
-    Leaf 1: x=990,  y=245   (to the right and slightly above)
-    Leaf 2: x=990,  y=305   (to the right and slightly below)
-  Mirror pattern for Left-top branch.
-
-Named spacing variables:
-  H_BRANCH_GAP=230    # horizontal distance from root center to branch center
-  V_BRANCH_STEP=110   # vertical spacing between branch rows on same side
-  H_LEAF_OFFSET=160   # horizontal offset from branch right edge to leaf left edge
-  V_LEAF_STEP=60      # vertical spacing between sibling leaves
-  ROOT_W=180          # root ellipse width
-  ROOT_H=100          # root ellipse height
-  BRANCH_W=160        # branch ellipse width
-  BRANCH_H=60         # branch ellipse height
-  LEAF_W=130          # leaf ellipse width
-  LEAF_H=45           # leaf ellipse height
+Leaf positions (x=LEAF_X=510, ±25 from parent branch center):
+  Parent branch center=100 → leaves at y=55 (center=75) and y=105 (center=125)
+  Parent branch center=340 → leaves at y=295 (center=315) and y=345 (center=365)
 ```
 
 **Draw order:**
 1. Title text
-2. Root ellipse (dark navy)
-3. Branch ellipses (level-1, color by topic)
-4. Leaf ellipses (level-2, lighter fill)
-5. Lines: root → each branch (`add line`, not `add arrow` — no arrowheads)
-6. Lines: branch → each leaf
+2. Root ellipse (dark navy, left side)
+3. Branch ellipses (level-1, stacked vertically, color by topic)
+4. Leaf ellipses (level-2, lighter fill, ±25 from branch center)
+5. Arrows: root → each branch (Rule 24: `add arrow --start-arrowhead none --end-arrowhead arrow`)
+6. Arrows: branch → each leaf (same pattern)
+
+**Root → Branch arrow pattern (Rule 24):**
+Stagger 7 exit points within root height (ROOT_Y to ROOT_Y+ROOT_H), step = ROOT_H/6:
+```
+Root right edge x=220, stagger Y: 306, 317, 328, 340, 352, 363, 374
+add arrow --x 220 --y 306 --ex 300 --ey 100   # → Branch 1
+add arrow --x 220 --y 317 --ex 300 --ey 180   # → Branch 2
+add arrow --x 220 --y 340 --ex 300 --ey 340   # → Branch 4 (horizontal)
+```
+
+**Branch → Leaf arrow pattern:**
+```
+Branch right edge x=460, branch center_y=100
+add arrow --x 460 --y 100 --ex 510 --ey 75    # → Leaf above
+add arrow --x 460 --y 100 --ex 510 --ey 125   # → Leaf below
+```
+6. Arrows: branch → each leaf (same pattern)
 
 **Coordinate planning table (placeholder labels):**
 
@@ -124,14 +133,15 @@ Example leaf colors (matching parent hue):
 | `#ddd6fe`   | `#ede9fe`   | `#6d28d9`       |
 | `#fef08a`   | `#fef9c3`   | `#92400e`       |
 
-### Connecting lines
+### Connecting arrows
 
 | Property        | Value      | Notes                                         |
 |-----------------|------------|-----------------------------------------------|
 | `--stroke`      | `#94a3b8`  | Slate gray — hub-to-spoke color (color-palette.md) |
 | `--sw`          | `1`        | Thin lines keep visual weight on nodes        |
 | `--stroke-style`| `solid`    |                                               |
-| Command         | `add line` | NOT `add arrow` — mind maps have no arrowheads |
+| Command         | `add arrow --start-arrowhead none --end-arrowhead arrow` | Shows direction from hub to branch; NOT `add line`, NOT `element connect` |
+| Endpoint        | BRANCH NEAREST EDGE, not center | Prevents arrow from penetrating the branch node (Rule 24) |
 
 ### Font families
 
@@ -145,7 +155,7 @@ Example leaf colors (matching parent hue):
 
 ## Common pitfalls
 
-1. **Using `add arrow` instead of `add line` for branch connections.** Mind maps have no arrowheads — they show association, not direction. Use `add line --points "0,0 dx,dy"` where dx/dy are the relative offsets from the line's starting point to its end. The `--points` values are relative to `--x,--y`.
+1. **Using `element connect` for branch connections.** This produces auto-routed lines that pass through node centers rather than terminating at boundaries, and overlap when multiple spokes share a root. Always use `add arrow --x ROOT_CX --y ROOT_CY --ex BRANCH_EDGE_X --ey BRANCH_EDGE_Y --start-arrowhead none --end-arrowhead arrow` with the endpoint at the branch's nearest edge (Rule 23, Rule 24).
 
 2. **Dark root node with dark stroke — unreadable label.** If you use `--bg "#1e293b"` (the recommended dark navy for the root) but forget to set `--stroke "#e2e8f0"`, the label text will be invisible (dark text on dark background). This is the single most common error. Always pair dark `--bg` with light `--stroke`.
 
@@ -185,15 +195,15 @@ Lifecycle   → Left-bottom:  x=210, y=500
 Rendering   → Top-center:   x=520, y=180
 ```
 
-**Line points (root center = 600,420; branch centers computed from top-left + w/2, h/2):**
+**Arrow endpoints (root center = 600,420; branch NEAREST EDGE per Rule 24):**
 ```
-Root → Components (right-center):  start=(600,420), end=(910,420) → dx=310, dy=0
-Root → State (right-top):          start=(600,420), end=(910,310) → dx=310, dy=-110
-Root → Props (right-bottom):       start=(600,420), end=(910,530) → dx=310, dy=110
-Root → Hooks (left-center):        start=(600,420), end=(290,420) → dx=-310, dy=0
-Root → Context (left-top):         start=(600,420), end=(290,310) → dx=-310, dy=-110
-Root → Lifecycle (left-bottom):    start=(600,420), end=(290,530) → dx=-310, dy=110
-Root → Rendering (top):            start=(600,420), end=(600,210) → dx=0, dy=-210
+Root → Components (right: branch left edge):  ex=830, ey=420   (branch_x=830, cy=390+30=420)
+Root → State (right: branch left edge):       ex=830, ey=310   (branch_x=830, cy=280+30=310)
+Root → Props (right: branch left edge):       ex=830, ey=530   (branch_x=830, cy=500+30=530)
+Root → Hooks (left: branch right edge):       ex=370, ey=420   (branch_x+w=370, cy=390+30=420)
+Root → Context (left: branch right edge):     ex=370, ey=310   (branch_x+w=370, cy=280+30=310)
+Root → Lifecycle (left: branch right edge):   ex=370, ey=530   (branch_x+w=370, cy=500+30=530)
+Root → Rendering (top: branch bottom edge):   ex=600, ey=240   (cx=520+80=600, branch_y+h=180+60=240)
 ```
 
 ```bash
@@ -257,37 +267,40 @@ BR_REND=$(add ellipse --x 520 --y 180 -w 160 -h 60 \
   --label "Rendering" \
   --bg "#bbf7d0" --stroke "#15803d" --fill-style solid --roughness 0 --sw 2)
 
-# ── Connecting lines (root center = 600,420; no arrowheads) ──────────────────────
-# Root → Components: dx=310, dy=0
-add line --x 600 --y 420 --points "0,0 310,0" \
-  --stroke "#94a3b8" --sw 1 --stroke-style solid > /dev/null
+# ── Spoke arrows (root center=600,420 → branch nearest edge; Rule 23, Rule 24) ───
+# Right branches → endpoint = (branch_x, branch_center_y)
+add arrow --x 600 --y 420 --ex 830 --ey 420 \
+  --stroke "#94a3b8" --sw 1 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null   # → Components
 
-# Root → State: dx=310, dy=-110
-add line --x 600 --y 420 --points "0,0 310,-110" \
-  --stroke "#94a3b8" --sw 1 --stroke-style solid > /dev/null
+add arrow --x 600 --y 420 --ex 830 --ey 310 \
+  --stroke "#94a3b8" --sw 1 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null   # → State
 
-# Root → Props: dx=310, dy=110
-add line --x 600 --y 420 --points "0,0 310,110" \
-  --stroke "#94a3b8" --sw 1 --stroke-style solid > /dev/null
+add arrow --x 600 --y 420 --ex 830 --ey 530 \
+  --stroke "#94a3b8" --sw 1 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null   # → Props
 
-# Root → Hooks: dx=-310, dy=0
-add line --x 600 --y 420 --points "0,0 -310,0" \
-  --stroke "#94a3b8" --sw 1 --stroke-style solid > /dev/null
+# Left branches → endpoint = (branch_x + branch_w, branch_center_y)
+add arrow --x 600 --y 420 --ex 370 --ey 420 \
+  --stroke "#94a3b8" --sw 1 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null   # → Hooks
 
-# Root → Context: dx=-310, dy=-110
-add line --x 600 --y 420 --points "0,0 -310,-110" \
-  --stroke "#94a3b8" --sw 1 --stroke-style solid > /dev/null
+add arrow --x 600 --y 420 --ex 370 --ey 310 \
+  --stroke "#94a3b8" --sw 1 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null   # → Context
 
-# Root → Lifecycle: dx=-310, dy=110
-add line --x 600 --y 420 --points "0,0 -310,110" \
-  --stroke "#94a3b8" --sw 1 --stroke-style solid > /dev/null
+add arrow --x 600 --y 420 --ex 370 --ey 530 \
+  --stroke "#94a3b8" --sw 1 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null   # → Lifecycle
 
-# Root → Rendering: dx=0, dy=-210
-add line --x 600 --y 420 --points "0,0 0,-210" \
-  --stroke "#94a3b8" --sw 1 --stroke-style solid > /dev/null
+# Top branch → endpoint = (branch_center_x, branch_y + branch_h)
+add arrow --x 600 --y 420 --ex 600 --ey 240 \
+  --stroke "#94a3b8" --sw 1 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null   # → Rendering
 
 # ── Leaf nodes for Components branch (right side) ─────────────────────────────────
-# Branch center: (910, 420). Leaves extend further right.
+# Branch right edge: x=990, center y=420. Leaves at x=1010 (20px gap).
 L_FC=$(add ellipse --x 1010 --y 395 -w 130 -h 45 \
   --label "Functional" \
   --bg "#bbf7d0" --stroke "#15803d" --fill-style solid --roughness 0 --sw 1)
@@ -295,14 +308,16 @@ L_CL=$(add ellipse --x 1010 --y 450 -w 130 -h 45 \
   --label "Class" \
   --bg "#bbf7d0" --stroke "#15803d" --fill-style solid --roughness 0 --sw 1)
 
-# Lines: Components → leaves
-add line --x 990 --y 420 --points "0,0 20,-8" \
-  --stroke "#94a3b8" --sw 1 --stroke-style solid > /dev/null
-add line --x 990 --y 420 --points "0,0 20,48" \
-  --stroke "#94a3b8" --sw 1 --stroke-style solid > /dev/null
+# Arrows: branch right edge (990,420) → leaf left edge (1010, leaf_center_y)
+add arrow --x 990 --y 420 --ex 1010 --ey 417 \
+  --stroke "#94a3b8" --sw 1 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null
+add arrow --x 990 --y 420 --ex 1010 --ey 472 \
+  --stroke "#94a3b8" --sw 1 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null
 
 # ── Leaf nodes for Hooks branch (left side) ───────────────────────────────────────
-# Branch center: (290, 420). Leaves extend further left at x<150.
+# Branch left edge: x=210, center y=420. Leaves at x=60 (right edge=190).
 L_UE=$(add ellipse --x 60 --y 395 -w 130 -h 45 \
   --label "useEffect" \
   --bg "#fef9c3" --stroke "#92400e" --fill-style solid --roughness 0 --sw 1)
@@ -310,11 +325,13 @@ L_US=$(add ellipse --x 60 --y 450 -w 130 -h 45 \
   --label "useState" \
   --bg "#fef9c3" --stroke "#92400e" --fill-style solid --roughness 0 --sw 1)
 
-# Lines: Hooks → leaves (start at branch left edge x=210, center y=420)
-add line --x 210 --y 420 --points "0,0 -120,-8" \
-  --stroke "#94a3b8" --sw 1 --stroke-style solid > /dev/null
-add line --x 210 --y 420 --points "0,0 -120,48" \
-  --stroke "#94a3b8" --sw 1 --stroke-style solid > /dev/null
+# Arrows: branch left edge (210,420) → leaf right edge (190, leaf_center_y)
+add arrow --x 210 --y 420 --ex 190 --ey 417 \
+  --stroke "#94a3b8" --sw 1 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null
+add arrow --x 210 --y 420 --ex 190 --ey 472 \
+  --stroke "#94a3b8" --sw 1 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null
 
 $CLI -p "$P" export png --output /tmp/mindmap-worked-example.png --overwrite
 echo "Exported: /tmp/mindmap-worked-example.png"

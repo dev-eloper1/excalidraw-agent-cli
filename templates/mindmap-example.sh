@@ -1,15 +1,31 @@
 #!/usr/bin/env bash
-# mindmap-example.sh — React Concepts Mind Map
+# mindmap-example.sh — React Concepts Mind Map (tree layout)
 # Outputs: /Users/bhushan/Documents/excalidraw-agent-cli/examples/mindmap-template-preview.png
 #
-# Layout: radial, root ellipse centered at (600, 420)
-# Branches at 8 compass positions (7 used for 7 React concepts)
-# Lines from root to branches — add line (NOT add arrow, no arrowheads)
-# Leaf nodes on Components (right) and Hooks (left) branches.
+# Layout: left-to-right hierarchical tree
+#   Root  ──→  Level-1 branches (vertical stack)  ──→  Level-2 leaves
 #
-# CRITICAL: Root uses --bg "#1e293b" + --stroke "#e2e8f0" (Rule 22 — light stroke
-#           controls label text color; dark stroke on dark bg = unreadable label)
-# Rule 21: Title at y=15 (baseline≈37), first node at y=180 → 143px clearance ✓
+#   ROOT (x=80, w=140, h=80, center_y=340)
+#   BRANCHES (x=300, w=160, h=50, 80px center-to-center spacing):
+#     Components y=75  (center=100) — right: Functional/Class leaves
+#     State      y=155 (center=180)
+#     Props      y=235 (center=260)
+#     Hooks      y=315 (center=340) — right: useEffect/useState leaves
+#     Context    y=395 (center=420)
+#     Lifecycle  y=475 (center=500)
+#     Rendering  y=555 (center=580)
+#   LEAVES (x=510, w=130, h=40):
+#     Functional y=55  (center=75,  under Components ±25)
+#     Class      y=105 (center=125, under Components ±25)
+#     useEffect  y=295 (center=315, under Hooks ±25)
+#     useState   y=345 (center=365, under Hooks ±25)
+#
+# Arrow pattern (Rule 23/24): explicit add arrow, start-arrowhead none, end-arrowhead arrow
+#   Root exit points staggered within root height (y=306..374, step≈11)
+#   Leaf arrows from branch right edge to leaf left edge
+#
+# Rule 21: Title at y=15 (baseline≈37), first branch at y=75 → 38px clearance ✓
+# Rule 22: Root dark bg + light stroke; branches light bg + dark stroke ✓
 
 set -e
 
@@ -20,9 +36,9 @@ P=/tmp/mindmap-example.excalidraw
 OUT="/Users/bhushan/Documents/excalidraw-agent-cli/examples/mindmap-template-preview.png"
 
 # ── Named spacing variables ────────────────────────────────────────────────────
-ROOT_X=510;  ROOT_Y=370;  ROOT_W=180;  ROOT_H=100
-BRANCH_W=160; BRANCH_H=60
-LEAF_W=130;  LEAF_H=45
+ROOT_X=80;   ROOT_Y=300;  ROOT_W=140;  ROOT_H=80    # center_y=340
+BRANCH_X=300; BRANCH_W=160; BRANCH_H=50             # branch right edge=460
+LEAF_X=510;  LEAF_W=130;  LEAF_H=40                 # leaf left edge=510
 
 # Helper: add element and capture ID
 add() {
@@ -35,127 +51,140 @@ rm -f "$P"
 $CLI --json project new --name "mindmap-example" --output "$P" > /dev/null
 
 # ── Title ──────────────────────────────────────────────────────────────────────
-# y=15, fs=20 → baseline ≈ y=37. First node at y=180 → 143px clearance (Rule 21 ✓)
 add text --x 20 --y 15 --fs 20 --ff 2 --color "#1e293b" \
   -t "React Concepts" > /dev/null
 
-# ── Root ellipse ───────────────────────────────────────────────────────────────
-# Dark navy fill + near-white stroke = readable label (Rule 22 ✓)
-# root center = (600, 420)
+# ── Root ellipse (dark navy, center_y=340) ─────────────────────────────────────
 ROOT=$(add ellipse \
   --x "$ROOT_X" --y "$ROOT_Y" -w "$ROOT_W" -h "$ROOT_H" \
   --label "React" \
   --bg "#1e293b" --stroke "#e2e8f0" --fill-style solid --roughness 0 --sw 2)
+# Root right edge: x=80+140=220, center_y=340
 
-# ── Branch level-1 ellipses ───────────────────────────────────────────────────
-# Right-center (x=830, y=390): Components — App/Service green
+# ── Level-1 branch ellipses (stacked at 80px intervals) ───────────────────────
+# Components (y=75, center=100) — App/Service green
 BR_COMP=$(add ellipse \
-  --x 830 --y 390 -w "$BRANCH_W" -h "$BRANCH_H" \
+  --x "$BRANCH_X" --y 75 -w "$BRANCH_W" -h "$BRANCH_H" \
   --label "Components" \
   --bg "#86efac" --stroke "#15803d" --fill-style solid --roughness 0 --sw 2)
 
-# Right-top (x=830, y=280): State — Data/Storage purple
+# State (y=155, center=180) — Data/Storage purple
 BR_STATE=$(add ellipse \
-  --x 830 --y 280 -w "$BRANCH_W" -h "$BRANCH_H" \
+  --x "$BRANCH_X" --y 155 -w "$BRANCH_W" -h "$BRANCH_H" \
   --label "State" \
   --bg "#ddd6fe" --stroke "#6d28d9" --fill-style solid --roughness 0 --sw 2)
 
-# Right-bottom (x=830, y=500): Props — Clients/Users blue
+# Props (y=235, center=260) — Clients/Users blue
 BR_PROPS=$(add ellipse \
-  --x 830 --y 500 -w "$BRANCH_W" -h "$BRANCH_H" \
+  --x "$BRANCH_X" --y 235 -w "$BRANCH_W" -h "$BRANCH_H" \
   --label "Props" \
   --bg "#bfdbfe" --stroke "#1e40af" --fill-style solid --roughness 0 --sw 2)
 
-# Left-center (x=210, y=390): Hooks — Async/Events amber (dark brown stroke, Rule 22)
+# Hooks (y=315, center=340) — Async/Events amber (dark stroke for readability Rule 22)
 BR_HOOKS=$(add ellipse \
-  --x 210 --y 390 -w "$BRANCH_W" -h "$BRANCH_H" \
+  --x "$BRANCH_X" --y 315 -w "$BRANCH_W" -h "$BRANCH_H" \
   --label "Hooks" \
   --bg "#fef08a" --stroke "#92400e" --fill-style solid --roughness 0 --sw 2)
 
-# Left-top (x=210, y=280): Context — Security orange
+# Context (y=395, center=420) — Security orange
 BR_CTX=$(add ellipse \
-  --x 210 --y 280 -w "$BRANCH_W" -h "$BRANCH_H" \
+  --x "$BRANCH_X" --y 395 -w "$BRANCH_W" -h "$BRANCH_H" \
   --label "Context" \
   --bg "#fed7aa" --stroke "#c2410c" --fill-style solid --roughness 0 --sw 2)
 
-# Left-bottom (x=210, y=500): Lifecycle — Neutral
+# Lifecycle (y=475, center=500) — Neutral
 BR_LC=$(add ellipse \
-  --x 210 --y 500 -w "$BRANCH_W" -h "$BRANCH_H" \
+  --x "$BRANCH_X" --y 475 -w "$BRANCH_W" -h "$BRANCH_H" \
   --label "Lifecycle" \
   --bg "#e2e8f0" --stroke "#334155" --fill-style solid --roughness 0 --sw 2)
 
-# Top-center (x=520, y=180): Rendering — Gateway green
-# y=180 ≥ 97 (Rule 21 first-element minimum ✓)
+# Rendering (y=555, center=580) — Gateway green
 BR_REND=$(add ellipse \
-  --x 520 --y 180 -w "$BRANCH_W" -h "$BRANCH_H" \
+  --x "$BRANCH_X" --y 555 -w "$BRANCH_W" -h "$BRANCH_H" \
   --label "Rendering" \
   --bg "#bbf7d0" --stroke "#15803d" --fill-style solid --roughness 0 --sw 2)
 
-# ── Lines: root center (600,420) to each branch center ────────────────────────
-# add line uses --points as relative offsets from --x,--y
-# Branch center = branch_x + branch_w/2, branch_y + branch_h/2
+# ── Root → Branch arrows (Rule 24) ─────────────────────────────────────────────
+# Start at root right edge (x=220) at staggered Y within root height (300-380).
+# End at branch left edge (x=300) at branch center_y.
+# Stagger 7 exits: y = 306, 317, 328, 340, 352, 363, 374
 
-# → Components (center 910, 420): dx=+310, dy=0
-add line --x 600 --y 420 --points "0,0 310,0" \
-  --stroke "#94a3b8" --sw 1 --stroke-style solid > /dev/null
+# Root → Components (center=100)
+add arrow --x 220 --y 306 --ex 300 --ey 100 \
+  --stroke "#94a3b8" --sw 1 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null
 
-# → State (center 910, 310): dx=+310, dy=-110
-add line --x 600 --y 420 --points "0,0 310,-110" \
-  --stroke "#94a3b8" --sw 1 --stroke-style solid > /dev/null
+# Root → State (center=180)
+add arrow --x 220 --y 317 --ex 300 --ey 180 \
+  --stroke "#94a3b8" --sw 1 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null
 
-# → Props (center 910, 530): dx=+310, dy=+110
-add line --x 600 --y 420 --points "0,0 310,110" \
-  --stroke "#94a3b8" --sw 1 --stroke-style solid > /dev/null
+# Root → Props (center=260)
+add arrow --x 220 --y 328 --ex 300 --ey 260 \
+  --stroke "#94a3b8" --sw 1 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null
 
-# → Hooks (center 290, 420): dx=-310, dy=0
-add line --x 600 --y 420 --points "0,0 -310,0" \
-  --stroke "#94a3b8" --sw 1 --stroke-style solid > /dev/null
+# Root → Hooks (center=340) — horizontal, root center to hooks center
+add arrow --x 220 --y 340 --ex 300 --ey 340 \
+  --stroke "#94a3b8" --sw 1 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null
 
-# → Context (center 290, 310): dx=-310, dy=-110
-add line --x 600 --y 420 --points "0,0 -310,-110" \
-  --stroke "#94a3b8" --sw 1 --stroke-style solid > /dev/null
+# Root → Context (center=420)
+add arrow --x 220 --y 352 --ex 300 --ey 420 \
+  --stroke "#94a3b8" --sw 1 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null
 
-# → Lifecycle (center 290, 530): dx=-310, dy=+110
-add line --x 600 --y 420 --points "0,0 -310,110" \
-  --stroke "#94a3b8" --sw 1 --stroke-style solid > /dev/null
+# Root → Lifecycle (center=500)
+add arrow --x 220 --y 363 --ex 300 --ey 500 \
+  --stroke "#94a3b8" --sw 1 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null
 
-# → Rendering (center 600, 210): dx=0, dy=-210
-add line --x 600 --y 420 --points "0,0 0,-210" \
-  --stroke "#94a3b8" --sw 1 --stroke-style solid > /dev/null
+# Root → Rendering (center=580)
+add arrow --x 220 --y 374 --ex 300 --ey 580 \
+  --stroke "#94a3b8" --sw 1 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null
 
-# ── Leaf nodes: Components branch (right side) ────────────────────────────────
-# Branch center: (910, 420). Leaves at x=1010 (right of branch right edge x=990)
+# ── Level-2 leaf ellipses under Components ────────────────────────────────────
+# Branch right edge x=460; leaf left edge x=510. Leaves ±25 from branch center (100).
 L_FC=$(add ellipse \
-  --x 1010 --y 395 -w "$LEAF_W" -h "$LEAF_H" \
+  --x "$LEAF_X" --y 55 -w "$LEAF_W" -h "$LEAF_H" \
   --label "Functional" \
   --bg "#bbf7d0" --stroke "#15803d" --fill-style solid --roughness 0 --sw 1)
+
 L_CL=$(add ellipse \
-  --x 1010 --y 450 -w "$LEAF_W" -h "$LEAF_H" \
+  --x "$LEAF_X" --y 105 -w "$LEAF_W" -h "$LEAF_H" \
   --label "Class" \
   --bg "#bbf7d0" --stroke "#15803d" --fill-style solid --roughness 0 --sw 1)
 
-# Lines: Components right edge (990,420) → leaf centers
-add line --x 990 --y 420 --points "0,0 20,-8" \
-  --stroke "#94a3b8" --sw 1 --stroke-style solid > /dev/null
-add line --x 990 --y 420 --points "0,0 20,48" \
-  --stroke "#94a3b8" --sw 1 --stroke-style solid > /dev/null
+# Components right edge (460, 100) → leaf left edges at (510, center_y)
+# Functional center_y = 55+20=75; Class center_y = 105+20=125
+add arrow --x 460 --y 100 --ex 510 --ey 75 \
+  --stroke "#94a3b8" --sw 1 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null
+add arrow --x 460 --y 100 --ex 510 --ey 125 \
+  --stroke "#94a3b8" --sw 1 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null
 
-# ── Leaf nodes: Hooks branch (left side) ──────────────────────────────────────
-# Branch left edge x=210; leaves at x=60–190 (x<150 avoids branch overlap per recipe)
+# ── Level-2 leaf ellipses under Hooks ─────────────────────────────────────────
+# Leaves ±25 from Hooks center (340): centers at 315 and 365
 L_UE=$(add ellipse \
-  --x 60 --y 395 -w "$LEAF_W" -h "$LEAF_H" \
+  --x "$LEAF_X" --y 295 -w "$LEAF_W" -h "$LEAF_H" \
   --label "useEffect" \
   --bg "#fef9c3" --stroke "#92400e" --fill-style solid --roughness 0 --sw 1)
+
 L_US=$(add ellipse \
-  --x 60 --y 450 -w "$LEAF_W" -h "$LEAF_H" \
+  --x "$LEAF_X" --y 345 -w "$LEAF_W" -h "$LEAF_H" \
   --label "useState" \
   --bg "#fef9c3" --stroke "#92400e" --fill-style solid --roughness 0 --sw 1)
 
-# Lines: Hooks left edge (210,420) → leaf centers
-add line --x 210 --y 420 --points "0,0 -85,-8" \
-  --stroke "#94a3b8" --sw 1 --stroke-style solid > /dev/null
-add line --x 210 --y 420 --points "0,0 -85,48" \
-  --stroke "#94a3b8" --sw 1 --stroke-style solid > /dev/null
+# Hooks right edge (460, 340) → leaf left edges at (510, center_y)
+# useEffect center_y = 295+20=315; useState center_y = 345+20=365
+add arrow --x 460 --y 340 --ex 510 --ey 315 \
+  --stroke "#94a3b8" --sw 1 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null
+add arrow --x 460 --y 340 --ex 510 --ey 365 \
+  --stroke "#94a3b8" --sw 1 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null
 
 # ── Export PNG ─────────────────────────────────────────────────────────────────
 mkdir -p "$(dirname "$OUT")"

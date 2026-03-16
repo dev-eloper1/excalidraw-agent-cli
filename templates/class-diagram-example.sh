@@ -25,7 +25,7 @@ OUT="/Users/bhushan/Documents/excalidraw-agent-cli/examples/class-diagram-templa
 # ── Named grid/spacing variables ───────────────────────────────────────────────
 GRID_START_X=100
 GRID_START_Y=120
-H_SPACING=280         # horizontal distance between class left edges
+H_SPACING=340         # horizontal distance between class left edges (340 gives 140px gap for labels)
 CLASS_W=200
 CLASS_NAME_H=40       # height of the class name header section
 FIELD_ROW_H=22        # height per attribute row
@@ -63,8 +63,11 @@ USER_Y=$GRID_START_Y
 
 USER=$(add rectangle \
   --x "$USER_X" --y "$USER_Y" -w "$CLASS_W" -h "$USER_H" \
-  --label "User" \
   --bg "#ddd6fe" --stroke "#6d28d9" --fill-style solid --roughness 0 --sw 2)
+
+# Class name header text — top of box + 12px (avoids center-render overlap with attributes)
+add text --x $((USER_X + 10)) --y $((USER_Y + 12)) \
+  --fs 14 --ff 2 --color "#6d28d9" -t "User" > /dev/null
 
 # Divider line: y = USER_Y + CLASS_NAME_H = 120 + 40 = 160
 add line \
@@ -88,8 +91,11 @@ POST_Y=$GRID_START_Y
 
 POST=$(add rectangle \
   --x "$POST_X" --y "$POST_Y" -w "$CLASS_W" -h "$POST_H" \
-  --label "Post" \
   --bg "#ddd6fe" --stroke "#6d28d9" --fill-style solid --roughness 0 --sw 2)
+
+# Class name header text
+add text --x $((POST_X + 10)) --y $((POST_Y + 12)) \
+  --fs 14 --ff 2 --color "#6d28d9" -t "Post" > /dev/null
 
 # Divider line: y = 120 + 40 = 160
 add line \
@@ -113,8 +119,11 @@ CMT_Y=$GRID_START_Y
 
 COMMENT=$(add rectangle \
   --x "$CMT_X" --y "$CMT_Y" -w "$CLASS_W" -h "$COMMENT_H" \
-  --label "Comment" \
   --bg "#ddd6fe" --stroke "#6d28d9" --fill-style solid --roughness 0 --sw 2)
+
+# Class name header text
+add text --x $((CMT_X + 10)) --y $((CMT_Y + 12)) \
+  --fs 14 --ff 2 --color "#6d28d9" -t "Comment" > /dev/null
 
 # Divider line: y = 120 + 40 = 160
 add line \
@@ -131,31 +140,41 @@ add text --x "$ATTR_X" --y $((ATTR_Y + 66))     --fs 12 --ff 3 --color "#6d28d9"
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # RELATIONSHIPS
+# Rule 23: use explicit add arrow --x --y --ex --ey (NOT element connect)
+# when multiple arrows share a source or target node.
+# Stagger Y-exit/entry by 30px; skip connections route above all boxes (y=108).
 # ═══════════════════════════════════════════════════════════════════════════════
-# Post ---authored by---> User (association: thinner gray arrow)
-$CLI -p "$P" --json element connect \
-  --from "$POST" --to "$USER" \
+# Class edges (H_SPACING=340):
+#   User:    x=100-300, right x=300, center_y=189
+#   Post:    x=440-640, left x=440, right x=640, center_y=200
+#   Comment: x=780-980, left x=780, center_y=189
+#   All boxes top y=120 → skip-connection route at y=108 (above all boxes)
+# Gap between User and Post: 300-440 = 140px — enough for labels
+
+# Post ---authored by---> User (association: gray, horizontal at y=175)
+# Exit Post left at y=175, enter User right at y=175
+add arrow --x 440 --y 175 --ex 300 --ey 175 \
   --stroke "#94a3b8" --sw 1 --stroke-style solid \
-  --end-arrowhead arrow --start-arrowhead none > /dev/null
+  --start-arrowhead none --end-arrowhead arrow > /dev/null
+# Label centered in 140px gap between x=300 and x=440: midpoint=370
+add text --x 328 --y 159 --fs 12 --ff 2 --color "#6b7280" -t "authored by" > /dev/null
 
-# Comment ---belongs to---> Post (composition: purple solid arrow)
-$CLI -p "$P" --json element connect \
-  --from "$COMMENT" --to "$POST" \
+# Comment ---belongs to---> Post (composition: purple, horizontal at y=200)
+# Exit Comment left at y=200, enter Post right at y=200
+add arrow --x 780 --y 200 --ex 640 --ey 200 \
   --stroke "#6d28d9" --sw 2 --stroke-style solid \
-  --end-arrowhead arrow --start-arrowhead none > /dev/null
+  --start-arrowhead none --end-arrowhead arrow > /dev/null
+# Label centered in 140px gap between x=640 and x=780: midpoint=710
+add text --x 668 --y 184 --fs 12 --ff 2 --color "#6b7280" -t "belongs to" > /dev/null
 
-# Comment ---authored by---> User (association: thinner gray, goes across)
-$CLI -p "$P" --json element connect \
-  --from "$COMMENT" --to "$USER" \
+# Comment ---authored by---> User (dashed, SKIPS Post)
+# Route ABOVE all boxes at y=108 (box tops at y=120, so 12px clearance)
+# Exit Comment left at y=108, enter User right at y=108
+add arrow --x 780 --y 108 --ex 300 --ey 108 \
   --stroke "#94a3b8" --sw 1 --stroke-style dashed \
-  --end-arrowhead arrow --start-arrowhead none > /dev/null
-
-# ── Relationship label annotations ────────────────────────────────────────────
-# Placed below the arrow paths (approximate midpoint y below class boxes)
-add text --x 240 --y $((GRID_START_Y + POST_H + 16)) \
-  --fs 12 --ff 2 --color "#6b7280" -t "authored by" > /dev/null
-add text --x 520 --y $((GRID_START_Y + POST_H + 16)) \
-  --fs 12 --ff 2 --color "#6b7280" -t "belongs to" > /dev/null
+  --start-arrowhead none --end-arrowhead arrow > /dev/null
+# Label at midpoint of span 300-780 = 540, adjusted for text width
+add text --x 498 --y 92 --fs 12 --ff 2 --color "#6b7280" -t "authored by" > /dev/null
 
 # ── Export PNG ─────────────────────────────────────────────────────────────────
 mkdir -p "$(dirname "$OUT")"

@@ -42,14 +42,6 @@ add() {
     | python3 -c "import sys,json;print(json.load(sys.stdin)['id'])"
 }
 
-conn() {
-  local from="$1" to="$2" label="$3" color="$4" style="$5"
-  local args=("--from" "$from" "--to" "$to")
-  [[ -n "$label" ]] && args+=("-l" "$label")
-  [[ -n "$color" ]] && args+=("--stroke" "$color")
-  [[ -n "$style" ]] && args+=("--stroke-style" "$style")
-  $CLI -p "$P" --json element connect "${args[@]}" > /dev/null
-}
 
 # ── Create project ────────────────────────────────────────────────────────────
 rm -f "$P"
@@ -70,78 +62,110 @@ add text --x 240 --y 76 --fs 12 --ff 3 --color "#374151" -t "■ attribute" > /d
 
 # ════════════════════════════════════════════════════════════════════════════
 # STEP 1: Entity boxes
-# Entity name rendered centered via --label (uses --ff 2 for entity name font)
+# Entity name: separate add text at entity_y + 12 (NOT --label, which renders at center)
+# Divider line at entity_y + 34
 # Attribute text lines use add text with --ff 3 (monospace), 18px row height
-# Attribute y start = entity_y + 40 (clear centered label)
+# Attribute y start = entity_y + 46
 # ════════════════════════════════════════════════════════════════════════════
 
 # ── ENTITY: users  x=80, y=100, w=200, h=170
 USERS=$(add rectangle --x 80 --y 100 -w 200 -h 170 \
-  --label "users" \
   --bg "#ddd6fe" --stroke "#6d28d9" --fill-style solid --roughness 0 --sw 2)
-add text --x 92 --y 148 --fs 12 --ff 3 --color "#1e40af" -t "PK  id" > /dev/null
-add text --x 92 --y 166 --fs 12 --ff 3 --color "#374151" -t "    name" > /dev/null
-add text --x 92 --y 184 --fs 12 --ff 3 --color "#374151" -t "    email" > /dev/null
-add text --x 92 --y 202 --fs 12 --ff 3 --color "#374151" -t "    created_at" > /dev/null
-add text --x 92 --y 220 --fs 12 --ff 3 --color "#374151" -t "    password_hash" > /dev/null
+add text --x 92 --y 112 --fs 13 --ff 2 --color "#6d28d9" -t "users" > /dev/null
+add line --x 80 --y 134 --points "0,0 200,0" --stroke "#6d28d9" --sw 1 --stroke-style solid > /dev/null
+add text --x 92 --y 146 --fs 12 --ff 3 --color "#1e40af" -t "PK  id" > /dev/null
+add text --x 92 --y 164 --fs 12 --ff 3 --color "#374151" -t "    name" > /dev/null
+add text --x 92 --y 182 --fs 12 --ff 3 --color "#374151" -t "    email" > /dev/null
+add text --x 92 --y 200 --fs 12 --ff 3 --color "#374151" -t "    created_at" > /dev/null
+add text --x 92 --y 218 --fs 12 --ff 3 --color "#374151" -t "    password_hash" > /dev/null
 
 # ── ENTITY: posts  x=360, y=100, w=200, h=190
 POSTS=$(add rectangle --x 360 --y 100 -w 200 -h 190 \
-  --label "posts" \
   --bg "#ddd6fe" --stroke "#6d28d9" --fill-style solid --roughness 0 --sw 2)
-add text --x 372 --y 148 --fs 12 --ff 3 --color "#1e40af" -t "PK  id" > /dev/null
-add text --x 372 --y 166 --fs 12 --ff 3 --color "#6d28d9" -t "FK  user_id" > /dev/null
-add text --x 372 --y 184 --fs 12 --ff 3 --color "#374151" -t "    title" > /dev/null
-add text --x 372 --y 202 --fs 12 --ff 3 --color "#374151" -t "    body" > /dev/null
-add text --x 372 --y 220 --fs 12 --ff 3 --color "#374151" -t "    published_at" > /dev/null
-add text --x 372 --y 238 --fs 12 --ff 3 --color "#374151" -t "    created_at" > /dev/null
+add text --x 372 --y 112 --fs 13 --ff 2 --color "#6d28d9" -t "posts" > /dev/null
+add line --x 360 --y 134 --points "0,0 200,0" --stroke "#6d28d9" --sw 1 --stroke-style solid > /dev/null
+add text --x 372 --y 146 --fs 12 --ff 3 --color "#1e40af" -t "PK  id" > /dev/null
+add text --x 372 --y 164 --fs 12 --ff 3 --color "#6d28d9" -t "FK  user_id" > /dev/null
+add text --x 372 --y 182 --fs 12 --ff 3 --color "#374151" -t "    title" > /dev/null
+add text --x 372 --y 200 --fs 12 --ff 3 --color "#374151" -t "    body" > /dev/null
+add text --x 372 --y 218 --fs 12 --ff 3 --color "#374151" -t "    published_at" > /dev/null
+add text --x 372 --y 236 --fs 12 --ff 3 --color "#374151" -t "    created_at" > /dev/null
 
 # ── ENTITY: comments  x=640, y=100, w=200, h=190
 COMMENTS=$(add rectangle --x 640 --y 100 -w 200 -h 190 \
-  --label "comments" \
   --bg "#ddd6fe" --stroke "#6d28d9" --fill-style solid --roughness 0 --sw 2)
-add text --x 652 --y 148 --fs 12 --ff 3 --color "#1e40af" -t "PK  id" > /dev/null
-add text --x 652 --y 166 --fs 12 --ff 3 --color "#6d28d9" -t "FK  post_id" > /dev/null
-add text --x 652 --y 184 --fs 12 --ff 3 --color "#6d28d9" -t "FK  user_id" > /dev/null
-add text --x 652 --y 202 --fs 12 --ff 3 --color "#374151" -t "    body" > /dev/null
-add text --x 652 --y 220 --fs 12 --ff 3 --color "#374151" -t "    created_at" > /dev/null
+add text --x 652 --y 112 --fs 13 --ff 2 --color "#6d28d9" -t "comments" > /dev/null
+add line --x 640 --y 134 --points "0,0 200,0" --stroke "#6d28d9" --sw 1 --stroke-style solid > /dev/null
+add text --x 652 --y 146 --fs 12 --ff 3 --color "#1e40af" -t "PK  id" > /dev/null
+add text --x 652 --y 164 --fs 12 --ff 3 --color "#6d28d9" -t "FK  post_id" > /dev/null
+add text --x 652 --y 182 --fs 12 --ff 3 --color "#6d28d9" -t "FK  user_id" > /dev/null
+add text --x 652 --y 200 --fs 12 --ff 3 --color "#374151" -t "    body" > /dev/null
+add text --x 652 --y 218 --fs 12 --ff 3 --color "#374151" -t "    created_at" > /dev/null
 
 # ── ENTITY: tags  x=80, y=340, w=200, h=140
 TAGS=$(add rectangle --x 80 --y 340 -w 200 -h 140 \
-  --label "tags" \
   --bg "#ddd6fe" --stroke "#6d28d9" --fill-style solid --roughness 0 --sw 2)
-add text --x 92 --y 388 --fs 12 --ff 3 --color "#1e40af" -t "PK  id" > /dev/null
-add text --x 92 --y 406 --fs 12 --ff 3 --color "#374151" -t "    name" > /dev/null
-add text --x 92 --y 424 --fs 12 --ff 3 --color "#374151" -t "    slug" > /dev/null
-add text --x 92 --y 442 --fs 12 --ff 3 --color "#374151" -t "    created_at" > /dev/null
+add text --x 92 --y 352 --fs 13 --ff 2 --color "#6d28d9" -t "tags" > /dev/null
+add line --x 80 --y 374 --points "0,0 200,0" --stroke "#6d28d9" --sw 1 --stroke-style solid > /dev/null
+add text --x 92 --y 386 --fs 12 --ff 3 --color "#1e40af" -t "PK  id" > /dev/null
+add text --x 92 --y 404 --fs 12 --ff 3 --color "#374151" -t "    name" > /dev/null
+add text --x 92 --y 422 --fs 12 --ff 3 --color "#374151" -t "    slug" > /dev/null
+add text --x 92 --y 440 --fs 12 --ff 3 --color "#374151" -t "    created_at" > /dev/null
 
 # ── ENTITY: post_tags  x=360, y=340, w=200, h=140  [junction — hachure]
 POST_TAGS=$(add rectangle --x 360 --y 340 -w 200 -h 140 \
-  --label "post_tags" \
   --bg "#ddd6fe" --stroke "#6d28d9" --fill-style hachure --roughness 0 --sw 2)
-add text --x 372 --y 388 --fs 12 --ff 3 --color "#6d28d9" -t "PK FK  post_id" > /dev/null
-add text --x 372 --y 406 --fs 12 --ff 3 --color "#6d28d9" -t "PK FK  tag_id" > /dev/null
+add text --x 372 --y 352 --fs 13 --ff 2 --color "#6d28d9" -t "post_tags" > /dev/null
+add line --x 360 --y 374 --points "0,0 200,0" --stroke "#6d28d9" --sw 1 --stroke-style solid > /dev/null
+add text --x 372 --y 386 --fs 12 --ff 3 --color "#6d28d9" -t "PK FK  post_id" > /dev/null
+add text --x 372 --y 404 --fs 12 --ff 3 --color "#6d28d9" -t "PK FK  tag_id" > /dev/null
 
 # ════════════════════════════════════════════════════════════════════════════
 # STEP 2: Relationship arrows with cardinality labels
-# All use purple stroke (#6d28d9) — Data read/write convention
-# Solid sw=2 for all standard FK relationships
+# Rule 23: use explicit add arrow --x --y --ex --ey (NOT element connect)
+# when multiple arrows share a source or target node.
+# Stagger Y-exit/entry by 30px to prevent bundling at shared edges.
+# Skip connections route at a distinct y level so they don't overlap same-row arrows.
+# All arrows: purple stroke (#6d28d9) solid sw=2, label positioned 16px above midpoint.
 # ════════════════════════════════════════════════════════════════════════════
 
-# users → posts  (1 user writes N posts)
-conn "$USERS"     "$POSTS"     "1..N" "#6d28d9" "solid"
+# Entity edges (for reference):
+#   users:     right x=280, center_y=185
+#   posts:     left x=360, right x=560, center_y=195
+#   comments:  left x=640, center_y=195
+#   tags:      right x=280, center_y=410
+#   post_tags: left x=360, center_y=410
 
-# users → comments  (1 user writes N comments)
-conn "$USERS"     "$COMMENTS"  "1..N" "#6d28d9" "solid"
+# users → posts: exit users right at y=170, enter posts left at y=170
+add arrow --x 280 --y 170 --ex 360 --ey 170 \
+  --stroke "#6d28d9" --sw 2 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null
+add text --x 296 --y 154 --fs 11 --ff 2 --color "#6d28d9" -t "1..N" > /dev/null
 
-# posts → comments  (1 post has N comments)
-conn "$POSTS"     "$COMMENTS"  "1..N" "#6d28d9" "solid"
+# users → comments (skip: diagonal at distinct y levels — exits users at y=200, enters
+# comments at y=150; this differentiates it from users→posts and posts→comments at both ends)
+add arrow --x 280 --y 200 --ex 640 --ey 150 \
+  --stroke "#6d28d9" --sw 2 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null
+add text --x 430 --y 156 --fs 11 --ff 2 --color "#6d28d9" -t "1..N" > /dev/null
 
-# posts → post_tags  (1 post has N tag associations)
-conn "$POSTS"     "$POST_TAGS" "1..N" "#6d28d9" "solid"
+# posts → comments: exit posts right at y=200, enter comments left at y=200
+add arrow --x 560 --y 200 --ex 640 --ey 200 \
+  --stroke "#6d28d9" --sw 2 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null
+add text --x 578 --y 184 --fs 11 --ff 2 --color "#6d28d9" -t "1..N" > /dev/null
 
-# tags → post_tags  (1 tag has N post associations)
-conn "$TAGS"      "$POST_TAGS" "1..N" "#6d28d9" "solid"
+# posts → post_tags: vertical, exit posts bottom-center (460,290) → post_tags top-center (460,340)
+add arrow --x 460 --y 290 --ex 460 --ey 340 \
+  --stroke "#6d28d9" --sw 2 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null
+add text --x 468 --y 308 --fs 11 --ff 2 --color "#6d28d9" -t "1..N" > /dev/null
+
+# tags → post_tags: exit tags right at y=410, enter post_tags left at y=410
+add arrow --x 280 --y 410 --ex 360 --ey 410 \
+  --stroke "#6d28d9" --sw 2 --stroke-style solid \
+  --start-arrowhead none --end-arrowhead arrow > /dev/null
+add text --x 296 --y 394 --fs 11 --ff 2 --color "#6d28d9" -t "1..N" > /dev/null
 
 # ── Export PNG ────────────────────────────────────────────────────────────────
 $CLI -p "$P" export png --output "$OUT" --overwrite
