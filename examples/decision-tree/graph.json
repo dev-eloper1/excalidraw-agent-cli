@@ -1,0 +1,48 @@
+{
+  "direction": "TB",
+  "rankSep": 80,
+  "nodeSep": 50,
+  "title": "Pricing Plan Decision Tree",
+
+  "nodes": [
+    { "id": "start", "label": "New signup?", "shape": "diamond",
+      "fill": "#fef3c7", "stroke": "#b45309", "fillStyle": "solid", "roughness": 0,
+      "width": 180, "height": 80 },
+
+    { "id": "team_size", "label": "Team size?", "shape": "diamond",
+      "fill": "#fef3c7", "stroke": "#b45309", "fillStyle": "solid", "roughness": 0,
+      "width": 160, "height": 80 },
+    { "id": "usage", "label": "Monthly usage?", "shape": "diamond",
+      "fill": "#fef3c7", "stroke": "#b45309", "fillStyle": "solid", "roughness": 0,
+      "width": 180, "height": 80 },
+
+    { "id": "free", "label": "Free Plan\n$0/mo", "shape": "ellipse",
+      "fill": "#bbf7d0", "stroke": "#15803d", "fillStyle": "solid", "roughness": 0,
+      "width": 140, "height": 60 },
+    { "id": "starter", "label": "Starter Plan\n$29/mo", "shape": "ellipse",
+      "fill": "#bbf7d0", "stroke": "#15803d", "fillStyle": "solid", "roughness": 0,
+      "width": 140, "height": 60 },
+    { "id": "pro", "label": "Pro Plan\n$99/mo", "shape": "ellipse",
+      "fill": "#86efac", "stroke": "#15803d", "fillStyle": "solid", "roughness": 0,
+      "width": 140, "height": 60 },
+    { "id": "enterprise", "label": "Enterprise\nContact us", "shape": "ellipse",
+      "fill": "#bfdbfe", "stroke": "#1e40af", "fillStyle": "solid", "roughness": 0,
+      "width": 140, "height": 60 },
+    { "id": "custom", "label": "Custom Plan\nNegotiate", "shape": "ellipse",
+      "fill": "#fde68a", "stroke": "#b45309", "fillStyle": "solid", "roughness": 0,
+      "width": 140, "height": 60 }
+  ],
+
+  "edges": [
+    { "from": "start", "to": "team_size", "label": "≤ 5 users", "stroke": "#15803d", "style": "solid" },
+    { "from": "start", "to": "usage",     "label": "> 5 users",  "stroke": "#b45309", "style": "solid" },
+
+    { "from": "team_size", "to": "free",    "label": "hobby",    "stroke": "#15803d", "style": "solid" },
+    { "from": "team_size", "to": "starter", "label": "low use",  "stroke": "#15803d", "style": "solid" },
+    { "from": "team_size", "to": "pro",     "label": "heavy use","stroke": "#15803d", "style": "solid" },
+
+    { "from": "usage", "to": "pro",        "label": "< 1M req", "stroke": "#b45309", "style": "solid" },
+    { "from": "usage", "to": "enterprise", "label": "1M–10M",   "stroke": "#1e40af", "style": "solid" },
+    { "from": "usage", "to": "custom",     "label": "> 10M req","stroke": "#b45309", "style": "dashed" }
+  ]
+}

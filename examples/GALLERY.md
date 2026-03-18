@@ -318,6 +318,61 @@ Three-level LR hierarchy of the skill's reference files.
 
 ---
 
+### A16 — ER Diagram — Blog Schema
+
+📁 [`er-diagram/`](./er-diagram/)
+
+**Prompt**:
+```
+Draw an entity-relationship diagram for a blog schema: users, posts, comments,
+tags, post_tags (junction). Show PK/FK attributes per entity, cardinality labels
+(1..N) on all relationships. Use hachure fill for the junction table, solid fill
+for strong entities. Explicit arrow coordinates to avoid auto-router overlap.
+```
+
+5 entities, header/divider/attribute pattern, hachure junction table, staggered explicit arrows. Uses CLI approach (not dagre) — explicit coordinates prevent auto-router overlap on FK arrows.
+
+![ER Diagram](./er-diagram/er-diagram\.svg)
+
+---
+
+### A17 — State Diagram — Order Lifecycle
+
+📁 [`state-diagram/`](./state-diagram/)
+
+**Prompt**:
+```
+Draw an order lifecycle state diagram. Happy path left-to-right: placed →
+payment_pending → paid → fulfillment → shipped → delivered → end. Cancel states
+(red, dashed) branching down from placed and paid. Refund state (orange, dashed)
+from delivered. Start with a filled bullet, end with a filled circle.
+```
+
+10 states, two-row layout, green happy path, red cancel paths, orange refund path. Shape encoding: bullet=start, rounded rect=state, filled circle=terminal.
+
+![State Diagram](./state-diagram/state-diagram\.svg)
+
+---
+
+### A18 — Decision Tree — Pricing Plans
+
+📁 [`decision-tree/`](./decision-tree/)
+
+**Prompt**:
+```
+Draw a pricing plan decision tree. Root: "New signup?" diamond. Two branches:
+≤5 users → "Team size?" → hobby/low-use/heavy-use outcomes; >5 users →
+"Monthly usage?" → Pro Plan / Enterprise / Custom Plan outcomes. Color-code
+outcomes: green for standard tiers, blue for enterprise, yellow for custom.
+Dashed edge for the "> 10M req" unusual path.
+```
+
+Diamond decisions, ellipse outcomes, color-coded tiers. Dagre TB layout handles asymmetric branch depths automatically.
+
+![Decision Tree](./decision-tree/decision-tree\.svg)
+
+---
+
 ## Approach B — CLI element-by-element
 
 Write a bash script calling `excalidraw-agent-cli element add` and `element connect` with explicit coordinates.
