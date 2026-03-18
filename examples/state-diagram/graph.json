@@ -1,0 +1,56 @@
+{
+  "direction": "LR",
+  "rankSep": 100,
+  "nodeSep": 60,
+  "title": "Order Lifecycle — State Diagram",
+
+  "nodes": [
+    { "id": "start",    "label": "●",                "shape": "ellipse",
+      "fill": "#1e40af", "stroke": "#1e40af", "fillStyle": "solid", "roughness": 0,
+      "width": 40, "height": 40 },
+
+    { "id": "placed",      "label": "placed",           "shape": "rectangle",
+      "fill": "#86efac", "stroke": "#15803d", "fillStyle": "solid", "roughness": 0,
+      "rounded": true, "width": 160, "height": 56 },
+    { "id": "payment",     "label": "payment_pending",  "shape": "rectangle",
+      "fill": "#86efac", "stroke": "#15803d", "fillStyle": "solid", "roughness": 0,
+      "rounded": true, "width": 170, "height": 56 },
+    { "id": "paid",        "label": "paid",             "shape": "rectangle",
+      "fill": "#86efac", "stroke": "#15803d", "fillStyle": "solid", "roughness": 0,
+      "rounded": true, "width": 140, "height": 56 },
+    { "id": "fulfillment", "label": "fulfillment",      "shape": "rectangle",
+      "fill": "#86efac", "stroke": "#15803d", "fillStyle": "solid", "roughness": 0,
+      "rounded": true, "width": 160, "height": 56 },
+    { "id": "shipped",     "label": "shipped",          "shape": "rectangle",
+      "fill": "#86efac", "stroke": "#15803d", "fillStyle": "solid", "roughness": 0,
+      "rounded": true, "width": 150, "height": 56 },
+    { "id": "delivered",   "label": "delivered",        "shape": "rectangle",
+      "fill": "#a7f3d0", "stroke": "#047857", "fillStyle": "solid", "roughness": 0,
+      "rounded": true, "width": 160, "height": 56 },
+
+    { "id": "end",      "label": "◉",                "shape": "ellipse",
+      "fill": "#047857", "stroke": "#047857", "fillStyle": "solid", "roughness": 0,
+      "width": 50, "height": 50 },
+
+    { "id": "cancelled", "label": "cancelled",         "shape": "rectangle",
+      "fill": "#fecaca", "stroke": "#b91c1c", "fillStyle": "solid", "roughness": 0,
+      "rounded": true, "width": 160, "height": 56 },
+    { "id": "refunded",  "label": "refunded",          "shape": "rectangle",
+      "fill": "#fed7aa", "stroke": "#c2410c", "fillStyle": "solid", "roughness": 0,
+      "rounded": true, "width": 160, "height": 56 }
+  ],
+
+  "edges": [
+    { "from": "start",       "to": "placed",      "label": "new order",  "stroke": "#1e40af", "style": "solid", "width": 2 },
+    { "from": "placed",      "to": "payment",     "label": "checkout",   "stroke": "#15803d", "style": "solid", "width": 2 },
+    { "from": "payment",     "to": "paid",        "label": "payment ok", "stroke": "#15803d", "style": "solid", "width": 2 },
+    { "from": "paid",        "to": "fulfillment", "label": "confirmed",  "stroke": "#15803d", "style": "solid", "width": 2 },
+    { "from": "fulfillment", "to": "shipped",     "label": "dispatched", "stroke": "#15803d", "style": "solid", "width": 2 },
+    { "from": "shipped",     "to": "delivered",   "label": "delivered",  "stroke": "#15803d", "style": "solid", "width": 2 },
+    { "from": "delivered",   "to": "end",         "label": "",           "stroke": "#047857", "style": "solid", "width": 2 },
+
+    { "from": "placed",      "to": "cancelled",   "label": "cancel",     "stroke": "#dc2626", "style": "dashed", "width": 2 },
+    { "from": "paid",        "to": "cancelled",   "label": "cancel",     "stroke": "#dc2626", "style": "dashed", "width": 2 },
+    { "from": "delivered",   "to": "refunded",    "label": "refund req.","stroke": "#c2410c", "style": "dashed", "width": 2 }
+  ]
+}
