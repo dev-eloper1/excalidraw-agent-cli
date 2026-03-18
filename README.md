@@ -1,11 +1,46 @@
 # excalidraw-agent-cli
 
-A command-line tool for creating, editing, and exporting [Excalidraw](https://excalidraw.com) diagrams — designed for AI agents, scripting, and Claude Code.
+> Tell Claude what to draw. It picks the diagram type, plans the layout, writes the script, renders it, reads the PNG, and iterates until it passes a 7-point visual checklist. You get a hand-drawn Excalidraw diagram in seconds — `.excalidraw` + `.svg` + `.png`.
 
-- **No browser needed** — pure Python element mutations, real Excalidraw rendering via Node.js
-- **AI-native** — `--json` mode on every command outputs element IDs for reliable chaining
-- **Full element support** — rectangles, ellipses, diamonds, text, arrows, lines, frames
-- **Built-in Claude Code skill** — one command installs a diagram-building skill into Claude Code; just describe what you want and Claude draws it
+```bash
+pip install excalidraw-agent-cli
+excalidraw-agent-cli install-skill   # one-time — teach Claude to diagram
+```
+
+Then in any Claude Code session:
+
+```
+"Draw a system architecture for a three-tier web app"
+"Create a flowchart for the user signup and email verification process"
+"Diagram the CI/CD pipeline as a feedback loop"
+"Visualize the JWT authentication flow between browser, gateway, auth service, and DB"
+"Show the microservices architecture with an event bus and async fan-out"
+"Mind map the React & TypeScript ecosystem"
+```
+
+---
+
+## What it does
+
+The CLI lets AI agents build `.excalidraw` files element-by-element — no browser needed, pure JSON mutations, real Excalidraw rendering. There are two generation modes, and the bundled skill knows which to use:
+
+![Two Generation Approaches](./docs/two-approaches.svg)
+
+**Approach A — Dagre** (default): Write `graph.json` with nodes, edges, and optional zones. No coordinates needed — `dagre-layout.js` auto-computes all positions. Use for everything: architecture, flowcharts, mind maps, ER, state, CI/CD, data pipelines.
+
+**Approach B — CLI** (sequence diagrams only): Write a bash script calling `element add` and `element connect` with explicit `x,y` coordinates. Use only for sequence diagrams — lifelines require precise horizontal alignment that layout algorithms can't guarantee.
+
+Both produce identical output: the same `.excalidraw` JSON, the same Puppeteer rendering, the same hand-drawn aesthetic.
+
+---
+
+## The skill pipeline
+
+Install the skill once. After that, just describe what you want — Claude runs this pipeline automatically:
+
+![Skill Generation Pipeline](./docs/skill-pipeline.png)
+
+The self-inspection loop is what makes this more than one-shot generation. Claude reads the exported PNG with its vision, checks 7 quality items (labels readable, arrows directed correctly, no text overflow, colors consistent with the recipe, title clearance), and iterates up to 3 times if anything fails.
 
 ---
 
@@ -16,337 +51,300 @@ pip install excalidraw-agent-cli
 ```
 
 **Requires Node.js ≥ 18** for SVG/PNG export (`brew install node` or [nodejs.org](https://nodejs.org)).
-Node dependencies are auto-installed on first export — nothing else needed.
+Node dependencies are auto-installed on first export into `~/.cache/excalidraw-agent-cli/` — nothing else needed.
 
 ---
 
-## Claude Code skill
-
-The CLI ships with a built-in skill that teaches Claude Code how to build production-quality Excalidraw diagrams. After installing, Claude will pick up the skill automatically and use this CLI to draw any diagram you describe.
-
-### Install the skill
+## Install the Claude Code skill
 
 ```bash
-# Globally — available in every Claude Code session on this machine
+# Global — available in every Claude Code session on this machine
 excalidraw-agent-cli install-skill
 
-# Into a specific project — checked into git, shared with the team
+# Into a specific project — committed to git, shared with the team
 excalidraw-agent-cli install-skill --codebase .
-excalidraw-agent-cli install-skill --codebase ~/work/myapp
 
 # Overwrite an existing installation
 excalidraw-agent-cli install-skill --force
 ```
 
-### Then just describe your diagram
+After installation, just describe what you want in natural language. Claude picks the diagram type, chooses dagre or CLI based on the complexity, loads the matching layout recipe, generates the script, exports, inspects, and iterates.
 
-```
-"Draw a system architecture for a three-tier web app"
-"Create a flowchart for the user signup and email verification process"
-"Diagram the data flow between our auth service, core API, and Postgres"
-"Show the CI/CD pipeline as a feedback loop"
-"Visualize how JWT tokens flow from login to protected endpoints"
-```
-
-Claude will:
-1. Choose the right visual pattern (swim lanes, fan-out, cycle, timeline, etc.)
-2. Build the diagram with proper colors, spacing, and arrow styles
-3. Export a PNG and visually inspect it
-4. Fix any layout issues — truncated labels, zone bleeding, diagonal arrows
-5. Iterate until both the structure and readability checks pass
-
-### What the skill includes
-
-The skill installs as `SKILL.md` + a `references/` directory loaded on demand:
-
-| File | Purpose |
-|------|---------|
-| `SKILL.md` | Core philosophy, 6-step process, quality checklist |
-| `references/color-palette.md` | All semantic hex color pairs (`--bg` + `--stroke`) |
-| `references/cli-reference.md` | Full CLI syntax, bash helper patterns, copy-paste examples |
-| `references/patterns.md` | Visual pattern library: fan-out, convergence, swim lanes, timeline, cycle, hub-and-spoke, assembly line, evidence artifacts |
-| `references/layout-rules.md` | 15 layout rules, label-width formula, 3 coordinate templates, pre/post-build checklists |
-
-### Skill location after install
-
-| Mode | Path |
-|------|------|
-| Global (`--global`) | `~/.claude/skills/excalidraw/` |
-| Codebase (`--codebase .`) | `./.claude/skills/excalidraw/` |
+| Install mode | Path | When to use |
+|---|---|---|
+| Global (default) | `~/.claude/skills/excalidraw/` | Your personal machine — available everywhere |
+| Codebase | `./.claude/skills/excalidraw/` | Team projects — checked into git |
 
 ---
 
-## Quick start (scripting / manual use)
+## What the skill contains
 
-```bash
-CLI="excalidraw-agent-cli"
-P="/tmp/my-diagram.excalidraw"
+The skill is a set of reference files Claude loads on demand. It never loads everything at once — just `SKILL.md` plus the files relevant to the current diagram type.
 
-# 1. Create a project
-$CLI --json project new --name "my-diagram" --output "$P"
+![Skill File Structure](./docs/skill-files.png)
 
-# 2. Add shapes
-A=$($CLI --project "$P" --json element add rectangle \
-  --x 200 --y 200 -w 180 -h 80 \
-  --label "API Gateway" --bg "#86efac" --stroke "#15803d" \
-  | python3 -c "import sys,json;print(json.load(sys.stdin)['id'])")
-
-B=$($CLI --project "$P" --json element add rectangle \
-  --x 480 --y 200 -w 160 -h 80 \
-  --label "Auth Service" --bg "#86efac" --stroke "#15803d" \
-  | python3 -c "import sys,json;print(json.load(sys.stdin)['id'])")
-
-# 3. Connect them
-$CLI --project "$P" --json element connect \
-  --from "$A" --to "$B" -l "authenticates" --stroke "#15803d" > /dev/null
-
-# 4. Export
-$CLI --project "$P" export png --output /tmp/my-diagram.png --overwrite
-$CLI --project "$P" export svg --output /tmp/my-diagram.svg --overwrite
+```
+~/.claude/skills/excalidraw/
+├── SKILL.md                   ← workflow, quality checklist, philosophy
+└── references/
+    ├── color-palette.md       ← semantic hex pairs (bg + stroke) per concept type
+    ├── cli-reference.md       ← full CLI syntax, bash helper patterns
+    ├── patterns.md            ← visual pattern library (fan-out, swim lanes, cycles...)
+    ├── layout-rules.md        ← 26 layout rules, label-width formula, coordinate templates
+    ├── diagram-type-rubric.md ← decision table: which diagram type for which request
+    ├── dagre-reference.md     ← graph.json schema, when to use dagre, zone patterns
+    └── diagram-recipes/
+        ├── flowchart.md       ← coordinate grid, color defaults, pitfalls
+        ├── sequence.md
+        ├── mindmap.md
+        ├── architecture.md
+        ├── er-diagram.md
+        ├── class-diagram.md
+        ├── state-diagram.md
+        └── gantt.md
 ```
 
-### Bash helper pattern (recommended for scripts)
+Each recipe gives Claude a layout template, semantic color defaults, and a pitfall list for that diagram type. The 26 layout rules enforce constraints like minimum label width, zone clearance, and arrow label placement — so diagrams don't break as complexity grows.
 
-Use these helpers at the top of every diagram script to avoid quoting bugs:
+---
+
+## Example prompts and outputs
+
+These were all generated by Claude using this skill — the prompt is shown alongside each result.
+
+### Dagre approach — complex graphs
+
+**Prompt**: *"Create a mind map of modern software engineering. Five main branches: Frontend, Backend, Data, DevOps, Architecture. Each branch should expand into subcategories and then specific tools and technologies."*
+
+![Software Engineering Mind Map](./examples/mindmap-software-eng/mindmap-software-eng.svg)
+
+50+ nodes, 3 levels, asymmetric branch depths — Dagre handles all positions.
+
+---
+
+**Prompt**: *"Diagram the React & TypeScript ecosystem as a mind map. Six branches: State Management (with Redux → Toolkit/Saga/Thunk as sub-levels), Routing, Testing, Build Tools, Type System, UI Libraries. No arrowheads — this is associative, not directed."*
+
+![React Ecosystem](./examples/react-ecosystem/react-ecosystem.svg)
+
+44 nodes, intentionally different branch depths. The asymmetry is structural — not manually positioned.
+
+---
+
+**Prompt**: *"Draw a Kubernetes cluster architecture. Four zones: External Traffic, Control Plane, Worker Nodes, Storage. Show the full component graph: Ingress → kube-apiserver, kubelet, etcd, scheduler, controller-manager, kube-proxy, pods, PersistentVolume."*
+
+![Kubernetes Cluster](./examples/k8s-cluster/k8s-cluster.svg)
+
+---
+
+**Prompt**: *"Show the full cloud-native SaaS platform stack: CDN/WAF edge, API Gateway, 6 domain services (User, Product, Order, Inventory, Notification, Billing), platform layer (Kafka, Redis, Vault, LaunchDarkly), data tier (PostgreSQL, Elasticsearch, InfluxDB), and observability (Prometheus, Jaeger, Loki). Use solid arrows for sync calls, dashed for async."*
+
+![SaaS Platform](./examples/saas-platform/saas-platform.svg)
+
+7 zones, 32 nodes, 44 edges. Zone bounding boxes are computed automatically.
+
+---
+
+**Prompt**: *"Draw a user signup flowchart. Start with 'User signs up' → validate email (Email valid? diamond) → yes: Hash password → Save to Postgres → Send verify email → Account created. No branch: Return 422."*
+
+![Flowchart](./examples/flowchart/flowchart.svg)
+
+---
+
+**Prompt**: *"Draw a three-tier architecture with swim lane zones: CLIENTS (Web App, Mobile App, Partner API), SERVICES (API Gateway, Auth Service, Core API, Notification Svc), DATA (PostgreSQL, Redis Cache, SQS Queue). Use color coding: blue for clients, green for services, purple for data."*
+
+![Architecture](./examples/arch/arch.svg)
+
+---
+
+**Prompt**: *"Show a microservices architecture with 4 zones: CLIENT LAYER (Web App, Mobile App), GATEWAY (API Gateway), SERVICES (Auth Service, Order Service), BACKENDS / ASYNC (Redis Cache, EventBus SNS, Notification Svc). Labeled arrows, dashed for async connections."*
+
+![Microservices](./examples/microservices/microservices.svg)
+
+---
+
+### Not just programming — any domain
+
+**Prompt**: *"Draw an org chart for a startup: CEO → CTO / VP Product / VP Design. CTO manages Backend EM, Frontend EM, DevOps Lead. Each EM has a Senior Engineer and two Engineers."*
+
+![Org Chart](./examples/org-chart/org-chart.svg)
+
+---
+
+**Prompt**: *"Draw a customer journey map for e-commerce with five phases: Awareness, Consideration, Purchase, Post-Purchase, Retention. Solid arrows within each phase, dashed arrows between phases."*
+
+![Customer Journey](./examples/customer-journey/customer-journey.svg)
+
+---
+
+**Prompt**: *"Draw a 'What to cook tonight?' decision flowchart with time and preference questions leading to 8 meal outcomes. Add a dashed try-again arrow from 'Order takeout' back to the start."*
+
+![Recipe Flowchart](./examples/recipe-flowchart/recipe-flowchart.svg)
+
+---
+
+**Prompt**: *"Visualize a Claude Code session debugging a memory leak — no template. OOM alert → 3 parallel reads → 3 competing hypotheses (diamonds) → investigate each in parallel, two dead ends (gray, ❌ ruled out), one winner (green, ✅ found in pool.js:47) → fix → load test → verified. Gray out the dead-end paths, make the winning path bolder."*
+
+This one has no template. The prompt describes the story, and the graph structure carries the meaning: diamond = hypothesis, ellipse = observation, blue = gathering information, yellow = uncertain, green = resolved, gray = ruled out.
+
+![Agent Debug Session](./examples/agent-debug-session/agent-debug-session.svg)
+
+---
+
+### CLI approach — sequence diagrams only
+
+**Prompt**: *"Draw a JWT authentication sequence diagram with 4 participants: Browser, API Gateway, Auth Service, PostgreSQL. Show the full login flow: POST /auth/login, verify credentials, SELECT user, return JWT, then a protected request with Authorization header, token validation, and the successful response."*
+
+![Auth Sequence](./examples/auth-sequence/auth-sequence.svg)
+
+---
+
+## Visual style guide
+
+All styling options rendered as output images. Applies to both dagre and CLI approaches.
+
+### Fill styles
+
+![Fill Styles](./examples/style-guide/fill-styles.svg)
+
+`none` (default) = transparent background, border only. `solid` = flat color fill, automatically used when a fill color is specified. `hachure` and `cross-hatch` are opt-in for the hand-drawn texture look. Zone backgrounds always use `solid`.
+
+### Roughness levels
+
+![Roughness Levels](./examples/style-guide/roughness.svg)
+
+`0` = clean vector. `1` (default) = hand-drawn wobble. `2` = very sketchy. Use `--roughness 0` or `--clean` for presentation-ready output.
+
+### Font families
+
+![Font Families](./examples/style-guide/fonts.svg)
+
+`virgil` (default) = Excalidraw's handwritten font. `normal` = Helvetica. `mono` = Cascadia Code. In dagre: `--font virgil|normal|mono`. Per-element in CLI: `--ff 1|2|3`.
+
+### Shapes
+
+![Shapes](./examples/style-guide/shapes.svg)
+
+`rectangle` (default), `ellipse` (mind map nodes, root), `diamond` (decisions in flowcharts).
+
+### Arrow styles
+
+![Arrow Styles](./examples/style-guide/arrow-styles.svg)
+
+`solid` for primary flow, `dashed` for async/secondary, `dotted` for weak/hub-to-spoke connectors, plain line (`--end-arrowhead none`) for mind map spokes. Bidirectional: `--start-arrowhead arrow --end-arrowhead arrow`.
+
+### Semantic color palette
+
+![Color Palette](./examples/style-guide/color-palette.svg)
+
+Colors are semantic — the same `bg`/`stroke` pair everywhere for the same concept type. The dark Root node requires `fillStyle: solid` (set automatically by dagre when `textColor` is white).
+
+---
+
+## Dagre layout — complex graphs without coordinates
 
 ```bash
-#!/usr/bin/env bash
-set -e
+# 1. Write graph.json — nodes, edges, zones; no x/y
+cat > arch.json << 'EOF'
+{
+  "direction": "TB",
+  "title": "My Architecture",
+  "zones": [
+    { "id": "web", "label": "WEB TIER", "fill": "#dbeafe", "stroke": "#93c5fd",
+      "labelColor": "#1e40af", "nodeIds": ["nginx", "cdn"] }
+  ],
+  "nodes": [
+    { "id": "nginx", "label": "Nginx",    "fill": "#bfdbfe", "stroke": "#1e40af" },
+    { "id": "api",   "label": "API",      "fill": "#86efac", "stroke": "#15803d" },
+    { "id": "db",    "label": "Postgres", "fill": "#ddd6fe", "stroke": "#6d28d9" }
+  ],
+  "edges": [
+    { "from": "nginx", "to": "api", "stroke": "#15803d" },
+    { "from": "api",   "to": "db",  "stroke": "#6d28d9", "style": "dashed" }
+  ]
+}
+EOF
 
-CLI=$(which excalidraw-agent-cli)
-P=/tmp/my-diagram.excalidraw
+# 2. Compute layout → full .excalidraw with all positions
+DAGRE=$(python3 -c "import excalidraw_agent_cli,os; print(os.path.join(os.path.dirname(excalidraw_agent_cli.__file__),'..','dagre-layout.js'))")
+node "$DAGRE" arch.json --output arch.excalidraw
 
-# add: run any 'element add' command, return the element ID
+# 3. Export
+excalidraw-agent-cli --project arch.excalidraw export png --output arch.png --overwrite
+excalidraw-agent-cli --project arch.excalidraw export svg --output arch.svg --overwrite
+```
+
+### graph.json schema
+
+**Top-level**
+
+| Key | Values | Description |
+|-----|--------|-------------|
+| `direction` | `LR`, `TB`, `RL`, `BT` | Layout direction (`LR` for mind maps, `TB` for architectures) |
+| `rankSep` | integer (default 80) | Gap between rank levels |
+| `nodeSep` | integer (default 40) | Gap between nodes in same rank |
+| `title` | string | Title above the diagram |
+| `arrowhead` | `"none"` | Set globally for mind maps (no arrowheads on any edge) |
+
+**Node fields** — `id`, `label`, `width`, `height`, `fill`, `stroke`, `textColor`, `fillStyle`, `shape` (`rectangle`/`diamond`/`ellipse`), `rounded`, `fontSize`
+
+**Edge fields** — `from`, `to`, `label`, `stroke`, `style` (`solid`/`dashed`/`dotted`), `width`
+
+**Zone fields** — `id`, `label`, `labelColor`, `fill`, `stroke`, `nodeIds` (bounding box auto-sized)
+
+### dagre-layout.js flags
+
+```
+node "$DAGRE" graph.json --output out.excalidraw
+
+  --roughness 0|1|2     0=clean, 1=hand-drawn (default), 2=very rough
+  --font virgil|normal|mono
+  --fill hachure|solid  global default fill style (per-node fillStyle overrides this)
+  --arrow-width N       arrow stroke width (default 1.5)
+  --node-width N        node border width (default 2)
+  --clean               shortcut: roughness=0, font=mono, fill=solid
+```
+
+**Dark node auto-rule**: if a node has `textColor: "#ffffff"`, `dagre-layout.js` automatically applies `fillStyle: solid` and `roughness: 0` — you don't need to set these manually.
+
+---
+
+## CLI scripting
+
+```bash
+export PATH="/path/to/.venv/bin:/path/to/node/bin:$PATH"
+CLI="excalidraw-agent-cli"
+OUTDIR="${DIAGRAM_DIR:-$(pwd)}"   # override via DIAGRAM_DIR env var, default = cwd
+P="$OUTDIR/my-diagram.excalidraw"
+
+# Helpers
 add() {
   $CLI --project "$P" --json element add "$@" \
     | python3 -c "import sys,json;print(json.load(sys.stdin)['id'])"
 }
-
-# conn: connect two elements with optional label, color, style
-# Uses bash arrays to prevent hex color quoting issues with Click
 conn() {
   local from="$1" to="$2" label="$3" color="$4" style="$5"
-  local args=("--from" "$from" "--to" "$to")
+  local args=("--from" "$from" "--to" "$to" "--start-arrowhead" "none" "--end-arrowhead" "arrow")
   [[ -n "$label" ]] && args+=("-l" "$label")
   [[ -n "$color" ]] && args+=("--stroke" "$color")
   [[ -n "$style" ]] && args+=("--stroke-style" "$style")
-  $CLI --project "$P" --json element connect "${args[@]}" > /dev/null
+  $CLI --project "$P" element connect "${args[@]}" > /dev/null
 }
 
 rm -f "$P"
-$CLI --json project new --name "my-diagram" --output "$P" > /dev/null
-```
+$CLI project new --name "my-diagram" --output "$P" > /dev/null
 
----
+# Add nodes
+A=$(add rectangle --x 200 --y 200 -w 180 -h 80 \
+  --label "API Gateway" --bg "#86efac" --stroke "#15803d")
+B=$(add rectangle --x 480 --y 200 -w 160 -h 80 \
+  --label "Auth Service" --bg "#fed7aa" --stroke "#c2410c")
 
-## Examples
+# Connect
+conn "$A" "$B" "authenticates" "#c2410c" "solid"
 
-### Example 1 — Simple flowchart
-
-```bash
-#!/usr/bin/env bash
-set -e
-CLI=$(which excalidraw-agent-cli)
-P=/tmp/flowchart.excalidraw
-
-add() { $CLI --project "$P" --json element add "$@" | python3 -c "import sys,json;print(json.load(sys.stdin)['id'])"; }
-conn() {
-  local args=("--from" "$1" "--to" "$2")
-  [[ -n "$3" ]] && args+=("-l" "$3")
-  [[ -n "$4" ]] && args+=("--stroke" "$4")
-  [[ -n "$5" ]] && args+=("--stroke-style" "$5")
-  $CLI --project "$P" --json element connect "${args[@]}" > /dev/null
-}
-
-rm -f "$P"
-$CLI --json project new --name "flowchart" --output "$P" > /dev/null
-
-START=$(  add ellipse   --x 350 --y 200 -w 160 -h 70 --label "Start"           --bg "#a7f3d0" --stroke "#047857")
-STEP1=$(  add rectangle --x 330 --y 320 -w 200 -h 70 --label "Validate input"  --bg "#bfdbfe" --stroke "#1e40af")
-DECIDE=$( add diamond   --x 310 --y 450 -w 240 -h 100 --label "Valid?"         --bg "#fef3c7" --stroke "#b45309")
-OK=$(     add rectangle --x 560 --y 460 -w 200 -h 70 --label "Process request" --bg "#86efac" --stroke "#15803d")
-ERR=$(    add rectangle --x 100 --y 460 -w 160 -h 70 --label "Return 400"      --bg "#fecaca" --stroke "#b91c1c")
-END=$(    add ellipse   --x 350 --y 610 -w 160 -h 70 --label "End"             --bg "#a7f3d0" --stroke "#047857")
-
-conn "$START"  "$STEP1"
-conn "$STEP1"  "$DECIDE"
-conn "$DECIDE" "$OK"  "yes" "#15803d"
-conn "$DECIDE" "$ERR" "no"  "#b91c1c"
-conn "$OK"     "$END"
-conn "$ERR"    "$END"
-
-$CLI --project "$P" export png --output /tmp/flowchart.png --overwrite
-$CLI --project "$P" export svg --output /tmp/flowchart.svg --overwrite
-```
-
----
-
-### Example 2 — Three-tier architecture with swim lanes
-
-```bash
-#!/usr/bin/env bash
-set -e
-CLI=$(which excalidraw-agent-cli)
-P=/tmp/arch.excalidraw
-
-add() { $CLI --project "$P" --json element add "$@" | python3 -c "import sys,json;print(json.load(sys.stdin)['id'])"; }
-conn() {
-  local args=("--from" "$1" "--to" "$2")
-  [[ -n "$3" ]] && args+=("-l" "$3")
-  [[ -n "$4" ]] && args+=("--stroke" "$4")
-  $CLI --project "$P" --json element connect "${args[@]}" > /dev/null
-}
-
-rm -f "$P"
-$CLI --json project new --name "arch" --output "$P" > /dev/null
-
-# Zone backgrounds (must be added BEFORE nodes)
-add rectangle --x 185 --y 155 -w 820 -h 140 --bg "#dbeafe" --stroke "#93c5fd" --fill-style solid --opacity 15 --sw 1 > /dev/null
-add rectangle --x 185 --y 315 -w 820 -h 140 --bg "#dcfce7" --stroke "#86efac" --fill-style solid --opacity 20 --sw 1 > /dev/null
-add rectangle --x 185 --y 475 -w 820 -h 140 --bg "#ede9fe" --stroke "#c4b5fd" --fill-style solid --opacity 20 --sw 1 > /dev/null
-
-# Zone labels
-add text --x 195 --y 163 --fs 14 --ff 2 --color "#1e40af" -t "CLIENTS"  > /dev/null
-add text --x 195 --y 323 --fs 14 --ff 2 --color "#15803d" -t "SERVICES" > /dev/null
-add text --x 195 --y 483 --fs 14 --ff 2 --color "#6d28d9" -t "DATA"     > /dev/null
-
-# Client layer
-WEB=$(    add rectangle --x 205 --y 195 -w 160 -h 72 --label "Web App"     --bg "#bfdbfe" --stroke "#1e40af")
-MOBILE=$( add rectangle --x 415 --y 195 -w 160 -h 72 --label "Mobile App"  --bg "#bfdbfe" --stroke "#1e40af")
-PARTNER=$(add rectangle --x 625 --y 195 -w 165 -h 72 --label "Partner API" --bg "#bfdbfe" --stroke "#1e40af")
-
-# Services layer
-GW=$(   add rectangle --x 205 --y 355 -w 580 -h 72 --label "API Gateway"      --bg "#86efac" --stroke "#15803d")
-AUTH=$( add rectangle --x 205 --y 355 -w 160 -h 72 --label "Auth Service"     --bg "#86efac" --stroke "#15803d")
-CORE=$( add rectangle --x 415 --y 355 -w 160 -h 72 --label "Core API"         --bg "#86efac" --stroke "#15803d")
-NOTIF=$(add rectangle --x 625 --y 355 -w 165 -h 72 --label "Notification Svc" --bg "#86efac" --stroke "#15803d")
-
-# Data layer
-DB=$(    add rectangle --x 205 --y 515 -w 160 -h 72 --label "PostgreSQL"  --bg "#ddd6fe" --stroke "#6d28d9")
-CACHE=$( add rectangle --x 415 --y 515 -w 160 -h 72 --label "Redis Cache" --bg "#ddd6fe" --stroke "#6d28d9")
-STORAGE=$(add rectangle --x 625 --y 515 -w 165 -h 72 --label "S3 Storage" --bg "#ddd6fe" --stroke "#6d28d9")
-
-# Connections
-for client in "$WEB" "$MOBILE" "$PARTNER"; do
-  conn "$client" "$GW" "" "#1e40af"
-done
-conn "$GW"   "$AUTH"    "" "#1e1e1e"
-conn "$GW"   "$CORE"    "" "#1e1e1e"
-conn "$GW"   "$NOTIF"   "" "#1e1e1e"
-conn "$AUTH" "$DB"      "" "#6d28d9"
-conn "$CORE" "$DB"      "" "#6d28d9"
-conn "$CORE" "$CACHE"   "" "#6d28d9"
-conn "$NOTIF" "$STORAGE" "" "#6d28d9"
-
-$CLI --project "$P" export png --output /tmp/arch.png --overwrite
-$CLI --project "$P" export svg --output /tmp/arch.svg --overwrite
-```
-
----
-
-### Example 3 — CI/CD feedback cycle
-
-```bash
-#!/usr/bin/env bash
-set -e
-CLI=$(which excalidraw-agent-cli)
-P=/tmp/cicd.excalidraw
-
-add() { $CLI --project "$P" --json element add "$@" | python3 -c "import sys,json;print(json.load(sys.stdin)['id'])"; }
-conn() {
-  local args=("--from" "$1" "--to" "$2")
-  [[ -n "$3" ]] && args+=("-l" "$3")
-  [[ -n "$4" ]] && args+=("--stroke" "$4")
-  [[ -n "$5" ]] && args+=("--stroke-style" "$5")
-  $CLI --project "$P" --json element connect "${args[@]}" > /dev/null
-}
-
-rm -f "$P"
-$CLI --json project new --name "cicd" --output "$P" > /dev/null
-
-PLAN=$(   add rectangle --x 350 --y 200 -w 160 -h 72 --label "Plan"    --bg "#bfdbfe" --stroke "#1e40af")
-BUILD=$(  add rectangle --x 600 --y 350 -w 160 -h 72 --label "Build"   --bg "#86efac" --stroke "#15803d")
-DEPLOY=$( add rectangle --x 350 --y 500 -w 160 -h 72 --label "Deploy"  --bg "#fef08a" --stroke "#a16207")
-OBSERVE=$(add rectangle --x 100 --y 350 -w 160 -h 72 --label "Observe" --bg "#fecdd3" --stroke "#be123c")
-
-conn "$PLAN"    "$BUILD"   ""         "#1e1e1e"
-conn "$BUILD"   "$DEPLOY"  ""         "#1e1e1e"
-conn "$DEPLOY"  "$OBSERVE" ""         "#1e1e1e"
-conn "$OBSERVE" "$PLAN"    "feedback" "#be123c" "dashed"
-
-$CLI --project "$P" export png --output /tmp/cicd.png --overwrite
-```
-
----
-
-### Example 4 — Mind map (hub-and-spoke)
-
-```bash
-#!/usr/bin/env bash
-set -e
-CLI=$(which excalidraw-agent-cli)
-P=/tmp/mindmap.excalidraw
-
-add() { $CLI --project "$P" --json element add "$@" | python3 -c "import sys,json;print(json.load(sys.stdin)['id'])"; }
-spoke() {
-  $CLI --project "$P" --json element connect \
-    --from "$1" --to "$2" --stroke "#94a3b8" --stroke-style dotted --sw 1 > /dev/null
-}
-
-rm -f "$P"
-$CLI --json project new --name "mindmap" --output "$P" > /dev/null
-
-HUB=$(add ellipse --x 580 --y 390 -w 200 -h 80 --label "excalidraw-agent-cli" \
-  --bg "#334155" --stroke "#0f172a" --roughness 0 --sw 3)
-
-CREATE=$(add rectangle --x 240 --y 190 -w 160 -h 70 --label "Create"    --bg "#bfdbfe" --stroke "#1e40af")
-EDIT=$(  add rectangle --x 240 --y 420 -w 160 -h 70 --label "Edit"      --bg "#bbf7d0" --stroke "#15803d")
-EXPORT=$(add rectangle --x 960 --y 190 -w 160 -h 70 --label "Export"    --bg "#fef08a" --stroke "#a16207")
-AGENT=$( add rectangle --x 960 --y 420 -w 160 -h 70 --label "AI Agent"  --bg "#fed7aa" --stroke "#c2410c")
-SKILL=$( add rectangle --x 580 --y 620 -w 200 -h 70 --label "Claude Skill" --bg "#ddd6fe" --stroke "#6d28d9")
-
-spoke "$HUB" "$CREATE"
-spoke "$HUB" "$EDIT"
-spoke "$HUB" "$EXPORT"
-spoke "$HUB" "$AGENT"
-spoke "$HUB" "$SKILL"
-
-add text --x 80  --y 170 --fs 13 --ff 1 --color "#1e40af" -t "rectangle / ellipse / diamond" > /dev/null
-add text --x 80  --y 215 --fs 13 --ff 1 --color "#1e40af" -t "text / arrow / line / frame"   > /dev/null
-add text --x 80  --y 400 --fs 13 --ff 1 --color "#15803d" -t "update / move / delete"        > /dev/null
-add text --x 80  --y 445 --fs 13 --ff 1 --color "#15803d" -t "connect (auto-positioned)"     > /dev/null
-add text --x 1140 --y 175 --fs 13 --ff 1 --color "#a16207" -t "SVG (vector)"                 > /dev/null
-add text --x 1140 --y 220 --fs 13 --ff 1 --color "#a16207" -t "PNG (raster)"                 > /dev/null
-add text --x 1140 --y 265 --fs 13 --ff 1 --color "#a16207" -t ".excalidraw (JSON)"           > /dev/null
-add text --x 1140 --y 405 --fs 13 --ff 1 --color "#c2410c" -t "--json flag on every cmd"     > /dev/null
-add text --x 1140 --y 450 --fs 13 --ff 1 --color "#c2410c" -t "element IDs for chaining"     > /dev/null
-add text --x 490  --y 605 --fs 13 --ff 1 --color "#6d28d9" -t "install-skill command"        > /dev/null
-
-$CLI --project "$P" export png --output /tmp/mindmap.png --overwrite
-$CLI --project "$P" export svg --output /tmp/mindmap.svg --overwrite
-```
-
----
-
-### Example 5 — Interactive REPL
-
-```
-$ excalidraw-agent-cli
-excalidraw> project new --name "scratch" -o /tmp/scratch.excalidraw
-✓ Project created: scratch
-
-excalidraw> --project /tmp/scratch.excalidraw element add rectangle \
-    --x 200 --y 200 --label "Hello" --bg "#86efac" --stroke "#15803d"
-✓ Added rectangle abc123
-
-excalidraw> --project /tmp/scratch.excalidraw element list
-1 element(s):
-  abc123  rectangle  (200, 200)  180×80  "Hello"
-
-excalidraw> --project /tmp/scratch.excalidraw export svg -o /tmp/scratch.svg --overwrite
-✓ Exported SVG → /tmp/scratch.svg
-
-excalidraw> exit
+# Export
+$CLI --project "$P" export png --output "$OUTDIR/my-diagram.png" --overwrite
+$CLI --project "$P" export svg --output "$OUTDIR/my-diagram.svg" --overwrite
 ```
 
 ---
@@ -364,6 +362,7 @@ install-skill  [--global] [--codebase DIR] [--force]
 ```
 
 Global flags (go **before** the subcommand):
+
 ```
 --project  -p   Path to .excalidraw file
 --json          Output as JSON (required for agent/scripting use)
@@ -371,18 +370,18 @@ Global flags (go **before** the subcommand):
 
 ---
 
-## Element add flags
+## Element reference
 
-### Shapes (rectangle / ellipse / diamond)
+### Shapes: `rectangle` / `ellipse` / `diamond`
 
 | Flag | Description | Default |
 |------|-------------|---------|
-| `--x`, `--y` | Canvas position (top-left) | required |
+| `--x`, `--y` | Canvas position (top-left corner) | required |
 | `-w`, `-h` | Width and height in px | `180 × 80` |
-| `--label` | Text inside the shape | none |
+| `--label` / `-l` | Text inside the shape | none |
 | `--bg` | Fill color (hex) | `#ffffff` |
 | `--stroke` | Border color (hex) | `#1e1e1e` |
-| `--fill-style` | `solid`, `hachure`, `cross-hatch`, `dots`, `zigzag` | `hachure` |
+| `--fill-style` | `hachure`, `solid`, `cross-hatch`, `dots`, `zigzag` | `hachure` |
 | `--sw` | Stroke width in px | `1` |
 | `--roughness` | `0` clean · `1` default · `2` sketchy | `1` |
 | `--opacity` | 0–100 | `100` |
@@ -392,88 +391,98 @@ Global flags (go **before** the subcommand):
 
 | Flag | Description |
 |------|-------------|
-| `-t` | Text content (use `-t`, not `--label`) |
-| `--fs` | Font size (minimum 12) |
-| `--ff` | Font family: `1` Virgil · `2` Helvetica · `3` Cascadia (mono) |
+| `-t` / positional | Text content |
+| `--fs` | Font size (min 12) |
+| `--ff` | Font family: `1` Virgil · `2` Helvetica · `3` Cascadia Code |
 | `--color` | Text color (hex) |
 
-### Arrow / connection
+### `element connect`
 
 | Flag | Values | Default |
 |------|--------|---------|
-| `--from`, `--to` | element IDs | required |
-| `-l` | Arrow label | none |
+| `--from` | source element ID | required |
+| `--to` | target element ID | required |
+| `-l` / `--label` | Arrow label | none |
 | `--stroke` | hex color | `#1e1e1e` |
 | `--sw` | stroke width | `2` |
 | `--stroke-style` | `solid`, `dashed`, `dotted` | `solid` |
-| `--start-arrowhead` | `arrow`, `triangle`, `dot`, `bar`, `circle`, or omit | none |
-| `--end-arrowhead` | `arrow`, `triangle`, `dot`, `bar`, `circle`, `None` | `arrow` |
-
-```bash
-# Bidirectional arrow
-excalidraw-agent-cli --project "$P" --json element connect \
-  --from "$A" --to "$B" \
-  -l "read / write" \
-  --stroke "#6d28d9" --sw 2 \
-  --start-arrowhead arrow --end-arrowhead arrow
-```
+| `--start-arrowhead` | `arrow`, `bar`, `dot`, `triangle`, `circle`, or omit for none | none |
+| `--end-arrowhead` | `arrow`, `bar`, `dot`, `triangle`, `circle`, `none` | `arrow` |
 
 ---
 
-## Color palette
+## Semantic color palette
 
-All colors are semantic — use the same pair everywhere for the same concept:
-
-| Semantic purpose | `--bg` | `--stroke` |
-|-----------------|--------|------------|
+| Concept | `--bg` | `--stroke` |
+|---------|--------|------------|
 | Clients / Users | `#bfdbfe` | `#1e40af` |
-| Services / API | `#86efac` | `#15803d` |
 | Gateway / Routing | `#bbf7d0` | `#15803d` |
-| Async / Queue | `#fef08a` | `#a16207` |
+| Services / API | `#86efac` | `#15803d` |
+| Async / Queue | `#fef08a` | `#92400e` |
 | Data / Storage | `#ddd6fe` | `#6d28d9` |
-| Security / Edge | `#fed7aa` | `#c2410c` |
+| Security / Auth | `#fed7aa` | `#c2410c` |
 | Observability | `#fecdd3` | `#be123c` |
-| AI / LLM | `#ddd6fe` | `#6d28d9` |
 | Decision diamond | `#fef3c7` | `#b45309` |
 | Start / Trigger | `#dbeafe` | `#1e40af` |
 | End / Success | `#a7f3d0` | `#047857` |
 | Error / Reject | `#fecaca` | `#b91c1c` |
+| Root / Dark emphasis | `#1e293b` | `#e2e8f0` |
 
 Arrow color conventions:
 
 | Relationship | `--stroke` |
-|-------------|------------|
+|---|---|
 | Primary call / request | `#1e1e1e` |
-| Async / event | `#a16207` |
+| Async / event | `#92400e` |
 | Error / failure | `#dc2626` |
 | Data read/write | `#6d28d9` |
 | Auth / security | `#c2410c` |
-| Observability | `#be123c` |
-| Hub-to-spoke | `#94a3b8` |
+| Hub-to-spoke connector | `#94a3b8` |
 
 ---
 
-## How it works
+## How rendering works
 
 ```
-pip install excalidraw-agent-cli
-        │
-        ▼
-excalidraw_agent_cli/   (pure Python)
-  ├── cli.py            Click CLI + REPL
-  ├── core/             element mutations, project state, export
-  ├── utils/            backend manager, REPL skin
-  ├── export_helper/    export.js + package.json  (64 KB, no node_modules)
-  └── skill/            SKILL.md + references/    (Claude Code skill)
-        │
-        ▼ first SVG/PNG export
-~/.cache/excalidraw-agent-cli/
-  ├── export.js         (copied from wheel)
-  ├── package.json
-  └── node_modules/     (npm install runs once, ~52 MB)
+excalidraw-agent-cli (Python)
+     │  element add / connect / update
+     │  → builds .excalidraw JSON in memory
+     ▼
+.excalidraw file
+     │
+     ├── export png/svg → Node.js (Puppeteer) → raster/vector output
+     └── export json    → raw .excalidraw file (editable in excalidraw.com)
 ```
 
-No Excalidraw installation required. The Python layer handles all element mutations and saves `.excalidraw` JSON files. Node.js is only invoked for rendering to SVG/PNG.
+The Python layer handles all element state — no Excalidraw installation required. Node.js is invoked only for raster/vector export and auto-installs its dependencies (~52 MB) on first use into `~/.cache/excalidraw-agent-cli/`.
+
+---
+
+## How `--json` mode works for agents
+
+Every `element add` returns a JSON object including the element's `id`:
+
+```bash
+$ excalidraw-agent-cli --project "$P" --json element add rectangle \
+    --x 200 --y 200 -w 180 -h 80 --label "API Gateway"
+
+{
+  "status": "added",
+  "id": "a3f2c1d0-...",
+  "type": "rectangle",
+  "x": 200, "y": 200,
+  "width": 180, "height": 80,
+  "label": "API Gateway"
+}
+```
+
+The `id` is passed to `element connect --from` / `--to`, enabling reliable wiring without coordinate heuristics. This is what makes it agent-friendly.
+
+---
+
+## More examples
+
+See [`examples/GALLERY.md`](./examples/GALLERY.md) for all examples with full prompts, approach notes, and previews.
 
 ---
 

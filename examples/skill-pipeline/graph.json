@@ -1,0 +1,129 @@
+{
+  "direction": "LR",
+  "rankSep": 90,
+  "nodeSep": 40,
+  "title": "Excalidraw Skill — Generation Pipeline",
+
+  "zones": [
+    {
+      "id": "zone_input",
+      "label": "Input",
+      "labelColor": "#1e40af",
+      "fill": "#dbeafe",
+      "stroke": "#93c5fd",
+      "nodeIds": ["prompt", "codebase"]
+    },
+    {
+      "id": "zone_skill",
+      "label": "Excalidraw Skill",
+      "labelColor": "#15803d",
+      "fill": "#dcfce7",
+      "stroke": "#86efac",
+      "nodeIds": ["type_select", "dagre", "cli_script"]
+    },
+    {
+      "id": "zone_output",
+      "label": "Output",
+      "labelColor": "#6d28d9",
+      "fill": "#ede9fe",
+      "stroke": "#c4b5fd",
+      "nodeIds": ["excalidraw_file", "png", "svg"]
+    }
+  ],
+
+  "nodes": [
+    {
+      "id": "prompt",
+      "label": "User prompt\n(\"draw a flowchart of...\")",
+      "width": 200,
+      "height": 70,
+      "fill": "#bfdbfe",
+      "stroke": "#1e40af",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    },
+    {
+      "id": "codebase",
+      "label": "Codebase\n(optional — read files\nfor architecture diagrams)",
+      "width": 200,
+      "height": 70,
+      "fill": "#bfdbfe",
+      "stroke": "#1e40af",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    },
+    {
+      "id": "type_select",
+      "label": "diagram-type-rubric.md\n(pick best type)",
+      "width": 210,
+      "height": 60,
+      "fill": "#86efac",
+      "stroke": "#15803d",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    },
+    {
+      "id": "dagre",
+      "label": "graph.json\n→ dagre-layout.js\n(default for all types)",
+      "width": 200,
+      "height": 75,
+      "fill": "#bbf7d0",
+      "stroke": "#15803d",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    },
+    {
+      "id": "cli_script",
+      "label": "bash script\n(CLI only for\nsequence diagrams)",
+      "width": 200,
+      "height": 70,
+      "fill": "#fef08a",
+      "stroke": "#92400e",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    },
+    {
+      "id": "excalidraw_file",
+      "label": ".excalidraw\n(source — always kept)",
+      "width": 185,
+      "height": 65,
+      "fill": "#ddd6fe",
+      "stroke": "#6d28d9",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    },
+    {
+      "id": "png",
+      "label": "PNG\n(visual validation\n+ documentation)",
+      "width": 185,
+      "height": 65,
+      "fill": "#ddd6fe",
+      "stroke": "#6d28d9",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    },
+    {
+      "id": "svg",
+      "label": "SVG\n(scalable embed\nin README / docs)",
+      "width": 185,
+      "height": 65,
+      "fill": "#ddd6fe",
+      "stroke": "#6d28d9",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    }
+  ],
+
+  "edges": [
+    { "from": "prompt", "to": "type_select", "stroke": "#1e40af", "style": "solid", "width": 2 },
+    { "from": "codebase", "to": "type_select", "stroke": "#1e40af", "style": "solid", "width": 2 },
+    { "from": "type_select", "to": "dagre", "label": "most types", "stroke": "#15803d", "style": "solid", "width": 2 },
+    { "from": "type_select", "to": "cli_script", "label": "sequence only", "stroke": "#92400e", "style": "dashed", "width": 2 },
+    { "from": "dagre", "to": "excalidraw_file", "stroke": "#6d28d9", "style": "solid", "width": 2 },
+    { "from": "dagre", "to": "png", "stroke": "#6d28d9", "style": "solid", "width": 2 },
+    { "from": "dagre", "to": "svg", "stroke": "#6d28d9", "style": "solid", "width": 2 },
+    { "from": "cli_script", "to": "excalidraw_file", "stroke": "#6d28d9", "style": "solid", "width": 2 },
+    { "from": "cli_script", "to": "png", "stroke": "#6d28d9", "style": "solid", "width": 2 },
+    { "from": "cli_script", "to": "svg", "stroke": "#6d28d9", "style": "solid", "width": 2 }
+  ]
+}

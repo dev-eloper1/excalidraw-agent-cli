@@ -1,0 +1,21 @@
+{
+  "direction": "TB",
+  "rankSep": 55,
+  "nodeSep": 35,
+  "title": "Fill Styles",
+
+  "nodes": [
+    { "id": "title",      "label": "Fill Styles",        "width": 700, "height": 40, "fill": "#1e293b", "stroke": "#475569", "textColor": "#ffffff", "shape": "rectangle", "rounded": true },
+    { "id": "none_node",  "label": "None\n(default)",    "width": 155, "height": 80, "fill": "none",    "stroke": "#15803d", "shape": "rectangle", "rounded": true },
+    { "id": "solid_node", "label": "Solid",              "width": 155, "height": 80, "fill": "#86efac", "stroke": "#15803d", "fillStyle": "solid",       "shape": "rectangle", "rounded": true },
+    { "id": "hachure_node","label": "Hachure\n(opt-in)", "width": 155, "height": 80, "fill": "#86efac", "stroke": "#15803d", "fillStyle": "hachure",     "shape": "rectangle", "rounded": true },
+    { "id": "cross_node", "label": "Cross-hatch\n(opt-in)","width": 155,"height": 80, "fill": "#86efac", "stroke": "#15803d", "fillStyle": "cross-hatch", "shape": "rectangle", "rounded": true }
+  ],
+
+  "edges": [
+    { "from": "title", "to": "cross_node",   "stroke": "#94a3b8", "style": "solid", "width": 1 },
+    { "from": "title", "to": "hachure_node", "stroke": "#94a3b8", "style": "solid", "width": 1 },
+    { "from": "title", "to": "solid_node",   "stroke": "#94a3b8", "style": "solid", "width": 1 },
+    { "from": "title", "to": "none_node",    "stroke": "#94a3b8", "style": "solid", "width": 1 }
+  ]
+}

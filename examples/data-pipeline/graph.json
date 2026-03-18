@@ -1,0 +1,185 @@
+{
+  "direction": "LR",
+  "rankSep": 100,
+  "nodeSep": 50,
+  "title": "ETL Data Pipeline",
+
+  "zones": [
+    {
+      "id": "z_sources",
+      "label": "SOURCES",
+      "labelColor": "#c2410c",
+      "fill": "#ffedd5",
+      "stroke": "#fdba74",
+      "nodeIds": ["postgres", "mongodb", "s3"]
+    },
+    {
+      "id": "z_transform",
+      "label": "TRANSFORM",
+      "labelColor": "#15803d",
+      "fill": "#dcfce7",
+      "stroke": "#86efac",
+      "nodeIds": ["ingest_validate", "clean_normalize", "enrich_aggregate"]
+    },
+    {
+      "id": "z_destinations",
+      "label": "DESTINATIONS",
+      "labelColor": "#6d28d9",
+      "fill": "#ede9fe",
+      "stroke": "#c4b5fd",
+      "nodeIds": ["data_warehouse", "analytics", "ml_training"]
+    }
+  ],
+
+  "nodes": [
+    {
+      "id": "postgres",
+      "label": "PostgreSQL",
+      "width": 160,
+      "height": 60,
+      "fill": "#fed7aa",
+      "stroke": "#c2410c",
+      "shape": "rectangle",
+      "fillStyle": "solid"
+    },
+    {
+      "id": "mongodb",
+      "label": "MongoDB",
+      "width": 160,
+      "height": 60,
+      "fill": "#fed7aa",
+      "stroke": "#c2410c",
+      "shape": "rectangle",
+      "fillStyle": "solid"
+    },
+    {
+      "id": "s3",
+      "label": "S3",
+      "width": 160,
+      "height": 60,
+      "fill": "#fed7aa",
+      "stroke": "#c2410c",
+      "shape": "rectangle",
+      "fillStyle": "solid"
+    },
+    {
+      "id": "ingest_validate",
+      "label": "Ingest / Validate",
+      "width": 180,
+      "height": 60,
+      "fill": "#86efac",
+      "stroke": "#15803d",
+      "shape": "rectangle",
+      "fillStyle": "solid"
+    },
+    {
+      "id": "clean_normalize",
+      "label": "Clean / Normalize",
+      "width": 180,
+      "height": 60,
+      "fill": "#86efac",
+      "stroke": "#15803d",
+      "shape": "rectangle",
+      "fillStyle": "solid"
+    },
+    {
+      "id": "enrich_aggregate",
+      "label": "Enrich / Aggregate",
+      "width": 180,
+      "height": 60,
+      "fill": "#86efac",
+      "stroke": "#15803d",
+      "shape": "rectangle",
+      "fillStyle": "solid"
+    },
+    {
+      "id": "data_warehouse",
+      "label": "Data Warehouse",
+      "width": 170,
+      "height": 60,
+      "fill": "#ddd6fe",
+      "stroke": "#6d28d9",
+      "shape": "rectangle",
+      "fillStyle": "solid"
+    },
+    {
+      "id": "analytics",
+      "label": "Analytics",
+      "width": 160,
+      "height": 60,
+      "fill": "#ddd6fe",
+      "stroke": "#6d28d9",
+      "shape": "rectangle",
+      "fillStyle": "solid"
+    },
+    {
+      "id": "ml_training",
+      "label": "ML Training",
+      "width": 160,
+      "height": 60,
+      "fill": "#ddd6fe",
+      "stroke": "#6d28d9",
+      "shape": "rectangle",
+      "fillStyle": "solid"
+    }
+  ],
+
+  "edges": [
+    {
+      "from": "postgres",
+      "to": "ingest_validate",
+      "stroke": "#c2410c",
+      "style": "solid",
+      "width": 2
+    },
+    {
+      "from": "mongodb",
+      "to": "ingest_validate",
+      "stroke": "#c2410c",
+      "style": "solid",
+      "width": 2
+    },
+    {
+      "from": "s3",
+      "to": "ingest_validate",
+      "stroke": "#c2410c",
+      "style": "solid",
+      "width": 2
+    },
+    {
+      "from": "ingest_validate",
+      "to": "clean_normalize",
+      "stroke": "#15803d",
+      "style": "solid",
+      "width": 2
+    },
+    {
+      "from": "clean_normalize",
+      "to": "enrich_aggregate",
+      "stroke": "#15803d",
+      "style": "solid",
+      "width": 2
+    },
+    {
+      "from": "enrich_aggregate",
+      "to": "data_warehouse",
+      "stroke": "#6d28d9",
+      "style": "solid",
+      "width": 2
+    },
+    {
+      "from": "enrich_aggregate",
+      "to": "analytics",
+      "stroke": "#6d28d9",
+      "style": "solid",
+      "width": 2
+    },
+    {
+      "from": "enrich_aggregate",
+      "to": "ml_training",
+      "stroke": "#6d28d9",
+      "style": "solid",
+      "width": 2
+    }
+  ]
+}

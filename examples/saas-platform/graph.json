@@ -1,0 +1,105 @@
+{
+  "direction": "TB",
+  "rankSep": 90,
+  "nodeSep": 28,
+  "title": "Cloud-Native SaaS Platform Architecture",
+  "zones": [
+    { "id": "client",   "label": "CLIENT TIER",        "labelColor": "#1e40af", "fill": "#dbeafe", "stroke": "#93c5fd",
+      "nodeIds": ["web", "mobile", "desktop", "admin"] },
+    { "id": "edge",     "label": "EDGE / SECURITY",    "labelColor": "#b91c1c", "fill": "#fee2e2", "stroke": "#fca5a5",
+      "nodeIds": ["cdn", "waf", "ddos"] },
+    { "id": "gateway",  "label": "API GATEWAY",        "labelColor": "#0f766e", "fill": "#ccfbf1", "stroke": "#5eead4",
+      "nodeIds": ["gateway", "authn", "ratelimit", "lb"] },
+    { "id": "services", "label": "DOMAIN SERVICES",    "labelColor": "#15803d", "fill": "#dcfce7", "stroke": "#86efac",
+      "nodeIds": ["user_svc", "billing_svc", "content_svc", "notif_svc", "analytics_svc", "search_svc"] },
+    { "id": "platform", "label": "PLATFORM SERVICES",  "labelColor": "#7c3aed", "fill": "#ede9fe", "stroke": "#c4b5fd",
+      "nodeIds": ["mq", "cache", "config", "secrets", "feature_flags"] },
+    { "id": "data",     "label": "DATA TIER",          "labelColor": "#6d28d9", "fill": "#f5f3ff", "stroke": "#ddd6fe",
+      "nodeIds": ["pg_primary", "pg_replica", "redis_db", "s3", "elastic_db", "timeseries"] },
+    { "id": "ops",      "label": "OBSERVABILITY",      "labelColor": "#92400e", "fill": "#fffbeb", "stroke": "#fde68a",
+      "nodeIds": ["metrics", "traces", "logs", "alerts"] }
+  ],
+  "nodes": [
+    { "id": "web",          "label": "Web App\n(React)",       "width": 145, "height": 58, "fill": "#bfdbfe", "stroke": "#1e40af" },
+    { "id": "mobile",       "label": "Mobile\n(RN / Flutter)", "width": 155, "height": 58, "fill": "#bfdbfe", "stroke": "#1e40af" },
+    { "id": "desktop",      "label": "Desktop\n(Electron)",    "width": 155, "height": 58, "fill": "#bfdbfe", "stroke": "#1e40af" },
+    { "id": "admin",        "label": "Admin\nDashboard",       "width": 155, "height": 58, "fill": "#bfdbfe", "stroke": "#1e40af" },
+
+    { "id": "cdn",          "label": "CDN\n(CloudFront)",      "width": 155, "height": 55, "fill": "#fecaca", "stroke": "#b91c1c" },
+    { "id": "waf",          "label": "WAF\n(OWASP rules)",     "width": 155, "height": 55, "fill": "#fecaca", "stroke": "#b91c1c" },
+    { "id": "ddos",         "label": "DDoS Shield",            "width": 145, "height": 55, "fill": "#fecaca", "stroke": "#b91c1c" },
+
+    { "id": "gateway",      "label": "API Gateway",            "width": 155, "height": 55, "fill": "#99f6e4", "stroke": "#0f766e" },
+    { "id": "authn",        "label": "Auth\n(JWT / OAuth2)",   "width": 160, "height": 55, "fill": "#99f6e4", "stroke": "#0f766e" },
+    { "id": "ratelimit",    "label": "Rate Limiter",           "width": 145, "height": 55, "fill": "#99f6e4", "stroke": "#0f766e" },
+    { "id": "lb",           "label": "Load Balancer",          "width": 155, "height": 55, "fill": "#99f6e4", "stroke": "#0f766e" },
+
+    { "id": "user_svc",     "label": "User Service",           "width": 145, "height": 55, "fill": "#86efac", "stroke": "#15803d" },
+    { "id": "billing_svc",  "label": "Billing Service",        "width": 160, "height": 55, "fill": "#86efac", "stroke": "#15803d" },
+    { "id": "content_svc",  "label": "Content Service",        "width": 160, "height": 55, "fill": "#86efac", "stroke": "#15803d" },
+    { "id": "notif_svc",    "label": "Notification Svc",       "width": 170, "height": 55, "fill": "#86efac", "stroke": "#15803d" },
+    { "id": "analytics_svc","label": "Analytics Service",      "width": 175, "height": 55, "fill": "#86efac", "stroke": "#15803d" },
+    { "id": "search_svc",   "label": "Search Service",         "width": 160, "height": 55, "fill": "#86efac", "stroke": "#15803d" },
+
+    { "id": "mq",           "label": "Message Queue\n(Kafka)", "width": 175, "height": 55, "fill": "#ddd6fe", "stroke": "#7c3aed" },
+    { "id": "cache",        "label": "Cache\n(Redis Cluster)", "width": 175, "height": 55, "fill": "#ddd6fe", "stroke": "#7c3aed" },
+    { "id": "config",       "label": "Config Service",         "width": 160, "height": 55, "fill": "#ddd6fe", "stroke": "#7c3aed" },
+    { "id": "secrets",      "label": "Secrets\n(Vault)",       "width": 150, "height": 55, "fill": "#ddd6fe", "stroke": "#7c3aed" },
+    { "id": "feature_flags","label": "Feature Flags\n(LaunchDarkly)", "width": 190, "height": 55, "fill": "#ddd6fe", "stroke": "#7c3aed" },
+
+    { "id": "pg_primary",   "label": "PostgreSQL\n(Primary)",  "width": 170, "height": 55, "fill": "#ede9fe", "stroke": "#6d28d9" },
+    { "id": "pg_replica",   "label": "PostgreSQL\n(Replica)",  "width": 170, "height": 55, "fill": "#ede9fe", "stroke": "#6d28d9" },
+    { "id": "redis_db",     "label": "Redis\n(Persistent)",    "width": 160, "height": 55, "fill": "#ede9fe", "stroke": "#6d28d9" },
+    { "id": "s3",           "label": "Object Store\n(S3)",     "width": 155, "height": 55, "fill": "#ede9fe", "stroke": "#6d28d9" },
+    { "id": "elastic_db",   "label": "Elasticsearch",          "width": 160, "height": 55, "fill": "#ede9fe", "stroke": "#6d28d9" },
+    { "id": "timeseries",   "label": "TimeSeries\n(InfluxDB)", "width": 170, "height": 55, "fill": "#ede9fe", "stroke": "#6d28d9" },
+
+    { "id": "metrics",      "label": "Metrics\n(Prometheus)",  "width": 170, "height": 55, "fill": "#fde68a", "stroke": "#92400e" },
+    { "id": "traces",       "label": "Traces\n(Jaeger / OTEL)","width": 185, "height": 55, "fill": "#fde68a", "stroke": "#92400e" },
+    { "id": "logs",         "label": "Logs\n(Loki / ELK)",     "width": 160, "height": 55, "fill": "#fde68a", "stroke": "#92400e" },
+    { "id": "alerts",       "label": "Alerting\n(PagerDuty)",  "width": 175, "height": 55, "fill": "#fde68a", "stroke": "#92400e" }
+  ],
+  "edges": [
+    { "from": "web",      "to": "cdn",     "stroke": "#b91c1c", "style": "dashed" },
+    { "from": "mobile",   "to": "cdn",     "stroke": "#b91c1c", "style": "dashed" },
+    { "from": "desktop",  "to": "cdn",     "stroke": "#b91c1c", "style": "dashed" },
+    { "from": "admin",    "to": "cdn",     "stroke": "#b91c1c", "style": "dashed" },
+    { "from": "cdn",      "to": "waf",     "stroke": "#b91c1c" },
+    { "from": "waf",      "to": "ddos",    "stroke": "#b91c1c" },
+    { "from": "ddos",     "to": "gateway", "stroke": "#b91c1c" },
+
+    { "from": "gateway",  "to": "authn",    "stroke": "#0f766e" },
+    { "from": "gateway",  "to": "ratelimit","stroke": "#0f766e" },
+    { "from": "gateway",  "to": "lb",       "stroke": "#0f766e" },
+
+    { "from": "lb", "to": "user_svc",      "stroke": "#15803d" },
+    { "from": "lb", "to": "billing_svc",   "stroke": "#15803d" },
+    { "from": "lb", "to": "content_svc",   "stroke": "#15803d" },
+    { "from": "lb", "to": "notif_svc",     "stroke": "#15803d" },
+    { "from": "lb", "to": "analytics_svc", "stroke": "#15803d" },
+    { "from": "lb", "to": "search_svc",    "stroke": "#15803d" },
+
+    { "from": "user_svc",      "to": "mq",    "stroke": "#7c3aed", "style": "dashed" },
+    { "from": "billing_svc",   "to": "mq",    "stroke": "#7c3aed", "style": "dashed" },
+    { "from": "content_svc",   "to": "mq",    "stroke": "#7c3aed", "style": "dashed" },
+    { "from": "notif_svc",     "to": "mq",    "stroke": "#7c3aed", "style": "dashed" },
+    { "from": "user_svc",      "to": "cache", "stroke": "#7c3aed", "style": "dashed" },
+    { "from": "content_svc",   "to": "cache", "stroke": "#7c3aed", "style": "dashed" },
+    { "from": "user_svc",      "to": "config","stroke": "#7c3aed", "style": "dashed" },
+    { "from": "billing_svc",   "to": "secrets","stroke": "#7c3aed","style": "dashed" },
+    { "from": "user_svc",      "to": "feature_flags", "stroke": "#7c3aed", "style": "dashed" },
+
+    { "from": "user_svc",      "to": "pg_primary",  "stroke": "#6d28d9" },
+    { "from": "billing_svc",   "to": "pg_primary",  "stroke": "#6d28d9" },
+    { "from": "content_svc",   "to": "s3",          "stroke": "#6d28d9" },
+    { "from": "analytics_svc", "to": "timeseries",  "stroke": "#6d28d9" },
+    { "from": "search_svc",    "to": "elastic_db",  "stroke": "#6d28d9" },
+    { "from": "cache",         "to": "redis_db",    "stroke": "#6d28d9" },
+    { "from": "pg_primary",    "to": "pg_replica",  "stroke": "#6d28d9", "style": "dashed", "label": "replication" },
+
+    { "from": "user_svc",      "to": "metrics", "stroke": "#92400e", "style": "dashed" },
+    { "from": "billing_svc",   "to": "traces",  "stroke": "#92400e", "style": "dashed" },
+    { "from": "content_svc",   "to": "logs",    "stroke": "#92400e", "style": "dashed" },
+    { "from": "metrics",       "to": "alerts",  "stroke": "#92400e" }
+  ]
+}

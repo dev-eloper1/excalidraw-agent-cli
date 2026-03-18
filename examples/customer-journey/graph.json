@@ -1,0 +1,111 @@
+{
+  "direction": "TB",
+  "rankSep": 70,
+  "nodeSep": 40,
+  "title": "Customer Journey Map — E-Commerce",
+
+  "zones": [
+    {
+      "id": "z_awareness",
+      "label": "① AWARENESS",
+      "labelColor": "#1e40af",
+      "fill": "#dbeafe",
+      "stroke": "#3b82f6",
+      "nodeIds": ["sees_ad", "visits_site"]
+    },
+    {
+      "id": "z_consideration",
+      "label": "② CONSIDERATION",
+      "labelColor": "#15803d",
+      "fill": "#dcfce7",
+      "stroke": "#22c55e",
+      "nodeIds": ["browses", "reads_reviews", "compares"]
+    },
+    {
+      "id": "z_purchase",
+      "label": "③ PURCHASE",
+      "labelColor": "#c2410c",
+      "fill": "#ffedd5",
+      "stroke": "#f97316",
+      "nodeIds": ["add_cart", "checkout", "payment"]
+    },
+    {
+      "id": "z_postpurchase",
+      "label": "④ POST-PURCHASE",
+      "labelColor": "#6d28d9",
+      "fill": "#ede9fe",
+      "stroke": "#a78bfa",
+      "nodeIds": ["email_confirm", "ships", "delivery"]
+    },
+    {
+      "id": "z_retention",
+      "label": "⑤ RETENTION",
+      "labelColor": "#0f766e",
+      "fill": "#ccfbf1",
+      "stroke": "#2dd4bf",
+      "nodeIds": ["followup_email", "leaves_review", "reorders"]
+    }
+  ],
+
+  "nodes": [
+    { "id": "sees_ad",       "label": "👀  Sees Ad",           "width": 155, "height": 55, "stroke": "#1e40af", "shape": "ellipse" },
+    { "id": "visits_site",   "label": "🌐  Visits Site",       "width": 155, "height": 55, "stroke": "#1e40af", "shape": "rectangle", "rounded": true },
+
+    { "id": "t1", "label": "clicks through", "width": 130, "height": 32, "stroke": "#94a3b8", "shape": "rectangle", "rounded": true },
+
+    { "id": "browses",       "label": "🛍️  Browses\nProducts", "width": 155, "height": 62, "stroke": "#15803d", "shape": "rectangle", "rounded": true },
+    { "id": "reads_reviews", "label": "⭐  Reads\nReviews",    "width": 155, "height": 62, "stroke": "#15803d", "shape": "rectangle", "rounded": true },
+    { "id": "compares",      "label": "⚖️  Compares\nPrices",  "width": 155, "height": 62, "stroke": "#15803d", "shape": "diamond" },
+
+    { "id": "t2", "label": "decides to buy",  "width": 130, "height": 32, "stroke": "#94a3b8", "shape": "rectangle", "rounded": true },
+
+    { "id": "add_cart",      "label": "🛒  Adds to Cart",      "width": 155, "height": 55, "stroke": "#ea580c", "shape": "rectangle", "rounded": true },
+    { "id": "checkout",      "label": "📋  Checkout",          "width": 155, "height": 62, "stroke": "#c2410c", "shape": "diamond" },
+    { "id": "payment",       "label": "💳  Payment",           "width": 155, "height": 62, "stroke": "#9a3412", "shape": "diamond" },
+
+    { "id": "t3", "label": "order placed!",   "width": 120, "height": 32, "stroke": "#94a3b8", "shape": "rectangle", "rounded": true },
+
+    { "id": "email_confirm", "label": "✉️  Confirmation\nEmail",  "width": 155, "height": 62, "stroke": "#6d28d9", "shape": "rectangle", "rounded": true },
+    { "id": "ships",         "label": "📦  Order Ships",        "width": 155, "height": 55, "stroke": "#6d28d9", "shape": "rectangle", "rounded": true },
+    { "id": "delivery",      "label": "🏠  Delivered!",         "width": 155, "height": 55, "stroke": "#5b21b6", "shape": "rectangle", "rounded": true },
+
+    { "id": "t4", "label": "7 days later",    "width": 115, "height": 32, "stroke": "#94a3b8", "shape": "rectangle", "rounded": true },
+
+    { "id": "followup_email","label": "💌  Follow-up\nEmail",  "width": 155, "height": 62, "stroke": "#0f766e", "shape": "rectangle", "rounded": true },
+    { "id": "leaves_review", "label": "✍️  Leaves\nReview",    "width": 155, "height": 62, "stroke": "#0f766e", "shape": "diamond" },
+    { "id": "reorders",      "label": "🔄  Reorders",          "width": 155, "height": 55, "stroke": "#134e4a", "shape": "ellipse" }
+  ],
+
+  "edges": [
+    { "from": "sees_ad",       "to": "t1",            "stroke": "#1e40af", "style": "solid", "width": 2 },
+    { "from": "visits_site",   "to": "t1",            "stroke": "#1e40af", "style": "solid", "width": 2 },
+
+    { "from": "t1",            "to": "browses",       "stroke": "#22c55e", "style": "solid", "width": 2 },
+    { "from": "t1",            "to": "reads_reviews", "stroke": "#22c55e", "style": "solid", "width": 2 },
+    { "from": "t1",            "to": "compares",      "stroke": "#22c55e", "style": "solid", "width": 2 },
+
+    { "from": "browses",       "to": "t2",            "stroke": "#86efac", "style": "solid", "width": 2 },
+    { "from": "reads_reviews", "to": "t2",            "stroke": "#86efac", "style": "solid", "width": 2 },
+    { "from": "compares",      "to": "t2",            "stroke": "#86efac", "style": "solid", "width": 2 },
+
+    { "from": "t2",            "to": "add_cart",      "stroke": "#f97316", "style": "solid", "width": 2 },
+    { "from": "t2",            "to": "checkout",      "stroke": "#f97316", "style": "solid", "width": 2 },
+    { "from": "t2",            "to": "payment",       "stroke": "#f97316", "style": "solid", "width": 2 },
+
+    { "from": "add_cart",      "to": "t3",            "stroke": "#fb923c", "style": "solid", "width": 2 },
+    { "from": "checkout",      "to": "t3",            "stroke": "#fb923c", "style": "solid", "width": 2 },
+    { "from": "payment",       "to": "t3",            "stroke": "#fb923c", "style": "solid", "width": 2 },
+
+    { "from": "t3",            "to": "email_confirm", "stroke": "#a78bfa", "style": "solid", "width": 2 },
+    { "from": "t3",            "to": "ships",         "stroke": "#a78bfa", "style": "solid", "width": 2 },
+    { "from": "t3",            "to": "delivery",      "stroke": "#a78bfa", "style": "solid", "width": 2 },
+
+    { "from": "email_confirm", "to": "t4",            "stroke": "#c4b5fd", "style": "solid", "width": 2 },
+    { "from": "ships",         "to": "t4",            "stroke": "#c4b5fd", "style": "solid", "width": 2 },
+    { "from": "delivery",      "to": "t4",            "stroke": "#c4b5fd", "style": "solid", "width": 2 },
+
+    { "from": "t4",            "to": "followup_email","stroke": "#2dd4bf", "style": "solid", "width": 2 },
+    { "from": "t4",            "to": "leaves_review", "stroke": "#2dd4bf", "style": "solid", "width": 2 },
+    { "from": "t4",            "to": "reorders",      "stroke": "#2dd4bf", "style": "solid", "width": 2 }
+  ]
+}

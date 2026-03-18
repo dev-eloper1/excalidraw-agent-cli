@@ -1,0 +1,154 @@
+{
+  "direction": "TB",
+  "rankSep": 100,
+  "nodeSep": 50,
+  "title": "Three-Tier Web Architecture",
+
+  "zones": [
+    {
+      "id": "z_clients",
+      "label": "CLIENTS",
+      "labelColor": "#1e40af",
+      "fill": "#dbeafe",
+      "stroke": "#93c5fd",
+      "opacity": 30,
+      "nodeIds": ["web_app", "mobile_app", "partner_api"]
+    },
+    {
+      "id": "z_services",
+      "label": "SERVICES",
+      "labelColor": "#15803d",
+      "fill": "#dcfce7",
+      "stroke": "#86efac",
+      "opacity": 35,
+      "nodeIds": ["api_gateway", "auth_service", "core_api", "notif_svc"]
+    },
+    {
+      "id": "z_data",
+      "label": "DATA",
+      "labelColor": "#6d28d9",
+      "fill": "#ede9fe",
+      "stroke": "#c4b5fd",
+      "opacity": 35,
+      "nodeIds": ["postgres", "redis_cache", "sqs_queue"]
+    }
+  ],
+
+  "nodes": [
+    {
+      "id": "web_app",
+      "label": "Web App",
+      "width": 160,
+      "height": 60,
+      "fill": "#bfdbfe",
+      "stroke": "#1e40af",
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "mobile_app",
+      "label": "Mobile App",
+      "width": 160,
+      "height": 60,
+      "fill": "#bfdbfe",
+      "stroke": "#1e40af",
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "partner_api",
+      "label": "Partner API",
+      "width": 160,
+      "height": 60,
+      "fill": "#bfdbfe",
+      "stroke": "#1e40af",
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "api_gateway",
+      "label": "API Gateway",
+      "width": 280,
+      "height": 65,
+      "fill": "#bbf7d0",
+      "stroke": "#14532d",
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "auth_service",
+      "label": "Auth Service",
+      "width": 160,
+      "height": 60,
+      "fill": "#fed7aa",
+      "stroke": "#c2410c",
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "core_api",
+      "label": "Core API",
+      "width": 160,
+      "height": 60,
+      "fill": "#86efac",
+      "stroke": "#15803d",
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "notif_svc",
+      "label": "Notification Svc",
+      "width": 180,
+      "height": 60,
+      "fill": "#86efac",
+      "stroke": "#15803d",
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "postgres",
+      "label": "PostgreSQL",
+      "width": 160,
+      "height": 60,
+      "fill": "#ddd6fe",
+      "stroke": "#6d28d9",
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "redis_cache",
+      "label": "Redis Cache",
+      "width": 160,
+      "height": 60,
+      "fill": "#fef08a",
+      "stroke": "#92400e",
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "sqs_queue",
+      "label": "SQS Queue",
+      "width": 160,
+      "height": 60,
+      "fill": "#fef08a",
+      "stroke": "#92400e",
+      "fillStyle": "solid",
+      "roughness": 0
+    }
+  ],
+
+  "edges": [
+    { "from": "web_app",    "to": "api_gateway", "stroke": "#1e1e1e", "style": "solid", "width": 2 },
+    { "from": "mobile_app", "to": "api_gateway", "stroke": "#1e1e1e", "style": "solid", "width": 2 },
+    { "from": "partner_api","to": "api_gateway", "stroke": "#1e1e1e", "style": "solid", "width": 2 },
+
+    { "from": "api_gateway", "to": "auth_service", "stroke": "#c2410c", "style": "solid", "width": 2 },
+    { "from": "api_gateway", "to": "core_api",     "stroke": "#1e1e1e", "style": "solid", "width": 2 },
+    { "from": "api_gateway", "to": "notif_svc",    "stroke": "#1e1e1e", "style": "solid", "width": 2 },
+
+    { "from": "core_api",  "to": "postgres",    "stroke": "#6d28d9", "style": "solid", "width": 2 },
+    { "from": "core_api",  "to": "redis_cache", "stroke": "#a16207", "style": "dashed", "width": 1 },
+    { "from": "notif_svc", "to": "sqs_queue",   "stroke": "#a16207", "style": "dashed", "width": 1 },
+    { "from": "auth_service","to": "postgres",  "stroke": "#6d28d9", "style": "solid", "width": 2 }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "direction": "LR",
+  "rankSep": 80,
+  "nodeSep": 28,
+  "title": "Claude Debugging a Memory Leak — Agentic Session",
+
+  "zones": [
+    {
+      "id": "z_trigger",
+      "label": "TRIGGER",
+      "labelColor": "#991b1b",
+      "fill": "#fef2f2",
+      "stroke": "#fca5a5",
+      "nodeIds": ["alert", "oom"]
+    },
+    {
+      "id": "z_orient",
+      "label": "ORIENT",
+      "labelColor": "#1e40af",
+      "fill": "#eff6ff",
+      "stroke": "#93c5fd",
+      "nodeIds": ["read_log", "grep_alloc", "read_pool"]
+    },
+    {
+      "id": "z_hypothesize",
+      "label": "HYPOTHESIZE",
+      "labelColor": "#854d0e",
+      "fill": "#fefce8",
+      "stroke": "#fde047",
+      "nodeIds": ["h1", "h2", "h3"]
+    },
+    {
+      "id": "z_investigate",
+      "label": "INVESTIGATE",
+      "labelColor": "#374151",
+      "fill": "#f9fafb",
+      "stroke": "#d1d5db",
+      "nodeIds": ["test_h1", "wrong_h1", "test_h2", "wrong_h2", "test_h3", "found"]
+    },
+    {
+      "id": "z_resolve",
+      "label": "RESOLVE",
+      "labelColor": "#14532d",
+      "fill": "#f0fdf4",
+      "stroke": "#86efac",
+      "nodeIds": ["fix", "loadtest", "verified", "postmortem"]
+    }
+  ],
+
+  "nodes": [
+    { "id": "alert",     "label": "🚨  OOM Alert\n(PagerDuty 3am)",   "width": 170, "height": 60,  "fill": "#fee2e2", "stroke": "#dc2626", "shape": "ellipse" },
+    { "id": "oom",       "label": "💥  Heap: 2.1 GB\nProcess killed",  "width": 170, "height": 60,  "fill": "#fca5a5", "stroke": "#991b1b", "textColor": "#7f1d1d", "shape": "rectangle", "rounded": true },
+
+    { "id": "read_log",  "label": "📄  Read error.log\n→ heap snapshots every 10s", "width": 200, "height": 62, "fill": "#bfdbfe", "stroke": "#1d4ed8", "shape": "rectangle", "rounded": true },
+    { "id": "grep_alloc","label": "🔍  Grep codebase\n→ 'new ', 'require', listeners",  "width": 200, "height": 62, "fill": "#bfdbfe", "stroke": "#1d4ed8", "shape": "rectangle", "rounded": true },
+    { "id": "read_pool", "label": "📄  Read db/pool.js\n→ 847 lines, connection mgmt", "width": 200, "height": 62, "fill": "#bfdbfe", "stroke": "#1d4ed8", "shape": "rectangle", "rounded": true },
+
+    { "id": "h1",        "label": "H1: Event listener\nnever removed?",   "width": 170, "height": 62, "fill": "#fef9c3", "stroke": "#ca8a04", "shape": "diamond" },
+    { "id": "h2",        "label": "H2: In-memory cache\nhas no TTL?",      "width": 170, "height": 62, "fill": "#fef9c3", "stroke": "#ca8a04", "shape": "diamond" },
+    { "id": "h3",        "label": "H3: DB connection\nnever released?",    "width": 170, "height": 62, "fill": "#fef08a", "stroke": "#a16207", "shape": "diamond" },
+
+    { "id": "test_h1",   "label": "🧪  Add removeListener\nto EventEmitter",      "width": 175, "height": 60, "fill": "#e0f2fe", "stroke": "#0284c7", "shape": "rectangle", "rounded": true },
+    { "id": "wrong_h1",  "label": "❌  Memory still grows\nH1 ruled out",          "width": 175, "height": 60, "fill": "#f1f5f9", "stroke": "#94a3b8", "textColor": "#94a3b8", "shape": "rectangle", "rounded": true },
+    { "id": "test_h2",   "label": "🧪  Add TTL to\nRedis cache config",            "width": 175, "height": 60, "fill": "#e0f2fe", "stroke": "#0284c7", "shape": "rectangle", "rounded": true },
+    { "id": "wrong_h2",  "label": "❌  Cache was fine\nH2 ruled out",               "width": 175, "height": 60, "fill": "#f1f5f9", "stroke": "#94a3b8", "textColor": "#94a3b8", "shape": "rectangle", "rounded": true },
+    { "id": "test_h3",   "label": "🧪  Inspect pool.js:47\nconn lifecycle",         "width": 175, "height": 60, "fill": "#e0f2fe", "stroke": "#0284c7", "shape": "rectangle", "rounded": true },
+    { "id": "found",     "label": "✅  pool.js:47 — conn\nnever released in catch", "width": 195, "height": 62, "fill": "#bbf7d0", "stroke": "#15803d", "shape": "ellipse" },
+
+    { "id": "fix",       "label": "🔧  Add finally { conn.release() }\nto all query wrappers",  "width": 215, "height": 62, "fill": "#86efac", "stroke": "#15803d", "shape": "rectangle", "rounded": true },
+    { "id": "loadtest",  "label": "⚡  Load test\n10,000 requests",                               "width": 175, "height": 60, "fill": "#bbf7d0", "stroke": "#15803d", "shape": "rectangle", "rounded": true },
+    { "id": "verified",  "label": "✅  Memory stable\nat 180 MB",                                 "width": 165, "height": 60, "fill": "#4ade80", "stroke": "#15803d", "textColor": "#14532d", "shape": "ellipse" },
+    { "id": "postmortem","label": "📝  Postmortem\n+ lint rule added",                            "width": 165, "height": 60, "fill": "#bbf7d0", "stroke": "#15803d", "shape": "rectangle", "rounded": true }
+  ],
+
+  "edges": [
+    { "from": "alert",      "to": "oom",        "stroke": "#dc2626", "style": "solid",  "width": 2 },
+
+    { "from": "oom",        "to": "read_log",   "stroke": "#1d4ed8", "style": "solid",  "width": 2 },
+    { "from": "oom",        "to": "grep_alloc", "stroke": "#1d4ed8", "style": "solid",  "width": 2 },
+    { "from": "oom",        "to": "read_pool",  "stroke": "#1d4ed8", "style": "solid",  "width": 2 },
+
+    { "from": "read_log",   "to": "h1",         "stroke": "#92400e", "style": "dashed", "width": 1, "label": "informs" },
+    { "from": "read_log",   "to": "h2",         "stroke": "#92400e", "style": "dashed", "width": 1 },
+    { "from": "grep_alloc", "to": "h1",         "stroke": "#92400e", "style": "dashed", "width": 1 },
+    { "from": "grep_alloc", "to": "h2",         "stroke": "#92400e", "style": "dashed", "width": 1 },
+    { "from": "read_pool",  "to": "h3",         "stroke": "#92400e", "style": "dashed", "width": 1, "label": "informs" },
+    { "from": "grep_alloc", "to": "h3",         "stroke": "#92400e", "style": "dashed", "width": 1 },
+
+    { "from": "h1",         "to": "test_h1",    "stroke": "#0284c7", "style": "solid",  "width": 2 },
+    { "from": "test_h1",    "to": "wrong_h1",   "stroke": "#94a3b8", "style": "solid",  "width": 2 },
+    { "from": "h2",         "to": "test_h2",    "stroke": "#0284c7", "style": "solid",  "width": 2 },
+    { "from": "test_h2",    "to": "wrong_h2",   "stroke": "#94a3b8", "style": "solid",  "width": 2 },
+    { "from": "h3",         "to": "test_h3",    "stroke": "#0284c7", "style": "solid",  "width": 2 },
+    { "from": "test_h3",    "to": "found",      "stroke": "#15803d", "style": "solid",  "width": 3 },
+
+    { "from": "found",      "to": "fix",        "stroke": "#15803d", "style": "solid",  "width": 3 },
+    { "from": "fix",        "to": "loadtest",   "stroke": "#15803d", "style": "solid",  "width": 2 },
+    { "from": "loadtest",   "to": "verified",   "stroke": "#15803d", "style": "solid",  "width": 2 },
+    { "from": "verified",   "to": "postmortem", "stroke": "#15803d", "style": "solid",  "width": 2 }
+  ]
+}

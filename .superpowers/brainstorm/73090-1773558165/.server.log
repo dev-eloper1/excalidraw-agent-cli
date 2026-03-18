@@ -1,0 +1,5 @@
+{"type":"server-started","port":51972,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:51972","screen_dir":"/Users/bhushan/Documents/excalidraw-agent-cli/.superpowers/brainstorm/73090-1773558165"}
+{"type":"screen-added","file":"/Users/bhushan/Documents/excalidraw-agent-cli/.superpowers/brainstorm/73090-1773558165/welcome.html"}
+{"type":"screen-added","file":"/Users/bhushan/Documents/excalidraw-agent-cli/.superpowers/brainstorm/73090-1773558165/architecture.html"}
+{"type":"screen-added","file":"/Users/bhushan/Documents/excalidraw-agent-cli/.superpowers/brainstorm/73090-1773558165/writing-spec.html"}
+{"type":"server-stopped","reason":"idle timeout"}

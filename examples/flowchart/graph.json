@@ -1,0 +1,135 @@
+{
+  "direction": "TB",
+  "rankSep": 80,
+  "nodeSep": 60,
+  "title": "User Signup Flow",
+
+  "nodes": [
+    {
+      "id": "signup",
+      "label": "User signs up",
+      "width": 180,
+      "height": 60,
+      "fill": "#dbeafe",
+      "stroke": "#1e40af",
+      "shape": "rectangle",
+      "rounded": true,
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "email_valid",
+      "label": "Email valid?",
+      "width": 200,
+      "height": 80,
+      "fill": "#fef3c7",
+      "stroke": "#b45309",
+      "shape": "diamond",
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "return_422",
+      "label": "Return 422",
+      "width": 160,
+      "height": 60,
+      "fill": "#fecaca",
+      "stroke": "#b91c1c",
+      "shape": "rectangle",
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "hash_password",
+      "label": "Hash password",
+      "width": 180,
+      "height": 60,
+      "fill": "#86efac",
+      "stroke": "#15803d",
+      "shape": "rectangle",
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "save_postgres",
+      "label": "Save to Postgres",
+      "width": 190,
+      "height": 60,
+      "fill": "#ddd6fe",
+      "stroke": "#6d28d9",
+      "shape": "rectangle",
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "send_email",
+      "label": "Send verify email",
+      "width": 190,
+      "height": 60,
+      "fill": "#86efac",
+      "stroke": "#15803d",
+      "shape": "rectangle",
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "account_created",
+      "label": "Account created",
+      "width": 190,
+      "height": 60,
+      "fill": "#a7f3d0",
+      "stroke": "#047857",
+      "shape": "rectangle",
+      "rounded": true,
+      "fillStyle": "solid",
+      "roughness": 0
+    }
+  ],
+
+  "edges": [
+    {
+      "from": "signup",
+      "to": "email_valid",
+      "stroke": "#1e1e1e",
+      "style": "solid",
+      "width": 2
+    },
+    {
+      "from": "email_valid",
+      "to": "hash_password",
+      "label": "Yes",
+      "stroke": "#15803d",
+      "style": "solid",
+      "width": 2
+    },
+    {
+      "from": "email_valid",
+      "to": "return_422",
+      "label": "No",
+      "stroke": "#b91c1c",
+      "style": "dashed",
+      "width": 2
+    },
+    {
+      "from": "hash_password",
+      "to": "save_postgres",
+      "stroke": "#1e1e1e",
+      "style": "solid",
+      "width": 2
+    },
+    {
+      "from": "save_postgres",
+      "to": "send_email",
+      "stroke": "#1e1e1e",
+      "style": "solid",
+      "width": 2
+    },
+    {
+      "from": "send_email",
+      "to": "account_created",
+      "stroke": "#1e1e1e",
+      "style": "solid",
+      "width": 2
+    }
+  ]
+}

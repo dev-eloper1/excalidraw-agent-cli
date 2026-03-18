@@ -1,0 +1,193 @@
+{
+  "direction": "TB",
+  "rankSep": 80,
+  "nodeSep": 60,
+  "title": "Microservices Architecture",
+
+  "zones": [
+    {
+      "id": "z_client",
+      "label": "CLIENT LAYER",
+      "labelColor": "#1e40af",
+      "fill": "#dbeafe",
+      "stroke": "#93c5fd",
+      "opacity": 30,
+      "nodeIds": ["web_app", "mobile_app"]
+    },
+    {
+      "id": "z_gateway",
+      "label": "GATEWAY / SECURITY",
+      "labelColor": "#c2410c",
+      "fill": "#ffedd5",
+      "stroke": "#fdba74",
+      "opacity": 35,
+      "nodeIds": ["api_gateway"]
+    },
+    {
+      "id": "z_services",
+      "label": "SERVICES",
+      "labelColor": "#15803d",
+      "fill": "#dcfce7",
+      "stroke": "#86efac",
+      "opacity": 35,
+      "nodeIds": ["auth_service", "order_service"]
+    },
+    {
+      "id": "z_backends",
+      "label": "BACKENDS / ASYNC",
+      "labelColor": "#a16207",
+      "fill": "#fef9c3",
+      "stroke": "#fbbf24",
+      "opacity": 40,
+      "nodeIds": ["redis_cache", "eventbus_sns", "notification_svc"]
+    }
+  ],
+
+  "nodes": [
+    {
+      "id": "web_app",
+      "label": "Web App",
+      "width": 160,
+      "height": 60,
+      "fill": "#bfdbfe",
+      "stroke": "#1e40af",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "shape": "rectangle"
+    },
+    {
+      "id": "mobile_app",
+      "label": "Mobile App",
+      "width": 160,
+      "height": 60,
+      "fill": "#bfdbfe",
+      "stroke": "#1e40af",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "shape": "rectangle"
+    },
+    {
+      "id": "api_gateway",
+      "label": "API Gateway",
+      "width": 320,
+      "height": 60,
+      "fill": "#bbf7d0",
+      "stroke": "#15803d",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "shape": "rectangle"
+    },
+    {
+      "id": "auth_service",
+      "label": "Auth Service",
+      "width": 160,
+      "height": 60,
+      "fill": "#fed7aa",
+      "stroke": "#c2410c",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "shape": "rectangle"
+    },
+    {
+      "id": "order_service",
+      "label": "Order Service",
+      "width": 160,
+      "height": 60,
+      "fill": "#86efac",
+      "stroke": "#15803d",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "shape": "rectangle"
+    },
+    {
+      "id": "redis_cache",
+      "label": "Redis Cache",
+      "width": 160,
+      "height": 60,
+      "fill": "#fef08a",
+      "stroke": "#92400e",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "shape": "rectangle"
+    },
+    {
+      "id": "eventbus_sns",
+      "label": "EventBus SNS",
+      "width": 160,
+      "height": 60,
+      "fill": "#fef08a",
+      "stroke": "#92400e",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "shape": "rectangle"
+    },
+    {
+      "id": "notification_svc",
+      "label": "Notification Svc",
+      "width": 175,
+      "height": 60,
+      "fill": "#86efac",
+      "stroke": "#15803d",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "shape": "rectangle"
+    }
+  ],
+
+  "edges": [
+    {
+      "from": "web_app",
+      "to": "api_gateway",
+      "stroke": "#1e1e1e",
+      "style": "solid",
+      "width": 2
+    },
+    {
+      "from": "mobile_app",
+      "to": "api_gateway",
+      "stroke": "#1e1e1e",
+      "style": "solid",
+      "width": 2
+    },
+    {
+      "from": "api_gateway",
+      "to": "auth_service",
+      "label": "auth check",
+      "stroke": "#c2410c",
+      "style": "solid",
+      "width": 2
+    },
+    {
+      "from": "api_gateway",
+      "to": "order_service",
+      "label": "route",
+      "stroke": "#15803d",
+      "style": "solid",
+      "width": 2
+    },
+    {
+      "from": "order_service",
+      "to": "redis_cache",
+      "label": "cache",
+      "stroke": "#a16207",
+      "style": "dashed",
+      "width": 1
+    },
+    {
+      "from": "order_service",
+      "to": "eventbus_sns",
+      "label": "PlaceOrder",
+      "stroke": "#a16207",
+      "style": "dashed",
+      "width": 1
+    },
+    {
+      "from": "eventbus_sns",
+      "to": "notification_svc",
+      "label": "fan-out",
+      "stroke": "#6d28d9",
+      "style": "solid",
+      "width": 2
+    }
+  ]
+}

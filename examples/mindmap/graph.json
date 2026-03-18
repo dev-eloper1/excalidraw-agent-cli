@@ -1,0 +1,322 @@
+{
+  "direction": "LR",
+  "rankSep": 100,
+  "nodeSep": 20,
+  "arrowhead": "none",
+  "title": "excalidraw-agent-cli",
+  "nodes": [
+    {
+      "id": "root",
+      "label": "excalidraw-agent-cli",
+      "shape": "ellipse",
+      "fill": "#1e293b",
+      "stroke": "#1e293b",
+      "textColor": "#ffffff",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "width": 200,
+      "height": 80
+    },
+
+    {
+      "id": "create",
+      "label": "Create",
+      "shape": "ellipse",
+      "fill": "#86efac",
+      "stroke": "#15803d",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "width": 130,
+      "height": 55
+    },
+    {
+      "id": "edit",
+      "label": "Edit",
+      "shape": "ellipse",
+      "fill": "#bfdbfe",
+      "stroke": "#1e40af",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "width": 130,
+      "height": 55
+    },
+    {
+      "id": "export",
+      "label": "Export",
+      "shape": "ellipse",
+      "fill": "#ddd6fe",
+      "stroke": "#6d28d9",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "width": 130,
+      "height": 55
+    },
+    {
+      "id": "ai",
+      "label": "AI / Claude",
+      "shape": "ellipse",
+      "fill": "#fef08a",
+      "stroke": "#92400e",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "width": 140,
+      "height": 55
+    },
+    {
+      "id": "skill",
+      "label": "Skill",
+      "shape": "ellipse",
+      "fill": "#fed7aa",
+      "stroke": "#c2410c",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "width": 130,
+      "height": 55
+    },
+
+    {
+      "id": "rectangle",
+      "label": "rectangle",
+      "shape": "ellipse",
+      "fill": "#bbf7d0",
+      "stroke": "#15803d",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "width": 140,
+      "height": 44
+    },
+    {
+      "id": "ellipse",
+      "label": "ellipse",
+      "shape": "ellipse",
+      "fill": "#bbf7d0",
+      "stroke": "#15803d",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "width": 140,
+      "height": 44
+    },
+    {
+      "id": "diamond",
+      "label": "diamond",
+      "shape": "ellipse",
+      "fill": "#bbf7d0",
+      "stroke": "#15803d",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "width": 140,
+      "height": 44
+    },
+    {
+      "id": "text",
+      "label": "text",
+      "shape": "ellipse",
+      "fill": "#bbf7d0",
+      "stroke": "#15803d",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "width": 140,
+      "height": 44
+    },
+    {
+      "id": "arrow",
+      "label": "arrow",
+      "shape": "ellipse",
+      "fill": "#bbf7d0",
+      "stroke": "#15803d",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "width": 140,
+      "height": 44
+    },
+    {
+      "id": "line",
+      "label": "line",
+      "shape": "ellipse",
+      "fill": "#bbf7d0",
+      "stroke": "#15803d",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "width": 140,
+      "height": 44
+    },
+    {
+      "id": "frame",
+      "label": "frame",
+      "shape": "ellipse",
+      "fill": "#bbf7d0",
+      "stroke": "#15803d",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "width": 140,
+      "height": 44
+    },
+
+    {
+      "id": "update_label",
+      "label": "update label/position/size",
+      "shape": "ellipse",
+      "fill": "#dbeafe",
+      "stroke": "#1e40af",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "width": 220,
+      "height": 44
+    },
+    {
+      "id": "move_delta",
+      "label": "move by delta",
+      "shape": "ellipse",
+      "fill": "#dbeafe",
+      "stroke": "#1e40af",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "width": 180,
+      "height": 44
+    },
+    {
+      "id": "connect_auto",
+      "label": "connect auto-positioned",
+      "shape": "ellipse",
+      "fill": "#dbeafe",
+      "stroke": "#1e40af",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "width": 220,
+      "height": 44
+    },
+
+    {
+      "id": "svg",
+      "label": "SVG vector scalable",
+      "shape": "ellipse",
+      "fill": "#ede9fe",
+      "stroke": "#6d28d9",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "width": 185,
+      "height": 44
+    },
+    {
+      "id": "png",
+      "label": "PNG raster viewable",
+      "shape": "ellipse",
+      "fill": "#ede9fe",
+      "stroke": "#6d28d9",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "width": 185,
+      "height": 44
+    },
+    {
+      "id": "excalidraw_json",
+      "label": ".excalidraw JSON raw",
+      "shape": "ellipse",
+      "fill": "#ede9fe",
+      "stroke": "#6d28d9",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "width": 185,
+      "height": 44
+    },
+
+    {
+      "id": "json_flag",
+      "label": "--json flag on every cmd",
+      "shape": "ellipse",
+      "fill": "#fef9c3",
+      "stroke": "#92400e",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "width": 205,
+      "height": 44
+    },
+    {
+      "id": "element_ids",
+      "label": "element IDs for chaining",
+      "shape": "ellipse",
+      "fill": "#fef9c3",
+      "stroke": "#92400e",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "width": 205,
+      "height": 44
+    },
+    {
+      "id": "repl_modes",
+      "label": "REPL + subprocess modes",
+      "shape": "ellipse",
+      "fill": "#fef9c3",
+      "stroke": "#92400e",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "width": 205,
+      "height": 44
+    },
+
+    {
+      "id": "install_skill",
+      "label": "install-skill command",
+      "shape": "ellipse",
+      "fill": "#ffedd5",
+      "stroke": "#c2410c",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "width": 185,
+      "height": 44
+    },
+    {
+      "id": "global_flag",
+      "label": "--global / --codebase",
+      "shape": "ellipse",
+      "fill": "#ffedd5",
+      "stroke": "#c2410c",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "width": 185,
+      "height": 44
+    },
+    {
+      "id": "skill_md",
+      "label": "SKILL.md + references/",
+      "shape": "ellipse",
+      "fill": "#ffedd5",
+      "stroke": "#c2410c",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "width": 185,
+      "height": 44
+    }
+  ],
+  "edges": [
+    { "from": "root", "to": "create", "stroke": "#94a3b8", "style": "solid", "width": 1 },
+    { "from": "root", "to": "edit", "stroke": "#94a3b8", "style": "solid", "width": 1 },
+    { "from": "root", "to": "export", "stroke": "#94a3b8", "style": "solid", "width": 1 },
+    { "from": "root", "to": "ai", "stroke": "#94a3b8", "style": "solid", "width": 1 },
+    { "from": "root", "to": "skill", "stroke": "#94a3b8", "style": "solid", "width": 1 },
+
+    { "from": "create", "to": "rectangle", "stroke": "#94a3b8", "style": "solid", "width": 1 },
+    { "from": "create", "to": "ellipse", "stroke": "#94a3b8", "style": "solid", "width": 1 },
+    { "from": "create", "to": "diamond", "stroke": "#94a3b8", "style": "solid", "width": 1 },
+    { "from": "create", "to": "text", "stroke": "#94a3b8", "style": "solid", "width": 1 },
+    { "from": "create", "to": "arrow", "stroke": "#94a3b8", "style": "solid", "width": 1 },
+    { "from": "create", "to": "line", "stroke": "#94a3b8", "style": "solid", "width": 1 },
+    { "from": "create", "to": "frame", "stroke": "#94a3b8", "style": "solid", "width": 1 },
+
+    { "from": "edit", "to": "update_label", "stroke": "#94a3b8", "style": "solid", "width": 1 },
+    { "from": "edit", "to": "move_delta", "stroke": "#94a3b8", "style": "solid", "width": 1 },
+    { "from": "edit", "to": "connect_auto", "stroke": "#94a3b8", "style": "solid", "width": 1 },
+
+    { "from": "export", "to": "svg", "stroke": "#94a3b8", "style": "solid", "width": 1 },
+    { "from": "export", "to": "png", "stroke": "#94a3b8", "style": "solid", "width": 1 },
+    { "from": "export", "to": "excalidraw_json", "stroke": "#94a3b8", "style": "solid", "width": 1 },
+
+    { "from": "ai", "to": "json_flag", "stroke": "#94a3b8", "style": "solid", "width": 1 },
+    { "from": "ai", "to": "element_ids", "stroke": "#94a3b8", "style": "solid", "width": 1 },
+    { "from": "ai", "to": "repl_modes", "stroke": "#94a3b8", "style": "solid", "width": 1 },
+
+    { "from": "skill", "to": "install_skill", "stroke": "#94a3b8", "style": "solid", "width": 1 },
+    { "from": "skill", "to": "global_flag", "stroke": "#94a3b8", "style": "solid", "width": 1 },
+    { "from": "skill", "to": "skill_md", "stroke": "#94a3b8", "style": "solid", "width": 1 }
+  ]
+}

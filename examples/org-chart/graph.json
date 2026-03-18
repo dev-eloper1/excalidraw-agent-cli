@@ -1,0 +1,255 @@
+{
+  "direction": "TB",
+  "rankSep": 80,
+  "nodeSep": 30,
+  "arrowhead": "none",
+  "title": "Startup Engineering Org Chart",
+
+  "nodes": [
+    {
+      "id": "ceo",
+      "label": "CEO",
+      "width": 160,
+      "height": 60,
+      "fill": "#1e293b",
+      "stroke": "#e2e8f0",
+      "textColor": "#ffffff",
+      "fillStyle": "solid",
+      "shape": "rectangle",
+      "rounded": true
+    },
+
+    {
+      "id": "cto",
+      "label": "CTO",
+      "width": 160,
+      "height": 60,
+      "fill": "#1e40af",
+      "stroke": "#e2e8f0",
+      "textColor": "#ffffff",
+      "fillStyle": "solid",
+      "shape": "rectangle",
+      "rounded": true
+    },
+    {
+      "id": "vp_product",
+      "label": "VP Product",
+      "width": 160,
+      "height": 60,
+      "fill": "#1e40af",
+      "stroke": "#e2e8f0",
+      "textColor": "#ffffff",
+      "fillStyle": "solid",
+      "shape": "rectangle",
+      "rounded": true
+    },
+    {
+      "id": "vp_design",
+      "label": "VP Design",
+      "width": 160,
+      "height": 60,
+      "fill": "#1e40af",
+      "stroke": "#e2e8f0",
+      "textColor": "#ffffff",
+      "fillStyle": "solid",
+      "shape": "rectangle",
+      "rounded": true
+    },
+
+    {
+      "id": "em_backend",
+      "label": "Engineering Manager\n(Backend)",
+      "width": 180,
+      "height": 70,
+      "fill": "#bfdbfe",
+      "stroke": "#1e40af",
+      "fillStyle": "solid",
+      "shape": "rectangle",
+      "rounded": true
+    },
+    {
+      "id": "em_frontend",
+      "label": "Engineering Manager\n(Frontend)",
+      "width": 180,
+      "height": 70,
+      "fill": "#bfdbfe",
+      "stroke": "#1e40af",
+      "fillStyle": "solid",
+      "shape": "rectangle",
+      "rounded": true
+    },
+    {
+      "id": "devops_lead",
+      "label": "DevOps Lead",
+      "width": 160,
+      "height": 60,
+      "fill": "#bfdbfe",
+      "stroke": "#1e40af",
+      "fillStyle": "solid",
+      "shape": "rectangle",
+      "rounded": true
+    },
+    {
+      "id": "pm_growth",
+      "label": "Product Manager\n(Growth)",
+      "width": 170,
+      "height": 70,
+      "fill": "#bfdbfe",
+      "stroke": "#1e40af",
+      "fillStyle": "solid",
+      "shape": "rectangle",
+      "rounded": true
+    },
+    {
+      "id": "pm_platform",
+      "label": "Product Manager\n(Platform)",
+      "width": 170,
+      "height": 70,
+      "fill": "#bfdbfe",
+      "stroke": "#1e40af",
+      "fillStyle": "solid",
+      "shape": "rectangle",
+      "rounded": true
+    },
+    {
+      "id": "lead_designer",
+      "label": "Lead Designer",
+      "width": 160,
+      "height": 60,
+      "fill": "#bfdbfe",
+      "stroke": "#1e40af",
+      "fillStyle": "solid",
+      "shape": "rectangle",
+      "rounded": true
+    },
+    {
+      "id": "ux_researcher",
+      "label": "UX Researcher",
+      "width": 160,
+      "height": 60,
+      "fill": "#bfdbfe",
+      "stroke": "#1e40af",
+      "fillStyle": "solid",
+      "shape": "rectangle",
+      "rounded": true
+    },
+
+    {
+      "id": "be_senior_eng",
+      "label": "Senior Engineer",
+      "width": 160,
+      "height": 55,
+      "fill": "#dbeafe",
+      "stroke": "#1e40af",
+      "fillStyle": "hachure",
+      "shape": "rectangle",
+      "rounded": true
+    },
+    {
+      "id": "be_eng1",
+      "label": "Engineer",
+      "width": 130,
+      "height": 55,
+      "fill": "#dbeafe",
+      "stroke": "#1e40af",
+      "fillStyle": "hachure",
+      "shape": "rectangle",
+      "rounded": true
+    },
+    {
+      "id": "be_eng2",
+      "label": "Engineer",
+      "width": 130,
+      "height": 55,
+      "fill": "#dbeafe",
+      "stroke": "#1e40af",
+      "fillStyle": "hachure",
+      "shape": "rectangle",
+      "rounded": true
+    },
+
+    {
+      "id": "fe_senior_eng",
+      "label": "Senior Engineer",
+      "width": 160,
+      "height": 55,
+      "fill": "#dbeafe",
+      "stroke": "#1e40af",
+      "fillStyle": "hachure",
+      "shape": "rectangle",
+      "rounded": true
+    },
+    {
+      "id": "fe_eng1",
+      "label": "Engineer",
+      "width": 130,
+      "height": 55,
+      "fill": "#dbeafe",
+      "stroke": "#1e40af",
+      "fillStyle": "hachure",
+      "shape": "rectangle",
+      "rounded": true
+    },
+    {
+      "id": "fe_eng2",
+      "label": "Engineer",
+      "width": 130,
+      "height": 55,
+      "fill": "#dbeafe",
+      "stroke": "#1e40af",
+      "fillStyle": "hachure",
+      "shape": "rectangle",
+      "rounded": true
+    },
+
+    {
+      "id": "platform_eng",
+      "label": "Platform Engineer",
+      "width": 165,
+      "height": 55,
+      "fill": "#dbeafe",
+      "stroke": "#1e40af",
+      "fillStyle": "hachure",
+      "shape": "rectangle",
+      "rounded": true
+    },
+    {
+      "id": "sre",
+      "label": "Site Reliability\nEngineer",
+      "width": 160,
+      "height": 70,
+      "fill": "#dbeafe",
+      "stroke": "#1e40af",
+      "fillStyle": "hachure",
+      "shape": "rectangle",
+      "rounded": true
+    }
+  ],
+
+  "edges": [
+    { "from": "ceo", "to": "cto", "style": "solid", "stroke": "#374151", "width": 2 },
+    { "from": "ceo", "to": "vp_product", "style": "solid", "stroke": "#374151", "width": 2 },
+    { "from": "ceo", "to": "vp_design", "style": "solid", "stroke": "#374151", "width": 2 },
+
+    { "from": "cto", "to": "em_backend", "style": "solid", "stroke": "#374151", "width": 1.5 },
+    { "from": "cto", "to": "em_frontend", "style": "solid", "stroke": "#374151", "width": 1.5 },
+    { "from": "cto", "to": "devops_lead", "style": "solid", "stroke": "#374151", "width": 1.5 },
+
+    { "from": "vp_product", "to": "pm_growth", "style": "solid", "stroke": "#374151", "width": 1.5 },
+    { "from": "vp_product", "to": "pm_platform", "style": "solid", "stroke": "#374151", "width": 1.5 },
+
+    { "from": "vp_design", "to": "lead_designer", "style": "solid", "stroke": "#374151", "width": 1.5 },
+    { "from": "vp_design", "to": "ux_researcher", "style": "solid", "stroke": "#374151", "width": 1.5 },
+
+    { "from": "em_backend", "to": "be_senior_eng", "style": "solid", "stroke": "#64748b", "width": 1 },
+    { "from": "em_backend", "to": "be_eng1", "style": "solid", "stroke": "#64748b", "width": 1 },
+    { "from": "em_backend", "to": "be_eng2", "style": "solid", "stroke": "#64748b", "width": 1 },
+
+    { "from": "em_frontend", "to": "fe_senior_eng", "style": "solid", "stroke": "#64748b", "width": 1 },
+    { "from": "em_frontend", "to": "fe_eng1", "style": "solid", "stroke": "#64748b", "width": 1 },
+    { "from": "em_frontend", "to": "fe_eng2", "style": "solid", "stroke": "#64748b", "width": 1 },
+
+    { "from": "devops_lead", "to": "platform_eng", "style": "solid", "stroke": "#64748b", "width": 1 },
+    { "from": "devops_lead", "to": "sre", "style": "solid", "stroke": "#64748b", "width": 1 }
+  ]
+}

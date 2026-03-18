@@ -1,0 +1,291 @@
+{
+  "direction": "TB",
+  "rankSep": 100,
+  "nodeSep": 60,
+  "title": "Excalidraw Skill Generation Pipeline",
+
+  "nodes": [
+    {
+      "id": "step1",
+      "label": "Step 1: User Request",
+      "width": 220,
+      "height": 64,
+      "fill": "#dbeafe",
+      "stroke": "#1e40af",
+      "shape": "rectangle",
+      "rounded": true,
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "ann1",
+      "label": "\"draw a sequence diagram\"",
+      "width": 240,
+      "height": 44,
+      "fill": "#f8fafc",
+      "stroke": "#94a3b8",
+      "shape": "rectangle",
+      "rounded": true,
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "step2",
+      "label": "Step 2: Type Selection",
+      "width": 220,
+      "height": 64,
+      "fill": "#86efac",
+      "stroke": "#15803d",
+      "shape": "rectangle",
+      "rounded": false,
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "ann2",
+      "label": "flowchart / sequence / architecture / mind map",
+      "width": 280,
+      "height": 44,
+      "fill": "#f8fafc",
+      "stroke": "#94a3b8",
+      "shape": "rectangle",
+      "rounded": true,
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "step3",
+      "label": "Step 3: Read Recipe",
+      "width": 220,
+      "height": 64,
+      "fill": "#86efac",
+      "stroke": "#15803d",
+      "shape": "rectangle",
+      "rounded": false,
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "ann3",
+      "label": "layout template + color palette",
+      "width": 260,
+      "height": 44,
+      "fill": "#f8fafc",
+      "stroke": "#94a3b8",
+      "shape": "rectangle",
+      "rounded": true,
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "step4",
+      "label": "Step 4: Generate graph.json",
+      "width": 240,
+      "height": 64,
+      "fill": "#86efac",
+      "stroke": "#15803d",
+      "shape": "rectangle",
+      "rounded": false,
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "ann4",
+      "label": "nodes + edges + zones",
+      "width": 220,
+      "height": 44,
+      "fill": "#f8fafc",
+      "stroke": "#94a3b8",
+      "shape": "rectangle",
+      "rounded": true,
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "step5",
+      "label": "Step 5: Export PNG",
+      "width": 220,
+      "height": 64,
+      "fill": "#86efac",
+      "stroke": "#15803d",
+      "shape": "rectangle",
+      "rounded": false,
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "ann5",
+      "label": "Puppeteer renders .excalidraw → PNG",
+      "width": 280,
+      "height": 44,
+      "fill": "#f8fafc",
+      "stroke": "#94a3b8",
+      "shape": "rectangle",
+      "rounded": true,
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "step6",
+      "label": "Step 6: Self-Inspect",
+      "width": 220,
+      "height": 80,
+      "fill": "#fef3c7",
+      "stroke": "#b45309",
+      "shape": "diamond",
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "ann6",
+      "label": "7 quality checks:\nlabels, arrows, colors...",
+      "width": 240,
+      "height": 56,
+      "fill": "#f8fafc",
+      "stroke": "#94a3b8",
+      "shape": "rectangle",
+      "rounded": true,
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "output",
+      "label": "Output Markdown Embed",
+      "width": 220,
+      "height": 64,
+      "fill": "#a7f3d0",
+      "stroke": "#047857",
+      "shape": "rectangle",
+      "rounded": true,
+      "fillStyle": "solid",
+      "roughness": 0
+    },
+    {
+      "id": "fix",
+      "label": "Fix + Retry\n(max 3 iterations)",
+      "width": 200,
+      "height": 64,
+      "fill": "#fecaca",
+      "stroke": "#b91c1c",
+      "shape": "rectangle",
+      "rounded": false,
+      "fillStyle": "solid",
+      "roughness": 0
+    }
+  ],
+
+  "edges": [
+    {
+      "from": "step1",
+      "to": "ann1",
+      "label": "",
+      "stroke": "#94a3b8",
+      "style": "dotted",
+      "width": 1
+    },
+    {
+      "from": "step1",
+      "to": "step2",
+      "label": "",
+      "stroke": "#1e1e1e",
+      "style": "solid",
+      "width": 2
+    },
+    {
+      "from": "step2",
+      "to": "ann2",
+      "label": "",
+      "stroke": "#94a3b8",
+      "style": "dotted",
+      "width": 1
+    },
+    {
+      "from": "step2",
+      "to": "step3",
+      "label": "",
+      "stroke": "#1e1e1e",
+      "style": "solid",
+      "width": 2
+    },
+    {
+      "from": "step3",
+      "to": "ann3",
+      "label": "",
+      "stroke": "#94a3b8",
+      "style": "dotted",
+      "width": 1
+    },
+    {
+      "from": "step3",
+      "to": "step4",
+      "label": "",
+      "stroke": "#1e1e1e",
+      "style": "solid",
+      "width": 2
+    },
+    {
+      "from": "step4",
+      "to": "ann4",
+      "label": "",
+      "stroke": "#94a3b8",
+      "style": "dotted",
+      "width": 1
+    },
+    {
+      "from": "step4",
+      "to": "step5",
+      "label": "",
+      "stroke": "#1e1e1e",
+      "style": "solid",
+      "width": 2
+    },
+    {
+      "from": "step5",
+      "to": "ann5",
+      "label": "",
+      "stroke": "#94a3b8",
+      "style": "dotted",
+      "width": 1
+    },
+    {
+      "from": "step5",
+      "to": "step6",
+      "label": "",
+      "stroke": "#1e1e1e",
+      "style": "solid",
+      "width": 2
+    },
+    {
+      "from": "step6",
+      "to": "ann6",
+      "label": "",
+      "stroke": "#94a3b8",
+      "style": "dotted",
+      "width": 1
+    },
+    {
+      "from": "step6",
+      "to": "output",
+      "label": "pass",
+      "stroke": "#15803d",
+      "style": "solid",
+      "width": 2
+    },
+    {
+      "from": "step6",
+      "to": "fix",
+      "label": "fail",
+      "stroke": "#b91c1c",
+      "style": "dashed",
+      "width": 2
+    },
+    {
+      "from": "fix",
+      "to": "step4",
+      "label": "",
+      "stroke": "#b91c1c",
+      "style": "dashed",
+      "width": 2
+    }
+  ]
+}

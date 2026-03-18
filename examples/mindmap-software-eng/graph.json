@@ -1,0 +1,746 @@
+{
+  "direction": "LR",
+  "rankSep": 75,
+  "nodeSep": 10,
+  "title": "Modern Software Engineering",
+  "arrowhead": "none",
+  "nodes": [
+    {
+      "id": "root",
+      "label": "Software\nEngineering",
+      "width": 165,
+      "height": 75,
+      "fill": "#1e293b",
+      "stroke": "#1e293b",
+      "textColor": "#ffffff",
+      "rounded": true,
+      "fontSize": 15
+    },
+    {
+      "id": "fe",
+      "label": "Frontend",
+      "width": 115,
+      "height": 42,
+      "fill": "#1e40af",
+      "stroke": "#1e40af",
+      "textColor": "#ffffff",
+      "rounded": true
+    },
+    {
+      "id": "react",
+      "label": "React / Vue",
+      "width": 125,
+      "height": 36,
+      "fill": "#bfdbfe",
+      "stroke": "#1e40af",
+      "rounded": true
+    },
+    {
+      "id": "ts",
+      "label": "TypeScript",
+      "width": 115,
+      "height": 36,
+      "fill": "#bfdbfe",
+      "stroke": "#1e40af",
+      "rounded": true
+    },
+    {
+      "id": "css",
+      "label": "Styling",
+      "width": 100,
+      "height": 36,
+      "fill": "#bfdbfe",
+      "stroke": "#1e40af",
+      "rounded": true
+    },
+    {
+      "id": "fe_test",
+      "label": "Testing",
+      "width": 100,
+      "height": 36,
+      "fill": "#bfdbfe",
+      "stroke": "#1e40af",
+      "rounded": true
+    },
+    {
+      "id": "hooks",
+      "label": "Hooks & State",
+      "width": 130,
+      "height": 32,
+      "fill": "#dbeafe",
+      "stroke": "#93c5fd",
+      "rounded": true
+    },
+    {
+      "id": "router",
+      "label": "React Router",
+      "width": 125,
+      "height": 32,
+      "fill": "#dbeafe",
+      "stroke": "#93c5fd",
+      "rounded": true
+    },
+    {
+      "id": "tailwind",
+      "label": "Tailwind CSS",
+      "width": 120,
+      "height": 32,
+      "fill": "#dbeafe",
+      "stroke": "#93c5fd",
+      "rounded": true
+    },
+    {
+      "id": "scss",
+      "label": "CSS Modules",
+      "width": 120,
+      "height": 32,
+      "fill": "#dbeafe",
+      "stroke": "#93c5fd",
+      "rounded": true
+    },
+    {
+      "id": "jest",
+      "label": "Jest / Vitest",
+      "width": 120,
+      "height": 32,
+      "fill": "#dbeafe",
+      "stroke": "#93c5fd",
+      "rounded": true
+    },
+    {
+      "id": "cypress",
+      "label": "Cypress / Playwright",
+      "width": 160,
+      "height": 32,
+      "fill": "#dbeafe",
+      "stroke": "#93c5fd",
+      "rounded": true
+    },
+    {
+      "id": "be",
+      "label": "Backend",
+      "width": 105,
+      "height": 42,
+      "fill": "#15803d",
+      "stroke": "#15803d",
+      "textColor": "#ffffff",
+      "rounded": true
+    },
+    {
+      "id": "node",
+      "label": "Node / Python",
+      "width": 130,
+      "height": 36,
+      "fill": "#86efac",
+      "stroke": "#15803d",
+      "rounded": true
+    },
+    {
+      "id": "api",
+      "label": "API Design",
+      "width": 110,
+      "height": 36,
+      "fill": "#86efac",
+      "stroke": "#15803d",
+      "rounded": true
+    },
+    {
+      "id": "auth",
+      "label": "Auth",
+      "width": 90,
+      "height": 36,
+      "fill": "#86efac",
+      "stroke": "#15803d",
+      "rounded": true
+    },
+    {
+      "id": "express",
+      "label": "Express / NestJS",
+      "width": 145,
+      "height": 32,
+      "fill": "#bbf7d0",
+      "stroke": "#4ade80",
+      "rounded": true
+    },
+    {
+      "id": "fastapi",
+      "label": "FastAPI / Django",
+      "width": 145,
+      "height": 32,
+      "fill": "#bbf7d0",
+      "stroke": "#4ade80",
+      "rounded": true
+    },
+    {
+      "id": "rest",
+      "label": "REST",
+      "width": 85,
+      "height": 32,
+      "fill": "#bbf7d0",
+      "stroke": "#4ade80",
+      "rounded": true
+    },
+    {
+      "id": "graphql",
+      "label": "GraphQL",
+      "width": 100,
+      "height": 32,
+      "fill": "#bbf7d0",
+      "stroke": "#4ade80",
+      "rounded": true
+    },
+    {
+      "id": "jwt",
+      "label": "JWT / OAuth2",
+      "width": 120,
+      "height": 32,
+      "fill": "#bbf7d0",
+      "stroke": "#4ade80",
+      "rounded": true
+    },
+    {
+      "id": "rbac",
+      "label": "RBAC / Roles",
+      "width": 120,
+      "height": 32,
+      "fill": "#bbf7d0",
+      "stroke": "#4ade80",
+      "rounded": true
+    },
+    {
+      "id": "data",
+      "label": "Data",
+      "width": 95,
+      "height": 42,
+      "fill": "#6d28d9",
+      "stroke": "#6d28d9",
+      "textColor": "#ffffff",
+      "rounded": true
+    },
+    {
+      "id": "pg",
+      "label": "PostgreSQL",
+      "width": 120,
+      "height": 36,
+      "fill": "#ddd6fe",
+      "stroke": "#6d28d9",
+      "rounded": true
+    },
+    {
+      "id": "cache",
+      "label": "Caching",
+      "width": 100,
+      "height": 36,
+      "fill": "#ddd6fe",
+      "stroke": "#6d28d9",
+      "rounded": true
+    },
+    {
+      "id": "search",
+      "label": "Search",
+      "width": 95,
+      "height": 36,
+      "fill": "#ddd6fe",
+      "stroke": "#6d28d9",
+      "rounded": true
+    },
+    {
+      "id": "migrations",
+      "label": "Migrations",
+      "width": 115,
+      "height": 32,
+      "fill": "#ede9fe",
+      "stroke": "#a78bfa",
+      "rounded": true
+    },
+    {
+      "id": "indexes",
+      "label": "Indexes",
+      "width": 105,
+      "height": 32,
+      "fill": "#ede9fe",
+      "stroke": "#a78bfa",
+      "rounded": true
+    },
+    {
+      "id": "redis_c",
+      "label": "Redis",
+      "width": 85,
+      "height": 32,
+      "fill": "#ede9fe",
+      "stroke": "#a78bfa",
+      "rounded": true
+    },
+    {
+      "id": "cdn_c",
+      "label": "CDN / Edge",
+      "width": 110,
+      "height": 32,
+      "fill": "#ede9fe",
+      "stroke": "#a78bfa",
+      "rounded": true
+    },
+    {
+      "id": "elastic",
+      "label": "Elasticsearch",
+      "width": 130,
+      "height": 32,
+      "fill": "#ede9fe",
+      "stroke": "#a78bfa",
+      "rounded": true
+    },
+    {
+      "id": "vector",
+      "label": "Vector DB",
+      "width": 110,
+      "height": 32,
+      "fill": "#ede9fe",
+      "stroke": "#a78bfa",
+      "rounded": true
+    },
+    {
+      "id": "devops",
+      "label": "DevOps",
+      "width": 100,
+      "height": 42,
+      "fill": "#c2410c",
+      "stroke": "#c2410c",
+      "textColor": "#ffffff",
+      "rounded": true
+    },
+    {
+      "id": "containers",
+      "label": "Containers",
+      "width": 115,
+      "height": 36,
+      "fill": "#fed7aa",
+      "stroke": "#c2410c",
+      "rounded": true
+    },
+    {
+      "id": "cicd_d",
+      "label": "CI / CD",
+      "width": 95,
+      "height": 36,
+      "fill": "#fed7aa",
+      "stroke": "#c2410c",
+      "rounded": true
+    },
+    {
+      "id": "observe",
+      "label": "Observability",
+      "width": 130,
+      "height": 36,
+      "fill": "#fed7aa",
+      "stroke": "#c2410c",
+      "rounded": true
+    },
+    {
+      "id": "docker_d",
+      "label": "Docker",
+      "width": 100,
+      "height": 32,
+      "fill": "#ffedd5",
+      "stroke": "#fb923c",
+      "rounded": true
+    },
+    {
+      "id": "k8s_d",
+      "label": "Kubernetes",
+      "width": 115,
+      "height": 32,
+      "fill": "#ffedd5",
+      "stroke": "#fb923c",
+      "rounded": true
+    },
+    {
+      "id": "gh_actions",
+      "label": "GitHub Actions",
+      "width": 135,
+      "height": 32,
+      "fill": "#ffedd5",
+      "stroke": "#fb923c",
+      "rounded": true
+    },
+    {
+      "id": "argo",
+      "label": "ArgoCD",
+      "width": 100,
+      "height": 32,
+      "fill": "#ffedd5",
+      "stroke": "#fb923c",
+      "rounded": true
+    },
+    {
+      "id": "prom",
+      "label": "Prometheus",
+      "width": 115,
+      "height": 32,
+      "fill": "#ffedd5",
+      "stroke": "#fb923c",
+      "rounded": true
+    },
+    {
+      "id": "otel",
+      "label": "OpenTelemetry",
+      "width": 135,
+      "height": 32,
+      "fill": "#ffedd5",
+      "stroke": "#fb923c",
+      "rounded": true
+    },
+    {
+      "id": "arch",
+      "label": "Architecture",
+      "width": 125,
+      "height": 42,
+      "fill": "#0f766e",
+      "stroke": "#0f766e",
+      "textColor": "#ffffff",
+      "rounded": true
+    },
+    {
+      "id": "patterns",
+      "label": "Patterns",
+      "width": 105,
+      "height": 36,
+      "fill": "#99f6e4",
+      "stroke": "#0f766e",
+      "rounded": true
+    },
+    {
+      "id": "messaging",
+      "label": "Messaging",
+      "width": 110,
+      "height": 36,
+      "fill": "#99f6e4",
+      "stroke": "#0f766e",
+      "rounded": true
+    },
+    {
+      "id": "security",
+      "label": "Security",
+      "width": 105,
+      "height": 36,
+      "fill": "#99f6e4",
+      "stroke": "#0f766e",
+      "rounded": true
+    },
+    {
+      "id": "micro",
+      "label": "Microservices",
+      "width": 130,
+      "height": 32,
+      "fill": "#ccfbf1",
+      "stroke": "#2dd4bf",
+      "rounded": true
+    },
+    {
+      "id": "ddd",
+      "label": "Domain Design",
+      "width": 130,
+      "height": 32,
+      "fill": "#ccfbf1",
+      "stroke": "#2dd4bf",
+      "rounded": true
+    },
+    {
+      "id": "kafka",
+      "label": "Kafka",
+      "width": 90,
+      "height": 32,
+      "fill": "#ccfbf1",
+      "stroke": "#2dd4bf",
+      "rounded": true
+    },
+    {
+      "id": "events",
+      "label": "Event Sourcing",
+      "width": 130,
+      "height": 32,
+      "fill": "#ccfbf1",
+      "stroke": "#2dd4bf",
+      "rounded": true
+    },
+    {
+      "id": "waf",
+      "label": "WAF / DDoS",
+      "width": 115,
+      "height": 32,
+      "fill": "#ccfbf1",
+      "stroke": "#2dd4bf",
+      "rounded": true
+    },
+    {
+      "id": "secrets",
+      "label": "Secrets Mgmt",
+      "width": 125,
+      "height": 32,
+      "fill": "#ccfbf1",
+      "stroke": "#2dd4bf",
+      "rounded": true
+    }
+  ],
+  "edges": [
+    {
+      "from": "root",
+      "to": "fe",
+      "stroke": "#1e40af",
+      "width": 2
+    },
+    {
+      "from": "root",
+      "to": "be",
+      "stroke": "#15803d",
+      "width": 2
+    },
+    {
+      "from": "root",
+      "to": "data",
+      "stroke": "#6d28d9",
+      "width": 2
+    },
+    {
+      "from": "root",
+      "to": "devops",
+      "stroke": "#c2410c",
+      "width": 2
+    },
+    {
+      "from": "root",
+      "to": "arch",
+      "stroke": "#0f766e",
+      "width": 2
+    },
+    {
+      "from": "fe",
+      "to": "react",
+      "stroke": "#3b82f6"
+    },
+    {
+      "from": "fe",
+      "to": "ts",
+      "stroke": "#3b82f6"
+    },
+    {
+      "from": "fe",
+      "to": "css",
+      "stroke": "#3b82f6"
+    },
+    {
+      "from": "fe",
+      "to": "fe_test",
+      "stroke": "#3b82f6"
+    },
+    {
+      "from": "react",
+      "to": "hooks",
+      "stroke": "#93c5fd"
+    },
+    {
+      "from": "react",
+      "to": "router",
+      "stroke": "#93c5fd"
+    },
+    {
+      "from": "css",
+      "to": "tailwind",
+      "stroke": "#93c5fd"
+    },
+    {
+      "from": "css",
+      "to": "scss",
+      "stroke": "#93c5fd"
+    },
+    {
+      "from": "fe_test",
+      "to": "jest",
+      "stroke": "#93c5fd"
+    },
+    {
+      "from": "fe_test",
+      "to": "cypress",
+      "stroke": "#93c5fd"
+    },
+    {
+      "from": "be",
+      "to": "node",
+      "stroke": "#22c55e"
+    },
+    {
+      "from": "be",
+      "to": "api",
+      "stroke": "#22c55e"
+    },
+    {
+      "from": "be",
+      "to": "auth",
+      "stroke": "#22c55e"
+    },
+    {
+      "from": "node",
+      "to": "express",
+      "stroke": "#4ade80"
+    },
+    {
+      "from": "node",
+      "to": "fastapi",
+      "stroke": "#4ade80"
+    },
+    {
+      "from": "api",
+      "to": "rest",
+      "stroke": "#4ade80"
+    },
+    {
+      "from": "api",
+      "to": "graphql",
+      "stroke": "#4ade80"
+    },
+    {
+      "from": "auth",
+      "to": "jwt",
+      "stroke": "#4ade80"
+    },
+    {
+      "from": "auth",
+      "to": "rbac",
+      "stroke": "#4ade80"
+    },
+    {
+      "from": "data",
+      "to": "pg",
+      "stroke": "#8b5cf6"
+    },
+    {
+      "from": "data",
+      "to": "cache",
+      "stroke": "#8b5cf6"
+    },
+    {
+      "from": "data",
+      "to": "search",
+      "stroke": "#8b5cf6"
+    },
+    {
+      "from": "pg",
+      "to": "migrations",
+      "stroke": "#a78bfa"
+    },
+    {
+      "from": "pg",
+      "to": "indexes",
+      "stroke": "#a78bfa"
+    },
+    {
+      "from": "cache",
+      "to": "redis_c",
+      "stroke": "#a78bfa"
+    },
+    {
+      "from": "cache",
+      "to": "cdn_c",
+      "stroke": "#a78bfa"
+    },
+    {
+      "from": "search",
+      "to": "elastic",
+      "stroke": "#a78bfa"
+    },
+    {
+      "from": "search",
+      "to": "vector",
+      "stroke": "#a78bfa"
+    },
+    {
+      "from": "devops",
+      "to": "containers",
+      "stroke": "#ea580c"
+    },
+    {
+      "from": "devops",
+      "to": "cicd_d",
+      "stroke": "#ea580c"
+    },
+    {
+      "from": "devops",
+      "to": "observe",
+      "stroke": "#ea580c"
+    },
+    {
+      "from": "containers",
+      "to": "docker_d",
+      "stroke": "#fb923c"
+    },
+    {
+      "from": "containers",
+      "to": "k8s_d",
+      "stroke": "#fb923c"
+    },
+    {
+      "from": "cicd_d",
+      "to": "gh_actions",
+      "stroke": "#fb923c"
+    },
+    {
+      "from": "cicd_d",
+      "to": "argo",
+      "stroke": "#fb923c"
+    },
+    {
+      "from": "observe",
+      "to": "prom",
+      "stroke": "#fb923c"
+    },
+    {
+      "from": "observe",
+      "to": "otel",
+      "stroke": "#fb923c"
+    },
+    {
+      "from": "arch",
+      "to": "patterns",
+      "stroke": "#14b8a6"
+    },
+    {
+      "from": "arch",
+      "to": "messaging",
+      "stroke": "#14b8a6"
+    },
+    {
+      "from": "arch",
+      "to": "security",
+      "stroke": "#14b8a6"
+    },
+    {
+      "from": "patterns",
+      "to": "micro",
+      "stroke": "#2dd4bf"
+    },
+    {
+      "from": "patterns",
+      "to": "ddd",
+      "stroke": "#2dd4bf"
+    },
+    {
+      "from": "messaging",
+      "to": "kafka",
+      "stroke": "#2dd4bf"
+    },
+    {
+      "from": "messaging",
+      "to": "events",
+      "stroke": "#2dd4bf"
+    },
+    {
+      "from": "security",
+      "to": "waf",
+      "stroke": "#2dd4bf"
+    },
+    {
+      "from": "security",
+      "to": "secrets",
+      "stroke": "#2dd4bf"
+    }
+  ]
+}

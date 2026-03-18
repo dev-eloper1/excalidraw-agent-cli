@@ -1,0 +1,622 @@
+{
+  "direction": "LR",
+  "rankSep": 80,
+  "nodeSep": 12,
+  "title": "React & TypeScript Ecosystem",
+  "arrowhead": "none",
+  "nodes": [
+    {
+      "id": "root",
+      "label": "React\nTypeScript",
+      "width": 160,
+      "height": 80,
+      "fill": "#0f172a",
+      "stroke": "#0f172a",
+      "textColor": "#ffffff",
+      "rounded": true,
+      "fontSize": 16
+    },
+    {
+      "id": "state",
+      "label": "State\nManagement",
+      "width": 135,
+      "height": 55,
+      "fill": "#1e40af",
+      "stroke": "#1e40af",
+      "textColor": "#ffffff",
+      "rounded": true
+    },
+    {
+      "id": "data",
+      "label": "Data\nFetching",
+      "width": 120,
+      "height": 55,
+      "fill": "#15803d",
+      "stroke": "#15803d",
+      "textColor": "#ffffff",
+      "rounded": true
+    },
+    {
+      "id": "ui",
+      "label": "UI\nLibraries",
+      "width": 110,
+      "height": 55,
+      "fill": "#7c3aed",
+      "stroke": "#7c3aed",
+      "textColor": "#ffffff",
+      "rounded": true
+    },
+    {
+      "id": "testing",
+      "label": "Testing",
+      "width": 105,
+      "height": 55,
+      "fill": "#b45309",
+      "stroke": "#b45309",
+      "textColor": "#ffffff",
+      "rounded": true
+    },
+    {
+      "id": "build",
+      "label": "Build &\nTooling",
+      "width": 115,
+      "height": 55,
+      "fill": "#be123c",
+      "stroke": "#be123c",
+      "textColor": "#ffffff",
+      "rounded": true
+    },
+    {
+      "id": "routing",
+      "label": "Routing",
+      "width": 100,
+      "height": 55,
+      "fill": "#0f766e",
+      "stroke": "#0f766e",
+      "textColor": "#ffffff",
+      "rounded": true
+    },
+    {
+      "id": "redux",
+      "label": "Redux",
+      "width": 100,
+      "height": 40,
+      "fill": "#bfdbfe",
+      "stroke": "#1e40af",
+      "rounded": true
+    },
+    {
+      "id": "zustand",
+      "label": "Zustand",
+      "width": 105,
+      "height": 40,
+      "fill": "#bfdbfe",
+      "stroke": "#1e40af",
+      "rounded": true
+    },
+    {
+      "id": "jotai",
+      "label": "Jotai",
+      "width": 95,
+      "height": 40,
+      "fill": "#bfdbfe",
+      "stroke": "#1e40af",
+      "rounded": true
+    },
+    {
+      "id": "recoil",
+      "label": "Recoil",
+      "width": 95,
+      "height": 40,
+      "fill": "#bfdbfe",
+      "stroke": "#1e40af",
+      "rounded": true
+    },
+    {
+      "id": "ctx",
+      "label": "Context API",
+      "width": 120,
+      "height": 40,
+      "fill": "#bfdbfe",
+      "stroke": "#1e40af",
+      "rounded": true
+    },
+    {
+      "id": "rtk",
+      "label": "Redux\nToolkit",
+      "width": 110,
+      "height": 38,
+      "fill": "#dbeafe",
+      "stroke": "#93c5fd",
+      "rounded": true
+    },
+    {
+      "id": "saga",
+      "label": "Redux Saga",
+      "width": 115,
+      "height": 38,
+      "fill": "#dbeafe",
+      "stroke": "#93c5fd",
+      "rounded": true
+    },
+    {
+      "id": "thunk",
+      "label": "Redux Thunk",
+      "width": 115,
+      "height": 38,
+      "fill": "#dbeafe",
+      "stroke": "#93c5fd",
+      "rounded": true
+    },
+    {
+      "id": "tanstack",
+      "label": "TanStack\nQuery",
+      "width": 120,
+      "height": 40,
+      "fill": "#bbf7d0",
+      "stroke": "#15803d",
+      "rounded": true
+    },
+    {
+      "id": "swr",
+      "label": "SWR",
+      "width": 80,
+      "height": 40,
+      "fill": "#bbf7d0",
+      "stroke": "#15803d",
+      "rounded": true
+    },
+    {
+      "id": "apollo",
+      "label": "Apollo\nClient",
+      "width": 110,
+      "height": 40,
+      "fill": "#bbf7d0",
+      "stroke": "#15803d",
+      "rounded": true
+    },
+    {
+      "id": "trpc",
+      "label": "tRPC",
+      "width": 85,
+      "height": 40,
+      "fill": "#bbf7d0",
+      "stroke": "#15803d",
+      "rounded": true
+    },
+    {
+      "id": "rq_inf",
+      "label": "Infinite\nScroll",
+      "width": 110,
+      "height": 36,
+      "fill": "#dcfce7",
+      "stroke": "#86efac",
+      "rounded": true
+    },
+    {
+      "id": "rq_opt",
+      "label": "Optimistic\nUpdates",
+      "width": 120,
+      "height": 36,
+      "fill": "#dcfce7",
+      "stroke": "#86efac",
+      "rounded": true
+    },
+    {
+      "id": "shadcn",
+      "label": "shadcn/ui",
+      "width": 105,
+      "height": 40,
+      "fill": "#ede9fe",
+      "stroke": "#7c3aed",
+      "rounded": true
+    },
+    {
+      "id": "radix",
+      "label": "Radix UI",
+      "width": 100,
+      "height": 40,
+      "fill": "#ede9fe",
+      "stroke": "#7c3aed",
+      "rounded": true
+    },
+    {
+      "id": "mui",
+      "label": "MUI",
+      "width": 80,
+      "height": 40,
+      "fill": "#ede9fe",
+      "stroke": "#7c3aed",
+      "rounded": true
+    },
+    {
+      "id": "chakra",
+      "label": "Chakra UI",
+      "width": 105,
+      "height": 40,
+      "fill": "#ede9fe",
+      "stroke": "#7c3aed",
+      "rounded": true
+    },
+    {
+      "id": "ant",
+      "label": "Ant Design",
+      "width": 110,
+      "height": 40,
+      "fill": "#ede9fe",
+      "stroke": "#7c3aed",
+      "rounded": true
+    },
+    {
+      "id": "tailwind",
+      "label": "Tailwind\nCSS",
+      "width": 110,
+      "height": 36,
+      "fill": "#ddd6fe",
+      "stroke": "#a78bfa",
+      "rounded": true
+    },
+    {
+      "id": "cva",
+      "label": "CVA",
+      "width": 75,
+      "height": 36,
+      "fill": "#ddd6fe",
+      "stroke": "#a78bfa",
+      "rounded": true
+    },
+    {
+      "id": "vitest",
+      "label": "Vitest",
+      "width": 95,
+      "height": 40,
+      "fill": "#fef3c7",
+      "stroke": "#b45309",
+      "rounded": true
+    },
+    {
+      "id": "rtl",
+      "label": "Testing\nLibrary",
+      "width": 110,
+      "height": 40,
+      "fill": "#fef3c7",
+      "stroke": "#b45309",
+      "rounded": true
+    },
+    {
+      "id": "pw",
+      "label": "Playwright",
+      "width": 115,
+      "height": 40,
+      "fill": "#fef3c7",
+      "stroke": "#b45309",
+      "rounded": true
+    },
+    {
+      "id": "cypress",
+      "label": "Cypress",
+      "width": 100,
+      "height": 40,
+      "fill": "#fef3c7",
+      "stroke": "#b45309",
+      "rounded": true
+    },
+    {
+      "id": "sb",
+      "label": "Storybook",
+      "width": 105,
+      "height": 40,
+      "fill": "#fef3c7",
+      "stroke": "#b45309",
+      "rounded": true
+    },
+    {
+      "id": "msw",
+      "label": "MSW",
+      "width": 80,
+      "height": 40,
+      "fill": "#fef3c7",
+      "stroke": "#b45309",
+      "rounded": true
+    },
+    {
+      "id": "pw_gen",
+      "label": "Codegen",
+      "width": 95,
+      "height": 36,
+      "fill": "#fde68a",
+      "stroke": "#d97706",
+      "rounded": true
+    },
+    {
+      "id": "pw_tr",
+      "label": "Trace\nViewer",
+      "width": 100,
+      "height": 36,
+      "fill": "#fde68a",
+      "stroke": "#d97706",
+      "rounded": true
+    },
+    {
+      "id": "pw_sh",
+      "label": "Sharding",
+      "width": 95,
+      "height": 36,
+      "fill": "#fde68a",
+      "stroke": "#d97706",
+      "rounded": true
+    },
+    {
+      "id": "vite",
+      "label": "Vite",
+      "width": 85,
+      "height": 40,
+      "fill": "#fecdd3",
+      "stroke": "#be123c",
+      "rounded": true
+    },
+    {
+      "id": "turbo",
+      "label": "Turbopack",
+      "width": 115,
+      "height": 40,
+      "fill": "#fecdd3",
+      "stroke": "#be123c",
+      "rounded": true
+    },
+    {
+      "id": "eslint",
+      "label": "ESLint +\nPrettier",
+      "width": 115,
+      "height": 40,
+      "fill": "#fecdd3",
+      "stroke": "#be123c",
+      "rounded": true
+    },
+    {
+      "id": "tsc",
+      "label": "tsc",
+      "width": 75,
+      "height": 40,
+      "fill": "#fecdd3",
+      "stroke": "#be123c",
+      "rounded": true
+    },
+    {
+      "id": "rr",
+      "label": "React\nRouter",
+      "width": 110,
+      "height": 40,
+      "fill": "#99f6e4",
+      "stroke": "#0f766e",
+      "rounded": true
+    },
+    {
+      "id": "tsr",
+      "label": "TanStack\nRouter",
+      "width": 120,
+      "height": 40,
+      "fill": "#99f6e4",
+      "stroke": "#0f766e",
+      "rounded": true
+    }
+  ],
+  "edges": [
+    {
+      "from": "root",
+      "to": "state",
+      "stroke": "#1e40af",
+      "width": 2
+    },
+    {
+      "from": "root",
+      "to": "data",
+      "stroke": "#15803d",
+      "width": 2
+    },
+    {
+      "from": "root",
+      "to": "ui",
+      "stroke": "#7c3aed",
+      "width": 2
+    },
+    {
+      "from": "root",
+      "to": "testing",
+      "stroke": "#b45309",
+      "width": 2
+    },
+    {
+      "from": "root",
+      "to": "build",
+      "stroke": "#be123c",
+      "width": 2
+    },
+    {
+      "from": "root",
+      "to": "routing",
+      "stroke": "#0f766e",
+      "width": 2
+    },
+    {
+      "from": "state",
+      "to": "redux",
+      "stroke": "#3b82f6"
+    },
+    {
+      "from": "state",
+      "to": "zustand",
+      "stroke": "#3b82f6"
+    },
+    {
+      "from": "state",
+      "to": "jotai",
+      "stroke": "#3b82f6"
+    },
+    {
+      "from": "state",
+      "to": "recoil",
+      "stroke": "#3b82f6"
+    },
+    {
+      "from": "state",
+      "to": "ctx",
+      "stroke": "#3b82f6"
+    },
+    {
+      "from": "redux",
+      "to": "rtk",
+      "stroke": "#93c5fd"
+    },
+    {
+      "from": "redux",
+      "to": "saga",
+      "stroke": "#93c5fd"
+    },
+    {
+      "from": "redux",
+      "to": "thunk",
+      "stroke": "#93c5fd"
+    },
+    {
+      "from": "data",
+      "to": "tanstack",
+      "stroke": "#22c55e"
+    },
+    {
+      "from": "data",
+      "to": "swr",
+      "stroke": "#22c55e"
+    },
+    {
+      "from": "data",
+      "to": "apollo",
+      "stroke": "#22c55e"
+    },
+    {
+      "from": "data",
+      "to": "trpc",
+      "stroke": "#22c55e"
+    },
+    {
+      "from": "tanstack",
+      "to": "rq_inf",
+      "stroke": "#86efac"
+    },
+    {
+      "from": "tanstack",
+      "to": "rq_opt",
+      "stroke": "#86efac"
+    },
+    {
+      "from": "ui",
+      "to": "shadcn",
+      "stroke": "#8b5cf6"
+    },
+    {
+      "from": "ui",
+      "to": "radix",
+      "stroke": "#8b5cf6"
+    },
+    {
+      "from": "ui",
+      "to": "mui",
+      "stroke": "#8b5cf6"
+    },
+    {
+      "from": "ui",
+      "to": "chakra",
+      "stroke": "#8b5cf6"
+    },
+    {
+      "from": "ui",
+      "to": "ant",
+      "stroke": "#8b5cf6"
+    },
+    {
+      "from": "shadcn",
+      "to": "tailwind",
+      "stroke": "#a78bfa"
+    },
+    {
+      "from": "shadcn",
+      "to": "cva",
+      "stroke": "#a78bfa"
+    },
+    {
+      "from": "testing",
+      "to": "vitest",
+      "stroke": "#d97706"
+    },
+    {
+      "from": "testing",
+      "to": "rtl",
+      "stroke": "#d97706"
+    },
+    {
+      "from": "testing",
+      "to": "pw",
+      "stroke": "#d97706"
+    },
+    {
+      "from": "testing",
+      "to": "cypress",
+      "stroke": "#d97706"
+    },
+    {
+      "from": "testing",
+      "to": "sb",
+      "stroke": "#d97706"
+    },
+    {
+      "from": "testing",
+      "to": "msw",
+      "stroke": "#d97706"
+    },
+    {
+      "from": "pw",
+      "to": "pw_gen",
+      "stroke": "#f59e0b"
+    },
+    {
+      "from": "pw",
+      "to": "pw_tr",
+      "stroke": "#f59e0b"
+    },
+    {
+      "from": "pw",
+      "to": "pw_sh",
+      "stroke": "#f59e0b"
+    },
+    {
+      "from": "build",
+      "to": "vite",
+      "stroke": "#fb7185"
+    },
+    {
+      "from": "build",
+      "to": "turbo",
+      "stroke": "#fb7185"
+    },
+    {
+      "from": "build",
+      "to": "eslint",
+      "stroke": "#fb7185"
+    },
+    {
+      "from": "build",
+      "to": "tsc",
+      "stroke": "#fb7185"
+    },
+    {
+      "from": "routing",
+      "to": "rr",
+      "stroke": "#2dd4bf"
+    },
+    {
+      "from": "routing",
+      "to": "tsr",
+      "stroke": "#2dd4bf"
+    }
+  ]
+}

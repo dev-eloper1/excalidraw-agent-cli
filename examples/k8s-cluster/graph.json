@@ -1,0 +1,45 @@
+{
+  "direction": "TB",
+  "rankSep": 85,
+  "nodeSep": 30,
+  "title": "Kubernetes Cluster Architecture",
+  "zones": [
+    { "id": "ext",     "label": "EXTERNAL",       "labelColor": "#1e40af", "fill": "#dbeafe", "stroke": "#93c5fd", "nodeIds": ["internet","lb"] },
+    { "id": "cp",      "label": "CONTROL PLANE",  "labelColor": "#c2410c", "fill": "#ffedd5", "stroke": "#fdba74", "nodeIds": ["api","etcd","ctrlr","sched"] },
+    { "id": "workers", "label": "WORKER NODES",   "labelColor": "#15803d", "fill": "#dcfce7", "stroke": "#86efac", "nodeIds": ["kubelet","kube_proxy","runtime","pod_a","pod_b","pod_c"] },
+    { "id": "storage", "label": "STORAGE",        "labelColor": "#6d28d9", "fill": "#ede9fe", "stroke": "#c4b5fd", "nodeIds": ["pvc","pv","sc"] }
+  ],
+  "nodes": [
+    { "id": "internet",  "label": "Internet",         "width": 130, "height": 55, "fill": "#bfdbfe", "stroke": "#1e40af" },
+    { "id": "lb",        "label": "Load Balancer",    "width": 160, "height": 55, "fill": "#bfdbfe", "stroke": "#1e40af" },
+    { "id": "api",       "label": "kube-apiserver",   "width": 175, "height": 55, "fill": "#fed7aa", "stroke": "#c2410c" },
+    { "id": "etcd",      "label": "etcd",             "width": 120, "height": 55, "fill": "#fed7aa", "stroke": "#c2410c" },
+    { "id": "ctrlr",     "label": "Controller Mgr",   "width": 175, "height": 55, "fill": "#fed7aa", "stroke": "#c2410c" },
+    { "id": "sched",     "label": "Scheduler",        "width": 145, "height": 55, "fill": "#fed7aa", "stroke": "#c2410c" },
+    { "id": "kubelet",   "label": "kubelet",          "width": 130, "height": 55, "fill": "#86efac", "stroke": "#15803d" },
+    { "id": "kube_proxy","label": "kube-proxy",       "width": 145, "height": 55, "fill": "#86efac", "stroke": "#15803d" },
+    { "id": "runtime",   "label": "Container Runtime","width": 185, "height": 55, "fill": "#86efac", "stroke": "#15803d" },
+    { "id": "pod_a",     "label": "Pod: App",         "width": 130, "height": 55, "fill": "#bbf7d0", "stroke": "#15803d" },
+    { "id": "pod_b",     "label": "Pod: Worker",      "width": 135, "height": 55, "fill": "#bbf7d0", "stroke": "#15803d" },
+    { "id": "pod_c",     "label": "Pod: Sidecar",     "width": 145, "height": 55, "fill": "#bbf7d0", "stroke": "#15803d" },
+    { "id": "pvc",       "label": "PVC",              "width": 120, "height": 55, "fill": "#ddd6fe", "stroke": "#6d28d9" },
+    { "id": "pv",        "label": "PV",               "width": 120, "height": 55, "fill": "#ddd6fe", "stroke": "#6d28d9" },
+    { "id": "sc",        "label": "StorageClass",     "width": 155, "height": 55, "fill": "#ddd6fe", "stroke": "#6d28d9" }
+  ],
+  "edges": [
+    { "from": "internet",  "to": "lb",       "stroke": "#1e40af" },
+    { "from": "lb",        "to": "api",      "stroke": "#c2410c" },
+    { "from": "api",       "to": "etcd",     "stroke": "#c2410c" },
+    { "from": "api",       "to": "ctrlr",    "stroke": "#c2410c" },
+    { "from": "api",       "to": "sched",    "stroke": "#c2410c" },
+    { "from": "api",       "to": "kubelet",  "stroke": "#15803d" },
+    { "from": "kubelet",   "to": "runtime",  "stroke": "#15803d" },
+    { "from": "kubelet",   "to": "pod_a",    "stroke": "#15803d" },
+    { "from": "kubelet",   "to": "pod_b",    "stroke": "#15803d" },
+    { "from": "kubelet",   "to": "pod_c",    "stroke": "#15803d" },
+    { "from": "kube_proxy","to": "pod_a",    "stroke": "#15803d", "style": "dashed" },
+    { "from": "pod_a",     "to": "pvc",      "stroke": "#6d28d9", "style": "dashed" },
+    { "from": "pvc",       "to": "pv",       "stroke": "#6d28d9" },
+    { "from": "pv",        "to": "sc",       "stroke": "#6d28d9" }
+  ]
+}

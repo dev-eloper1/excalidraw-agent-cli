@@ -1,0 +1,60 @@
+<h2>Design: Mermaid-Parity Diagram Skill</h2>
+<p class="subtitle">What gets built — component overview</p>
+
+<div class="section">
+  <h3>New files added to excalidraw-agent-cli</h3>
+  <div style="font-family:monospace;font-size:13px;line-height:1.8;background:#1e293b;color:#e2e8f0;padding:20px;border-radius:8px">
+    <span style="color:#94a3b8">skill/</span><br>
+    &nbsp;&nbsp;<span style="color:#94a3b8">references/</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#86efac">diagram-recipes/</span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#64748b">← NEW: one .md per diagram type</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#fef08a">flowchart.md</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#fef08a">sequence.md</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#fef08a">mindmap.md</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#fef08a">class-diagram.md</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#fef08a">state-diagram.md</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#fef08a">er-diagram.md</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#fef08a">gantt.md</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#fef08a">architecture.md</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#86efac">diagram-type-rubric.md</span>&nbsp;&nbsp;<span style="color:#64748b">← NEW: how Claude picks type</span><br>
+    &nbsp;&nbsp;<span style="color:#86efac">SKILL.md</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#64748b">← UPDATED: workflow + type selection</span><br>
+    <span style="color:#94a3b8">templates/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#64748b">← NEW: runnable .sh examples per type</span><br>
+    <span style="color:#94a3b8">docs/superpowers/specs/</span><br>
+    &nbsp;&nbsp;<span style="color:#fecdd3">2026-03-15-mermaid-parity-design.md</span>&nbsp;<span style="color:#64748b">← NEW: this spec</span><br>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Each recipe file contains</h3>
+  <div class="options">
+    <div class="option" style="cursor:default;pointer-events:none">
+      <div class="letter">1</div>
+      <div class="content">
+        <h3>When to use</h3>
+        <p>Signals in the user's request that mean "use this type" — e.g., "show the flow", "document the API calls", "map the states"</p>
+      </div>
+    </div>
+    <div class="option" style="cursor:default;pointer-events:none">
+      <div class="letter">2</div>
+      <div class="content">
+        <h3>Layout template</h3>
+        <p>Canonical x/y coordinates, spacing rules, zone layout — Claude fills in node labels and connections without computing coordinates from scratch</p>
+      </div>
+    </div>
+    <div class="option" style="cursor:default;pointer-events:none">
+      <div class="letter">3</div>
+      <div class="content">
+        <h3>Color & style defaults</h3>
+        <p>Which semantic colors to use per node role, arrow types, font sizes — consistent with color-palette.md and layout-rules.md</p>
+      </div>
+    </div>
+    <div class="option" style="cursor:default;pointer-events:none">
+      <div class="letter">4</div>
+      <div class="content">
+        <h3>Pitfalls + worked example</h3>
+        <p>Common mistakes for this type (e.g., bidirectional arrows in sequence, overlap in mindmap) and one full bash script example</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p class="subtitle" style="margin-top:24px">Does this component breakdown look right? Reply in terminal.</p>

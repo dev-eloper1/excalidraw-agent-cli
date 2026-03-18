@@ -1,0 +1,109 @@
+{
+  "direction": "TB",
+  "rankSep": 80,
+  "nodeSep": 60,
+  "title": "excalidraw-agent-cli: Two Generation Approaches",
+
+  "zones": [
+    {
+      "id": "zone_cli",
+      "label": "Approach B — CLI",
+      "labelColor": "#15803d",
+      "fill": "#dcfce7",
+      "stroke": "#86efac",
+      "nodeIds": ["bash_script", "builds_excalidraw", "excalidraw_b"]
+    },
+    {
+      "id": "zone_dagre",
+      "label": "Approach A — Dagre",
+      "labelColor": "#1e40af",
+      "fill": "#dbeafe",
+      "stroke": "#93c5fd",
+      "nodeIds": ["graph_json", "dagre_layout", "excalidraw_a"]
+    }
+  ],
+
+  "nodes": [
+    {
+      "id": "bash_script",
+      "label": "bash script\n(element add /\nelement connect)",
+      "width": 220,
+      "height": 80,
+      "fill": "#fed7aa",
+      "stroke": "#c2410c",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    },
+    {
+      "id": "builds_excalidraw",
+      "label": "builds .excalidraw\n(explicit x,y coords)",
+      "width": 220,
+      "height": 70,
+      "fill": "#fef08a",
+      "stroke": "#92400e",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    },
+    {
+      "id": "excalidraw_b",
+      "label": ".excalidraw file\n(Use CLI for:\nsequence diagrams only)",
+      "width": 220,
+      "height": 80,
+      "fill": "#ddd6fe",
+      "stroke": "#6d28d9",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    },
+    {
+      "id": "graph_json",
+      "label": "graph.json\n(nodes + edges + zones,\nno coordinates needed)",
+      "width": 240,
+      "height": 80,
+      "fill": "#bfdbfe",
+      "stroke": "#1e40af",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    },
+    {
+      "id": "dagre_layout",
+      "label": "dagre-layout.js\n(auto-computes layout)",
+      "width": 220,
+      "height": 70,
+      "fill": "#86efac",
+      "stroke": "#15803d",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    },
+    {
+      "id": "excalidraw_a",
+      "label": ".excalidraw file\n(Use Dagre for:\neverything except\nsequence diagrams)",
+      "width": 240,
+      "height": 90,
+      "fill": "#ddd6fe",
+      "stroke": "#6d28d9",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    },
+    {
+      "id": "export",
+      "label": "excalidraw-agent-cli export\nSVG · PNG · .excalidraw",
+      "width": 280,
+      "height": 80,
+      "fill": "#1e293b",
+      "stroke": "#1e293b",
+      "textColor": "#ffffff",
+      "fillStyle": "solid",
+      "shape": "rectangle",
+      "roughness": 0
+    }
+  ],
+
+  "edges": [
+    { "from": "bash_script",       "to": "builds_excalidraw", "stroke": "#c2410c", "style": "solid", "width": 2 },
+    { "from": "builds_excalidraw", "to": "excalidraw_b",      "stroke": "#c2410c", "style": "solid", "width": 2 },
+    { "from": "excalidraw_b",      "to": "export",            "stroke": "#6d28d9", "style": "solid", "width": 2 },
+    { "from": "graph_json",        "to": "dagre_layout",      "stroke": "#1e40af", "style": "solid", "width": 2 },
+    { "from": "dagre_layout",      "to": "excalidraw_a",      "stroke": "#1e40af", "style": "solid", "width": 2 },
+    { "from": "excalidraw_a",      "to": "export",            "stroke": "#6d28d9", "style": "solid", "width": 2 }
+  ]
+}

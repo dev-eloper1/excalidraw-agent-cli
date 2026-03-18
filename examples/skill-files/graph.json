@@ -1,0 +1,205 @@
+{
+  "direction": "LR",
+  "rankSep": 80,
+  "nodeSep": 30,
+  "title": "Excalidraw Skill — File Structure",
+
+  "zones": [
+    {
+      "id": "zone_skill",
+      "label": "excalidraw/ skill",
+      "labelColor": "#1e40af",
+      "fill": "#dbeafe",
+      "stroke": "#93c5fd",
+      "nodeIds": ["skill_md", "references", "recipes"]
+    },
+    {
+      "id": "zone_refs",
+      "label": "references/",
+      "labelColor": "#15803d",
+      "fill": "#dcfce7",
+      "stroke": "#86efac",
+      "nodeIds": ["color_palette", "dagre_ref", "cli_ref", "patterns", "layout_rules", "rubric"]
+    },
+    {
+      "id": "zone_recipes",
+      "label": "references/diagram-recipes/",
+      "labelColor": "#c2410c",
+      "fill": "#fff7ed",
+      "stroke": "#fdba74",
+      "nodeIds": ["r_flowchart", "r_sequence", "r_mindmap", "r_arch", "r_er", "r_state"]
+    }
+  ],
+
+  "nodes": [
+    {
+      "id": "skill_md",
+      "label": "SKILL.md\n(always in context —\nworkflow + approach)",
+      "width": 200,
+      "height": 75,
+      "fill": "#1e293b",
+      "stroke": "#1e293b",
+      "textColor": "#ffffff",
+      "fillStyle": "solid",
+      "roughness": 0,
+      "shape": "rectangle"
+    },
+    {
+      "id": "references",
+      "label": "references/\n(read on demand)",
+      "width": 175,
+      "height": 60,
+      "fill": "#bfdbfe",
+      "stroke": "#1e40af",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    },
+    {
+      "id": "recipes",
+      "label": "diagram-recipes/\n(read before generating)",
+      "width": 175,
+      "height": 60,
+      "fill": "#fed7aa",
+      "stroke": "#c2410c",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    },
+    {
+      "id": "color_palette",
+      "label": "color-palette.md\n(all hex values)",
+      "width": 180,
+      "height": 55,
+      "fill": "#bbf7d0",
+      "stroke": "#15803d",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    },
+    {
+      "id": "dagre_ref",
+      "label": "dagre-reference.md\n(graph.json schema)",
+      "width": 180,
+      "height": 55,
+      "fill": "#bbf7d0",
+      "stroke": "#15803d",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    },
+    {
+      "id": "cli_ref",
+      "label": "cli-reference.md\n(bash helpers + flags)",
+      "width": 180,
+      "height": 55,
+      "fill": "#bbf7d0",
+      "stroke": "#15803d",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    },
+    {
+      "id": "patterns",
+      "label": "patterns.md\n(visual pattern library)",
+      "width": 180,
+      "height": 55,
+      "fill": "#bbf7d0",
+      "stroke": "#15803d",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    },
+    {
+      "id": "layout_rules",
+      "label": "layout-rules.md\n(coordinate templates)",
+      "width": 180,
+      "height": 55,
+      "fill": "#bbf7d0",
+      "stroke": "#15803d",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    },
+    {
+      "id": "rubric",
+      "label": "diagram-type-rubric.md\n(which type to use when)",
+      "width": 180,
+      "height": 55,
+      "fill": "#bbf7d0",
+      "stroke": "#15803d",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    },
+    {
+      "id": "r_flowchart",
+      "label": "flowchart.md",
+      "width": 150,
+      "height": 44,
+      "fill": "#ffedd5",
+      "stroke": "#c2410c",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    },
+    {
+      "id": "r_sequence",
+      "label": "sequence.md",
+      "width": 150,
+      "height": 44,
+      "fill": "#ffedd5",
+      "stroke": "#c2410c",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    },
+    {
+      "id": "r_mindmap",
+      "label": "mindmap.md",
+      "width": 150,
+      "height": 44,
+      "fill": "#ffedd5",
+      "stroke": "#c2410c",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    },
+    {
+      "id": "r_arch",
+      "label": "architecture.md",
+      "width": 150,
+      "height": 44,
+      "fill": "#ffedd5",
+      "stroke": "#c2410c",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    },
+    {
+      "id": "r_er",
+      "label": "er-diagram.md",
+      "width": 150,
+      "height": 44,
+      "fill": "#ffedd5",
+      "stroke": "#c2410c",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    },
+    {
+      "id": "r_state",
+      "label": "state-diagram.md",
+      "width": 150,
+      "height": 44,
+      "fill": "#ffedd5",
+      "stroke": "#c2410c",
+      "fillStyle": "solid",
+      "shape": "rectangle"
+    }
+  ],
+
+  "edges": [
+    { "from": "skill_md", "to": "references", "stroke": "#1e40af", "style": "solid", "width": 2 },
+    { "from": "skill_md", "to": "recipes", "stroke": "#c2410c", "style": "solid", "width": 2 },
+    { "from": "references", "to": "color_palette", "stroke": "#15803d", "style": "solid", "width": 1 },
+    { "from": "references", "to": "dagre_ref", "stroke": "#15803d", "style": "solid", "width": 1 },
+    { "from": "references", "to": "cli_ref", "stroke": "#15803d", "style": "solid", "width": 1 },
+    { "from": "references", "to": "patterns", "stroke": "#15803d", "style": "solid", "width": 1 },
+    { "from": "references", "to": "layout_rules", "stroke": "#15803d", "style": "solid", "width": 1 },
+    { "from": "references", "to": "rubric", "stroke": "#15803d", "style": "solid", "width": 1 },
+    { "from": "recipes", "to": "r_flowchart", "stroke": "#c2410c", "style": "solid", "width": 1 },
+    { "from": "recipes", "to": "r_sequence", "stroke": "#c2410c", "style": "solid", "width": 1 },
+    { "from": "recipes", "to": "r_mindmap", "stroke": "#c2410c", "style": "solid", "width": 1 },
+    { "from": "recipes", "to": "r_arch", "stroke": "#c2410c", "style": "solid", "width": 1 },
+    { "from": "recipes", "to": "r_er", "stroke": "#c2410c", "style": "solid", "width": 1 },
+    { "from": "recipes", "to": "r_state", "stroke": "#c2410c", "style": "solid", "width": 1 }
+  ]
+}
